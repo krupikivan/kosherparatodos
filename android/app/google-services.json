@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "422527605227",
+    "firebase_url": "https://kosherparatodos-e8111.firebaseio.com",
+    "project_id": "kosherparatodos-e8111",
+    "storage_bucket": "kosherparatodos-e8111.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:422527605227:android:fa2f2bdc9f639cd168e1ae",
+        "android_client_info": {
+          "package_name": "com.example.kosherparatodos"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "422527605227-8uckqqfu7bkc4krpcaqfr34v39775e2m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCRcwC2C4AMW7it4Q09qk95OJZrNL-gER4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "422527605227-8uckqqfu7bkc4krpcaqfr34v39775e2m.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
