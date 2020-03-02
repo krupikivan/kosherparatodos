@@ -1,7 +1,8 @@
+import 'package:cloud_functions/cloud_functions.dart';
 import 'package:flutter/widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-enum Status { Uninitialized, Authenticated, Authenticating, Unauthenticated, Choosing, Registering }
+enum Status { Uninitialized, Authenticated, Authenticating, Unauthenticated, Choosing, Register, Registering }
 
 class UserRepository with ChangeNotifier {
   FirebaseAuth _auth;
@@ -28,6 +29,31 @@ class UserRepository with ChangeNotifier {
     }
   }
 
+    Future<void> signup(String name, String email, String password) async {
+     _status = Status.Registering;
+      notifyListeners();
+     return await _auth.createUserWithEmailAndPassword(
+      email: email,
+      password: password,
+    ).then((firebaseUser) async{
+      final HttpsCallable callable = CloudFunctions.instance.getHttpsCallable(
+        functionName: 'addUser',
+      );
+//    dynamic resp = await callable.call();
+      await callable.call(<String, dynamic>{
+        'name': name,
+        'email': email,
+        'uid': firebaseUser.user.uid,
+      });
+        _status = Status.Register;
+      notifyListeners();
+    }).catchError((onError){
+              _status = Status.Register;
+      notifyListeners();
+    });
+  }
+
+
   Future<void> goLogin() async{
     _status = Status.Unauthenticated;
     notifyListeners();
@@ -35,7 +61,7 @@ class UserRepository with ChangeNotifier {
 
   
   Future<void> goSignup() async{
-    _status = Status.Registering;
+    _status = Status.Register;
     notifyListeners();
   }
 

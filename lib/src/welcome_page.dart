@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:kosherparatodos/src/Widget/title_widget.dart';
 import 'package:kosherparatodos/style/theme.dart' as MyTheme;
 import 'package:kosherparatodos/user_repository.dart';
 import 'package:provider/provider.dart';
@@ -46,20 +46,6 @@ class _WelcomePageState extends State<WelcomePage> {
     );
   }
 
-  Widget _title() {
-    return RichText(
-      textAlign: TextAlign.center,
-      text: TextSpan(
-          text: 'Kosher Para Todos',
-          style: GoogleFonts.portLligatSans(
-            textStyle: Theme.of(context).textTheme.display1,
-            fontSize: 30,
-            fontWeight: FontWeight.w700,
-            color: Colors.white,
-          ),),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -81,7 +67,7 @@ class _WelcomePageState extends State<WelcomePage> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                _title(),
+                TitleLabel(),
                 SizedBox(
                   height: 80,
                 ),

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:kosherparatodos/src/login_page.dart';
+import 'package:kosherparatodos/src/Widget/title_widget.dart';
 import 'package:kosherparatodos/user_repository.dart';
 import 'package:provider/provider.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:kosherparatodos/style/theme.dart' as MyTheme;
 
 import 'Widget/login_button.dart';
@@ -17,6 +16,21 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
+  final _formKey = GlobalKey<FormState>();
+  final _key = GlobalKey<ScaffoldState>();
+
+  TextEditingController _name;
+  TextEditingController _email;
+  TextEditingController _password;
+
+  @override
+  void initState() {
+    super.initState();
+    _name = TextEditingController(text: "");
+    _email = TextEditingController(text: "");
+    _password = TextEditingController(text: "");
+  }
+
   Widget _backButton() {
     return InkWell(
       onTap: () {
@@ -42,7 +56,7 @@ class _SignUpPageState extends State<SignUpPage> {
     );
   }
 
-  Widget _entryField(String title, {bool isPassword = false}) {
+  Widget _entryField(String title, controller, {bool isPassword = false}) {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 10),
       child: Column(
@@ -58,8 +72,12 @@ class _SignUpPageState extends State<SignUpPage> {
           SizedBox(
             height: 10,
           ),
-          TextField(
-                        style: TextStyle(color:MyTheme.Colors.light,),
+          TextFormField(
+              validator: (value) => (value.isEmpty) ? "Ingrese datos" : null,
+              controller: controller,
+              style: TextStyle(
+                color: MyTheme.Colors.light,
+              ),
               cursorColor: MyTheme.Colors.light,
               obscureText: isPassword,
               decoration: InputDecoration(
@@ -75,9 +93,26 @@ class _SignUpPageState extends State<SignUpPage> {
     );
   }
 
-  Widget _submitButton() {
-    return LoginButton(
-      name: 'Registrate',
+  Widget _submitButton(UserRepository user) {
+    return InkWell(
+      onTap: () async {
+        if (_formKey.currentState.validate()) {
+          await user
+              .signup(_name.text, _email.text, _password.text)
+              .then((onValue) {
+            _key.currentState.showSnackBar(SnackBar(
+              content: Text("Error!"),
+            ));
+          }).catchError((e) {
+            _key.currentState.showSnackBar(SnackBar(
+              content: Text("Error!"),
+            ));
+          });
+        }
+      },
+      child: LoginButton(
+        name: 'Registrate',
+      ),
     );
   }
 
@@ -115,73 +150,65 @@ class _SignUpPageState extends State<SignUpPage> {
     );
   }
 
-  Widget _title() {
-    return RichText(
-      textAlign: TextAlign.center,
-      text: TextSpan(
-        text: 'Kosher Para Todos',
-        style: GoogleFonts.portLligatSans(
-          textStyle: Theme.of(context).textTheme.display1,
-          fontSize: 30,
-          fontWeight: FontWeight.w700,
-          color: MyTheme.Colors.light,
-        ),
-      ),
-    );
-  }
-
   Widget _emailPasswordWidget() {
-    return Column(
-      children: <Widget>[
-        _entryField("Nombre"),
-        _entryField("Email"),
-        _entryField("Contraseña", isPassword: true),
-      ],
+    return Form(
+      key: _formKey,
+      child: Column(
+        children: <Widget>[
+          _entryField("Nombre", _name),
+          _entryField("Email", _email),
+          _entryField("Contraseña", _password, isPassword: true),
+        ],
+      ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<UserRepository>(context);
     return Scaffold(
+        key: _key,
         body: SingleChildScrollView(
             child: Container(
-      height: MediaQuery.of(context).size.height,
-      child: Stack(
-        children: <Widget>[
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Expanded(
-                  flex: 3,
-                  child: SizedBox(),
+          height: MediaQuery.of(context).size.height,
+          child: Stack(
+            children: <Widget>[
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Expanded(
+                      flex: 3,
+                      child: SizedBox(),
+                    ),
+                    TitleLabel(),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    _emailPasswordWidget(),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    user.status == Status.Registering
+                        ? Center(child: CircularProgressIndicator())
+                        : _submitButton(user),
+                    Expanded(
+                      flex: 2,
+                      child: SizedBox(),
+                    )
+                  ],
                 ),
-                _title(),
-                SizedBox(
-                  height: 20,
-                ),
-                _emailPasswordWidget(),
-                SizedBox(
-                  height: 20,
-                ),
-                _submitButton(),
-                Expanded(
-                  flex: 2,
-                  child: SizedBox(),
-                )
-              ],
-            ),
-            decoration: BoxDecoration(color: MyTheme.Colors.dark),
+                decoration: BoxDecoration(color: MyTheme.Colors.dark),
+              ),
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: _loginAccountLabel(),
+              ),
+              Positioned(top: 40, left: 0, child: _backButton()),
+            ],
           ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: _loginAccountLabel(),
-          ),
-          Positioned(top: 40, left: 0, child: _backButton()),
-        ],
-      ),
-    )));
+        )));
   }
 }

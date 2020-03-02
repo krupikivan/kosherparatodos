@@ -25,6 +25,8 @@ class HomePage extends StatelessWidget {
               return LoginPage();
             case Status.Authenticating:
               return LoginPage();
+            case Status.Register:
+              return SignUpPage();
             case Status.Authenticated:
               return UserInfoPage(user: user.user);
           }
