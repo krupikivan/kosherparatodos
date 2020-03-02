@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kosherparatodos/user_repository.dart';
 import 'package:provider/provider.dart';
+import 'package:kosherparatodos/style/theme.dart' as MyTheme;
+
+import 'Widget/login_button.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key key, this.title}) : super(key: key);
@@ -17,7 +20,7 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController _password;
   final _formKey = GlobalKey<FormState>();
   final _key = GlobalKey<ScaffoldState>();
-  TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
+  TextStyle style = TextStyle(color: MyTheme.Colors.light, fontFamily: MyTheme.Fonts.primaryFont, fontSize: 20.0);
 
   @override
   void initState() {
@@ -37,10 +40,10 @@ class _LoginPageState extends State<LoginPage> {
           children: <Widget>[
             Container(
               padding: EdgeInsets.only(left: 0, top: 10, bottom: 10),
-              child: Icon(Icons.keyboard_arrow_left, color: Colors.black),
+              child: Icon(Icons.keyboard_arrow_left, color: MyTheme.Colors.light),
             ),
             Text('Volver',
-                style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500))
+                style: TextStyle(color: MyTheme.Colors.light, fontSize: 12, fontWeight: FontWeight.w500))
           ],
         ),
       ),
@@ -57,28 +60,7 @@ class _LoginPageState extends State<LoginPage> {
             ));
         }
       },
-      child: Container(
-        width: MediaQuery.of(context).size.width,
-        padding: EdgeInsets.symmetric(vertical: 15),
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(5)),
-            boxShadow: <BoxShadow>[
-              BoxShadow(
-                  color: Colors.grey.shade200,
-                  offset: Offset(2, 4),
-                  blurRadius: 5,
-                  spreadRadius: 2)
-            ],
-            gradient: LinearGradient(
-                begin: Alignment.centerLeft,
-                end: Alignment.centerRight,
-                colors: [Color(0xfffbb448), Color(0xfff7892b)])),
-        child: Text(
-          'Ingresar',
-          style: TextStyle(fontSize: 20, color: Colors.white),
-        ),
-      ),
+      child: LoginButton(name: 'Ingresar',),
     );
   }
 
@@ -91,7 +73,7 @@ class _LoginPageState extends State<LoginPage> {
         children: <Widget>[
           Text(
             'No tienes cuenta?',
-            style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
+            style: TextStyle(color: MyTheme.Colors.light, fontSize: 13, fontWeight: FontWeight.w600),
           ),
           SizedBox(
             width: 10,
@@ -103,7 +85,7 @@ class _LoginPageState extends State<LoginPage> {
             child: Text(
               'Registrate',
               style: TextStyle(
-                  color: Color(0xfff79c4f),
+                  color: MyTheme.Colors.light,
                   fontSize: 13,
                   fontWeight: FontWeight.w600),
             ),
@@ -122,7 +104,7 @@ class _LoginPageState extends State<LoginPage> {
           textStyle: Theme.of(context).textTheme.display1,
           fontSize: 30,
           fontWeight: FontWeight.w700,
-          color: Color(0xffe46b10),
+          color: MyTheme.Colors.light,
         ),
       ),
     );
@@ -132,24 +114,44 @@ class _LoginPageState extends State<LoginPage> {
     return TextFormField(
       obscureText: true,
       controller: _password,
-      validator: (value) => (value.isEmpty) ? "Please Enter Password" : null,
+      validator: (value) => (value.isEmpty) ? "Ingrese una contraseña" : null,
       style: style,
+      cursorColor: MyTheme.Colors.light,
       decoration: InputDecoration(
-          prefixIcon: Icon(Icons.lock),
-          labelText: "Password",
-          border: OutlineInputBorder()),
+          prefixIcon: Icon(Icons.lock, color: MyTheme.Colors.light,),
+          labelText: "Contraseña",
+          errorStyle: TextStyle(color: MyTheme.Colors.light),
+           errorBorder: OutlineInputBorder(borderSide: BorderSide(color: MyTheme.Colors.light)),
+           focusedErrorBorder: OutlineInputBorder(borderSide: BorderSide(color: MyTheme.Colors.light)),
+          focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: MyTheme.Colors.light)),
+          labelStyle: TextStyle(color: MyTheme.Colors.light),
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(
+              color: MyTheme.Colors.light
+            )
+          )),
     );
   }
 
   Widget _emailWidget() {
     return TextFormField(
       controller: _email,
-      validator: (value) => (value.isEmpty) ? "Please Enter Email" : null,
+      validator: (value) => (value.isEmpty) ? "Ingrese un email" : null,
       style: style,
+            cursorColor: MyTheme.Colors.light,
       decoration: InputDecoration(
-          prefixIcon: Icon(Icons.email),
+          prefixIcon: Icon(Icons.email,color: MyTheme.Colors.light,),
           labelText: "Email",
-          border: OutlineInputBorder()),
+          errorStyle: TextStyle(color: MyTheme.Colors.light),
+          focusedErrorBorder: OutlineInputBorder(borderSide: BorderSide(color: MyTheme.Colors.light)),
+          errorBorder: OutlineInputBorder(borderSide: BorderSide(color: MyTheme.Colors.light)),
+          focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: MyTheme.Colors.light)),
+          labelStyle: TextStyle(color: MyTheme.Colors.light),
+          enabledBorder : OutlineInputBorder(
+            borderSide: new BorderSide(
+              color: MyTheme.Colors.light,
+            )
+          )),
     );
   }
 
@@ -193,6 +195,7 @@ class _LoginPageState extends State<LoginPage> {
                         alignment: Alignment.centerRight,
                         child: Text('Olvide la contraseña ?',
                             style: TextStyle(
+                              color: MyTheme.Colors.light,
                                 fontSize: 14, fontWeight: FontWeight.w500)),
                       ),
                       Expanded(
@@ -209,6 +212,8 @@ class _LoginPageState extends State<LoginPage> {
                 Positioned(top: 40, left: 0, child: _backButton()),
               ],
             ),
+                    decoration: BoxDecoration(
+            color: MyTheme.Colors.dark),
           ),
         )));
   }

@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:kosherparatodos/style/theme.dart' as MyTheme;
 import 'package:kosherparatodos/user_repository.dart';
 import 'package:provider/provider.dart';
+
+import 'Widget/login_button.dart';
 
 class WelcomePage extends StatefulWidget {
   WelcomePage({Key key, this.title}) : super(key: key);
@@ -18,25 +21,7 @@ class _WelcomePageState extends State<WelcomePage> {
       onTap: () {
          Provider.of<UserRepository>(context, listen: false).goLogin();
       },
-      child: Container(
-        width: MediaQuery.of(context).size.width,
-        padding: EdgeInsets.symmetric(vertical: 13),
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(5)),
-            boxShadow: <BoxShadow>[
-              BoxShadow(
-                  color: Color(0xffdf8e33).withAlpha(100),
-                  offset: Offset(2, 4),
-                  blurRadius: 8,
-                  spreadRadius: 2)
-            ],
-            color: Colors.white),
-        child: Text(
-          'Ingresar',
-          style: TextStyle(fontSize: 20, color: Color(0xfff7892b)),
-        ),
-      ),
+      child: LoginButton(name: 'Ingresar',),
     );
   }
 
@@ -83,6 +68,7 @@ class _WelcomePageState extends State<WelcomePage> {
             padding: EdgeInsets.symmetric(horizontal: 20),
             height: MediaQuery.of(context).size.height,
             decoration: BoxDecoration(
+              color: MyTheme.Colors.dark,
                 borderRadius: BorderRadius.all(Radius.circular(5)),
                 boxShadow: <BoxShadow>[
                   BoxShadow(
@@ -90,11 +76,7 @@ class _WelcomePageState extends State<WelcomePage> {
                       offset: Offset(2, 4),
                       blurRadius: 5,
                       spreadRadius: 2)
-                ],
-                gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [Color(0xfffbb448), Color(0xffe46b10)])),
+                ],),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
