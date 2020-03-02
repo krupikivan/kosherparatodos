@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'login_page.dart';
+import 'package:kosherparatodos/user_repository.dart';
+import 'package:provider/provider.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -15,7 +16,7 @@ class _SignUpPageState extends State<SignUpPage> {
   Widget _backButton() {
     return InkWell(
       onTap: () {
-        Navigator.pop(context);
+        Provider.of<UserRepository>(context, listen: false).goWelcome();
       },
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 10),
@@ -98,8 +99,7 @@ class _SignUpPageState extends State<SignUpPage> {
           ),
           InkWell(
             onTap: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => LoginPage()));
+              Provider.of<UserRepository>(context, listen: false).goLogin();
             },
             child: Text(
               'Ingresar',

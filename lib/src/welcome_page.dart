@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'signup_page.dart';
-import 'login_page.dart';
+import 'package:kosherparatodos/user_repository.dart';
+import 'package:provider/provider.dart';
 
 class WelcomePage extends StatefulWidget {
   WelcomePage({Key key, this.title}) : super(key: key);
@@ -16,8 +16,7 @@ class _WelcomePageState extends State<WelcomePage> {
   Widget _submitButton() {
     return InkWell(
       onTap: () {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => LoginPage()));
+         Provider.of<UserRepository>(context, listen: false).goLogin();
       },
       child: Container(
         width: MediaQuery.of(context).size.width,
@@ -44,8 +43,7 @@ class _WelcomePageState extends State<WelcomePage> {
   Widget _signUpButton() {
     return InkWell(
       onTap: () {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => SignUpPage()));
+               Provider.of<UserRepository>(context, listen: false).goSignup();
       },
       child: Container(
         width: MediaQuery.of(context).size.width,

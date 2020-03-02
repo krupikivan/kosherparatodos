@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'signup_page.dart';
+import 'package:kosherparatodos/user_repository.dart';
+import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key key, this.title}) : super(key: key);
@@ -12,10 +13,23 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  TextEditingController _email;
+  TextEditingController _password;
+  final _formKey = GlobalKey<FormState>();
+  final _key = GlobalKey<ScaffoldState>();
+  TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
+
+  @override
+  void initState() {
+    super.initState();
+    _email = TextEditingController(text: "");
+    _password = TextEditingController(text: "");
+  }
+
   Widget _backButton() {
     return InkWell(
       onTap: () {
-        Navigator.pop(context);
+        Provider.of<UserRepository>(context, listen: false).goWelcome();
       },
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 10),
@@ -33,51 +47,37 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Widget _entryField(String title, {bool isPassword = false}) {
-    return Container(
-      margin: EdgeInsets.symmetric(vertical: 10),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text(
-            title,
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          TextField(
-              obscureText: isPassword,
-              decoration: InputDecoration(
-                  border: InputBorder.none,
-                  fillColor: Color(0xfff3f3f4),
-                  filled: true))
-        ],
-      ),
-    );
-  }
-
-  Widget _submitButton() {
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      padding: EdgeInsets.symmetric(vertical: 15),
-      alignment: Alignment.center,
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(5)),
-          boxShadow: <BoxShadow>[
-            BoxShadow(
-                color: Colors.grey.shade200,
-                offset: Offset(2, 4),
-                blurRadius: 5,
-                spreadRadius: 2)
-          ],
-          gradient: LinearGradient(
-              begin: Alignment.centerLeft,
-              end: Alignment.centerRight,
-              colors: [Color(0xfffbb448), Color(0xfff7892b)])),
-      child: Text(
-        'Ingresar',
-        style: TextStyle(fontSize: 20, color: Colors.white),
+  Widget _submitButton(user) {
+    return InkWell(
+      onTap: () async {
+        if (_formKey.currentState.validate()) {
+          if (!await user.signIn(_email.text, _password.text))
+            _key.currentState.showSnackBar(SnackBar(
+              content: Text("Error!"),
+            ));
+        }
+      },
+      child: Container(
+        width: MediaQuery.of(context).size.width,
+        padding: EdgeInsets.symmetric(vertical: 15),
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(5)),
+            boxShadow: <BoxShadow>[
+              BoxShadow(
+                  color: Colors.grey.shade200,
+                  offset: Offset(2, 4),
+                  blurRadius: 5,
+                  spreadRadius: 2)
+            ],
+            gradient: LinearGradient(
+                begin: Alignment.centerLeft,
+                end: Alignment.centerRight,
+                colors: [Color(0xfffbb448), Color(0xfff7892b)])),
+        child: Text(
+          'Ingresar',
+          style: TextStyle(fontSize: 20, color: Colors.white),
+        ),
       ),
     );
   }
@@ -98,8 +98,7 @@ class _LoginPageState extends State<LoginPage> {
           ),
           InkWell(
             onTap: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => SignUpPage()));
+              Provider.of<UserRepository>(context, listen: false).goSignup();
             },
             child: Text(
               'Registrate',
@@ -118,38 +117,57 @@ class _LoginPageState extends State<LoginPage> {
     return RichText(
       textAlign: TextAlign.center,
       text: TextSpan(
-          text: 'Kosher Para Todos',
-          style: GoogleFonts.portLligatSans(
-            textStyle: Theme.of(context).textTheme.display1,
-            fontSize: 30,
-            fontWeight: FontWeight.w700,
-            color: Color(0xffe46b10),
-          ),),
+        text: 'Kosher Para Todos',
+        style: GoogleFonts.portLligatSans(
+          textStyle: Theme.of(context).textTheme.display1,
+          fontSize: 30,
+          fontWeight: FontWeight.w700,
+          color: Color(0xffe46b10),
+        ),
+      ),
     );
   }
 
-  Widget _emailPasswordWidget() {
-    return Column(
-      children: <Widget>[
-        _entryField("Email"),
-        _entryField("Contraseña", isPassword: true),
-      ],
+  Widget _passwordWidget() {
+    return TextFormField(
+      obscureText: true,
+      controller: _password,
+      validator: (value) => (value.isEmpty) ? "Please Enter Password" : null,
+      style: style,
+      decoration: InputDecoration(
+          prefixIcon: Icon(Icons.lock),
+          labelText: "Password",
+          border: OutlineInputBorder()),
+    );
+  }
+
+  Widget _emailWidget() {
+    return TextFormField(
+      controller: _email,
+      validator: (value) => (value.isEmpty) ? "Please Enter Email" : null,
+      style: style,
+      decoration: InputDecoration(
+          prefixIcon: Icon(Icons.email),
+          labelText: "Email",
+          border: OutlineInputBorder()),
     );
   }
 
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<UserRepository>(context);
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Container(
+        key: _key,
+        body: SingleChildScrollView(
+            child: Form(
+          key: _formKey,
+          child: Container(
             height: MediaQuery.of(context).size.height,
             child: Stack(
               children: <Widget>[
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 20),
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Expanded(
                         flex: 3,
@@ -157,19 +175,25 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       _title(),
                       SizedBox(
-                        height: 50,
+                        height: 20,
                       ),
-                      _emailPasswordWidget(),
+                      _emailWidget(),
                       SizedBox(
                         height: 20,
                       ),
-                      _submitButton(),
+                      _passwordWidget(),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      user.status == Status.Authenticating
+                          ? Center(child: CircularProgressIndicator())
+                          : _submitButton(user),
                       Container(
                         padding: EdgeInsets.symmetric(vertical: 10),
                         alignment: Alignment.centerRight,
                         child: Text('Olvide la contraseña ?',
-                            style:
-                                TextStyle(fontSize: 14, fontWeight: FontWeight.w500)),
+                            style: TextStyle(
+                                fontSize: 14, fontWeight: FontWeight.w500)),
                       ),
                       Expanded(
                         flex: 2,
@@ -185,8 +209,7 @@ class _LoginPageState extends State<LoginPage> {
                 Positioned(top: 40, left: 0, child: _backButton()),
               ],
             ),
-          )
-        )
-      );
+          ),
+        )));
   }
 }
