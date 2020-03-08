@@ -29,6 +29,7 @@ dependencies:
   cloud_functions: ^0.4.2+2
   cloud_firestore: ^0.13.4+1
   rxdart: ^0.22.3
+  rflutter_alert: ^1.0.3
 
 dev_dependencies:
   flutter_test:

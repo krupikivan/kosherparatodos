@@ -42,7 +42,7 @@ class _UserPageState extends State<UserPage> {
         backgroundColor: MyTheme.Colors.dark,
         title: ListTile(title: Text("Kosher para todos", style: style,), subtitle: Text(widget.user.email, style: style,), leading: Icon(Icons.account_circle, color: MyTheme.Colors.light,),),
         actions: <Widget>[
-          PopupMenu(choices: choices, type: 'menu'),
+          PopupMenu(choices: choices),
         ],
       ),
       body: _children[_currentIndex],
@@ -77,6 +77,10 @@ class _UserPageState extends State<UserPage> {
   _fillPopupData() {
     choices = <Item>[
       Item(
+          Text('Nuevo pedido',
+              style: TextStyle(fontFamily: MyTheme.Fonts.primaryFont)),
+          Icon(Icons.add)),
+    Item(
           Text('Cerrar Sesion',
               style: TextStyle(fontFamily: MyTheme.Fonts.primaryFont)),
           Icon(Icons.account_circle)),

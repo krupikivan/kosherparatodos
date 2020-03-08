@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class Producto{
   
   String idProducto;
+  String name;
   int costo;
   Timestamp ultimaActualizacion;
   int cantidad;
@@ -11,6 +12,7 @@ class Producto{
 
   Producto({
     this.idProducto,
+    this.name,
     this.costo,
     this.ultimaActualizacion,
     this.cantidad,

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:kosherparatodos/src/pages/home_pages/bloc/product_data_bloc.dart';
+import 'package:kosherparatodos/src/pages/home_pages/new_pedido_page.dart';
 import 'package:kosherparatodos/src/utils/item.dart';
 import 'package:kosherparatodos/user_repository.dart';
 import 'package:provider/provider.dart';
@@ -6,8 +8,7 @@ import 'package:provider/provider.dart';
 class PopupMenu extends StatefulWidget {
 
   final List<Item> choices;
-  final String type;
-  PopupMenu({Key key, this.choices, this.type}) : super(key: key);
+  PopupMenu({Key key, this.choices}) : super(key: key);
 
   @override
   _PopupMenuState createState() => _PopupMenuState();
@@ -34,6 +35,13 @@ class _PopupMenuState extends State<PopupMenu> {
 
   void choiceActionMenu(Item choice) {
     if (choice.title.data == widget.choices[0].title.data) {
+        blocProductData.getProductList();
+          Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => NewPedidoPage()));
+    }
+    else{
       Provider.of<UserRepository>(context, listen: false).signOut();
     }
   }

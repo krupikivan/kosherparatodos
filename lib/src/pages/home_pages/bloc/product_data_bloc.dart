@@ -9,12 +9,15 @@ class ProductDataBloc {
   Observable<List<Producto>> get getProducts => _docProductList.stream;
   Function(List<Producto>) get addProducts => _docProductList.sink.add;
 
+  List<Producto> list = List();
+
   getProductList() {
-    List<Producto> list = List();
+    list.clear();
     _repository.getProductList().then((doc) {
       for(int i=0; i<doc.documents.length; i++){
           Producto producto = new Producto();
           producto.cantidad = doc.documents[i].data['cantidad'];
+          producto.name = doc.documents[i].data['name'];
           producto.costo = doc.documents[i].data['costo'];
           producto.idProducto = doc.documents[i].documentID;
           producto.ultimaActualizacion = doc.documents[i].data['ultimaActualizacion'];
