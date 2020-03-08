@@ -18,7 +18,7 @@ class SignUpPage extends StatefulWidget {
 class _SignUpPageState extends State<SignUpPage> {
   final _formKey = GlobalKey<FormState>();
   final _key = GlobalKey<ScaffoldState>();
-
+  TextStyle style = TextStyle(color: MyTheme.Colors.light, fontFamily: MyTheme.Fonts.primaryFont, fontSize: 20.0);
   TextEditingController _name;
   TextEditingController _email;
   TextEditingController _password;
@@ -75,12 +75,13 @@ class _SignUpPageState extends State<SignUpPage> {
           TextFormField(
               validator: (value) => (value.isEmpty) ? "Ingrese datos" : null,
               controller: controller,
-              style: TextStyle(
-                color: MyTheme.Colors.light,
-              ),
+              style: style,
               cursorColor: MyTheme.Colors.light,
               obscureText: isPassword,
               decoration: InputDecoration(
+              errorStyle: TextStyle(color: MyTheme.Colors.light),
+              labelStyle: TextStyle(color: MyTheme.Colors.light),
+                 focusedErrorBorder: OutlineInputBorder(borderSide: BorderSide(color: MyTheme.Colors.light)),
                 enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: MyTheme.Colors.light)),
                 errorBorder: OutlineInputBorder(
@@ -96,19 +97,20 @@ class _SignUpPageState extends State<SignUpPage> {
   Widget _submitButton(UserRepository user) {
     return InkWell(
       onTap: () async {
-        if (_formKey.currentState.validate()) {
+        // if (_formKey.currentState.validate()) {
           await user
               .signup(_name.text, _email.text, _password.text)
               .then((onValue) {
+             user.signOutOnRegister();
             _key.currentState.showSnackBar(SnackBar(
-              content: Text("Error!"),
+              content: Text("Usuario creado, espere confirmacion."),
             ));
           }).catchError((e) {
             _key.currentState.showSnackBar(SnackBar(
               content: Text("Error!"),
             ));
           });
-        }
+        // }
       },
       child: LoginButton(
         name: 'Registrate',

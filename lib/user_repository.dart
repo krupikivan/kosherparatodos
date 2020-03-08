@@ -29,6 +29,8 @@ class UserRepository with ChangeNotifier {
     }
   }
 
+    Future<void> test() async {}
+
     Future<void> signup(String name, String email, String password) async {
      _status = Status.Registering;
       notifyListeners();
@@ -42,11 +44,10 @@ class UserRepository with ChangeNotifier {
 //    dynamic resp = await callable.call();
       await callable.call(<String, dynamic>{
         'name': name,
-        'email': email,
         'uid': firebaseUser.user.uid,
       });
-        _status = Status.Register;
-      notifyListeners();
+      //   _status = Status.Register;
+      // notifyListeners();
     }).catchError((onError){
               _status = Status.Register;
       notifyListeners();
@@ -77,12 +78,21 @@ class UserRepository with ChangeNotifier {
     return Future.delayed(Duration.zero);
   }
 
+    Future signOutOnRegister() async {
+    _auth.signOut();
+    return Future.delayed(Duration.zero);
+  }
+
   Future<void> _onAuthStateChanged(FirebaseUser firebaseUser) async {
-    if (firebaseUser == null) {
+    if (firebaseUser == null && _status != Status.Register) {
       _status = Status.Choosing;
     } else {
-      _user = firebaseUser;
-      _status = Status.Authenticated;
+      if(_status == Status.Registering || _status == Status.Register){
+          _status = Status.Register;
+          }else{
+        _user = firebaseUser;
+        _status = Status.Authenticated;
+      }
     }
     notifyListeners();
   }
