@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:kosherparatodos/splash_screen.dart';
-import 'package:kosherparatodos/src/login_page.dart';
-import 'package:kosherparatodos/src/signup_page.dart';
-import 'package:kosherparatodos/src/user_info_page.dart';
-import 'package:kosherparatodos/src/welcome_page.dart';
+import 'package:kosherparatodos/src/pages/auth_pages/export.dart';
+import 'package:kosherparatodos/src/pages/home_pages/user_page.dart';
 import 'package:kosherparatodos/user_repository.dart';
 import 'package:provider/provider.dart';
 
-class HomePage extends StatelessWidget {
+class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
@@ -28,7 +26,7 @@ class HomePage extends StatelessWidget {
             case Status.Register:
               return SignUpPage();
             case Status.Authenticated:
-              return UserInfoPage(user: user.user);
+              return UserPage(user: user.user);
           }
           return null;
         },

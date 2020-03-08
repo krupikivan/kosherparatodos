@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:kosherparatodos/src/Widget/login_button.dart';
 import 'package:kosherparatodos/src/repository/repo.dart';
 import 'package:kosherparatodos/user_repository.dart';
 import 'package:provider/provider.dart';
 import 'package:kosherparatodos/style/theme.dart' as MyTheme;
-
-import 'Widget/login_button.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key key, this.title}) : super(key: key);
@@ -225,7 +224,7 @@ class _LoginPageState extends State<LoginPage> {
                         height: 20,
                       ),
                       user.status == Status.Authenticating
-                          ? Center(child: CircularProgressIndicator())
+                          ? Center(child: CircularProgressIndicator(valueColor: new AlwaysStoppedAnimation<Color>(MyTheme.Colors.light),))
                           : _submitButton(user),
                       Container(
                         padding: EdgeInsets.symmetric(vertical: 10),

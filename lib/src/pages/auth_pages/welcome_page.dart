@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:kosherparatodos/src/Widget/login_button.dart';
 import 'package:kosherparatodos/src/Widget/title_widget.dart';
 import 'package:kosherparatodos/style/theme.dart' as MyTheme;
 import 'package:kosherparatodos/user_repository.dart';
 import 'package:provider/provider.dart';
-
-import 'Widget/login_button.dart';
 
 class WelcomePage extends StatefulWidget {
   WelcomePage({Key key, this.title}) : super(key: key);
