@@ -97,7 +97,7 @@ class _SignUpPageState extends State<SignUpPage> {
   Widget _submitButton(UserRepository user) {
     return InkWell(
       onTap: () async {
-        // if (_formKey.currentState.validate()) {
+        if (_formKey.currentState.validate()) {
           await user
               .signup(_name.text, _email.text, _password.text)
               .then((onValue) {
@@ -110,7 +110,7 @@ class _SignUpPageState extends State<SignUpPage> {
               content: Text("Error!"),
             ));
           });
-        // }
+        }
       },
       child: LoginButton(
         name: 'Registrate',

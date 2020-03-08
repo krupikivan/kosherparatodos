@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:kosherparatodos/src/repository/repo.dart';
 import 'package:kosherparatodos/user_repository.dart';
 import 'package:provider/provider.dart';
 import 'package:kosherparatodos/style/theme.dart' as MyTheme;
@@ -20,7 +21,10 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController _password;
   final _formKey = GlobalKey<FormState>();
   final _key = GlobalKey<ScaffoldState>();
-  TextStyle style = TextStyle(color: MyTheme.Colors.light, fontFamily: MyTheme.Fonts.primaryFont, fontSize: 20.0);
+  TextStyle style = TextStyle(
+      color: MyTheme.Colors.light,
+      fontFamily: MyTheme.Fonts.primaryFont,
+      fontSize: 20.0);
 
   @override
   void initState() {
@@ -40,10 +44,14 @@ class _LoginPageState extends State<LoginPage> {
           children: <Widget>[
             Container(
               padding: EdgeInsets.only(left: 0, top: 10, bottom: 10),
-              child: Icon(Icons.keyboard_arrow_left, color: MyTheme.Colors.light),
+              child:
+                  Icon(Icons.keyboard_arrow_left, color: MyTheme.Colors.light),
             ),
             Text('Volver',
-                style: TextStyle(color: MyTheme.Colors.light, fontSize: 12, fontWeight: FontWeight.w500))
+                style: TextStyle(
+                    color: MyTheme.Colors.light,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500))
           ],
         ),
       ),
@@ -54,14 +62,32 @@ class _LoginPageState extends State<LoginPage> {
     return InkWell(
       onTap: () async {
         if (_formKey.currentState.validate()) {
-          if (!await user.signIn(_email.text, _password.text))
-            _key.currentState.showSnackBar(SnackBar(
-              content: Text("Error!"),
-            ));
+          await _signIn(user);
         }
       },
-      child: LoginButton(name: 'Ingresar',),
+      child: LoginButton(
+        name: 'Ingresar',
+      ),
     );
+  }
+
+  _signIn(UserRepository user) async {
+    try {
+      await repo.isAuthenticated(_email.text).then((data) async {
+        if (data.documents.length == 0 ||
+            data.documents[0].data['isAuthenticated'] == true) {
+          if (!await user.signIn(_email.text, _password.text)) {
+            throw 'Ingreso incorrecto.';
+          }
+        } else {
+          throw 'Expere confirmacion por mail.';
+        }
+      });
+    } catch (e) {
+      _key.currentState.showSnackBar(SnackBar(
+        content: Text(e),
+      ));
+    }
   }
 
   Widget _createAccountLabel() {
@@ -73,7 +99,10 @@ class _LoginPageState extends State<LoginPage> {
         children: <Widget>[
           Text(
             'No tienes cuenta?',
-            style: TextStyle(color: MyTheme.Colors.light, fontSize: 13, fontWeight: FontWeight.w600),
+            style: TextStyle(
+                color: MyTheme.Colors.light,
+                fontSize: 13,
+                fontWeight: FontWeight.w600),
           ),
           SizedBox(
             width: 10,
@@ -118,18 +147,21 @@ class _LoginPageState extends State<LoginPage> {
       style: style,
       cursorColor: MyTheme.Colors.light,
       decoration: InputDecoration(
-          prefixIcon: Icon(Icons.lock, color: MyTheme.Colors.light,),
+          prefixIcon: Icon(
+            Icons.lock,
+            color: MyTheme.Colors.light,
+          ),
           labelText: "Contraseña",
           errorStyle: TextStyle(color: MyTheme.Colors.light),
-           errorBorder: OutlineInputBorder(borderSide: BorderSide(color: MyTheme.Colors.light)),
-           focusedErrorBorder: OutlineInputBorder(borderSide: BorderSide(color: MyTheme.Colors.light)),
-          focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: MyTheme.Colors.light)),
+          errorBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: MyTheme.Colors.light)),
+          focusedErrorBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: MyTheme.Colors.light)),
+          focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: MyTheme.Colors.light)),
           labelStyle: TextStyle(color: MyTheme.Colors.light),
           enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(
-              color: MyTheme.Colors.light
-            )
-          )),
+              borderSide: BorderSide(color: MyTheme.Colors.light))),
     );
   }
 
@@ -138,20 +170,25 @@ class _LoginPageState extends State<LoginPage> {
       controller: _email,
       validator: (value) => (value.isEmpty) ? "Ingrese un email" : null,
       style: style,
-            cursorColor: MyTheme.Colors.light,
+      cursorColor: MyTheme.Colors.light,
       decoration: InputDecoration(
-          prefixIcon: Icon(Icons.email,color: MyTheme.Colors.light,),
+          prefixIcon: Icon(
+            Icons.email,
+            color: MyTheme.Colors.light,
+          ),
           labelText: "Email",
           errorStyle: TextStyle(color: MyTheme.Colors.light),
-          focusedErrorBorder: OutlineInputBorder(borderSide: BorderSide(color: MyTheme.Colors.light)),
-          errorBorder: OutlineInputBorder(borderSide: BorderSide(color: MyTheme.Colors.light)),
-          focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: MyTheme.Colors.light)),
+          focusedErrorBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: MyTheme.Colors.light)),
+          errorBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: MyTheme.Colors.light)),
+          focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: MyTheme.Colors.light)),
           labelStyle: TextStyle(color: MyTheme.Colors.light),
-          enabledBorder : OutlineInputBorder(
-            borderSide: new BorderSide(
-              color: MyTheme.Colors.light,
-            )
-          )),
+          enabledBorder: OutlineInputBorder(
+              borderSide: new BorderSide(
+            color: MyTheme.Colors.light,
+          ))),
     );
   }
 
@@ -195,8 +232,9 @@ class _LoginPageState extends State<LoginPage> {
                         alignment: Alignment.centerRight,
                         child: Text('Olvide la contraseña ?',
                             style: TextStyle(
-                              color: MyTheme.Colors.light,
-                                fontSize: 14, fontWeight: FontWeight.w500)),
+                                color: MyTheme.Colors.light,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500)),
                       ),
                       Expanded(
                         flex: 2,
@@ -212,8 +250,7 @@ class _LoginPageState extends State<LoginPage> {
                 Positioned(top: 40, left: 0, child: _backButton()),
               ],
             ),
-                    decoration: BoxDecoration(
-            color: MyTheme.Colors.dark),
+            decoration: BoxDecoration(color: MyTheme.Colors.dark),
           ),
         )));
   }

@@ -29,8 +29,6 @@ class UserRepository with ChangeNotifier {
     }
   }
 
-    Future<void> test() async {}
-
     Future<void> signup(String name, String email, String password) async {
      _status = Status.Registering;
       notifyListeners();
