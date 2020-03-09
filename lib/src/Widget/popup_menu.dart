@@ -35,7 +35,7 @@ class _PopupMenuState extends State<PopupMenu> {
 
   void choiceActionMenu(Item choice) {
     if (choice.title.data == widget.choices[0].title.data) {
-        blocProductData.getProductList();
+      blocProductData.getProductList();
           Navigator.push(
         context,
         MaterialPageRoute(

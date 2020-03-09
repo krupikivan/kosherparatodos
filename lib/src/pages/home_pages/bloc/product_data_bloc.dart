@@ -11,6 +11,7 @@ class ProductDataBloc {
 
   List<Producto> list = List();
 
+
   getProductList() {
     list.clear();
     _repository.getProductList().then((doc) {

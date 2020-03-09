@@ -5,8 +5,6 @@ import 'package:kosherparatodos/src/models/product.dart';
 import 'package:kosherparatodos/src/pages/home_pages/bloc/new_pedido_bloc.dart';
 import 'package:kosherparatodos/src/pages/home_pages/bloc/product_data_bloc.dart';
 import 'package:kosherparatodos/style/theme.dart' as MyTheme;
-import 'package:rflutter_alert/rflutter_alert.dart';
-
 class NewPedidoPage extends StatefulWidget {
   const NewPedidoPage({Key key}) : super(key: key);
 
@@ -15,16 +13,15 @@ class NewPedidoPage extends StatefulWidget {
 }
 
 class _NewPedidoPageState extends State<NewPedidoPage> {
+
+  // TextEditingController _textFieldController = TextEditingController();
+
   @override
   void initState() {
     super.initState();
-    blocProductData.getProductList();
-    list = new List<Producto>();
   }
 
-  String _mySelection;
-  List<Producto> list;
-
+  // Producto _mySelection;
   Widget _productItems() {
     return StreamBuilder<Pedido>(
         stream: blocNewPedido.getPedido,
@@ -118,53 +115,78 @@ class _NewPedidoPageState extends State<NewPedidoPage> {
           color: MyTheme.Colors.light,
         ),
         backgroundColor: MyTheme.Colors.dark,
-        onPressed: () => _addPedido(context),
+        onPressed: () => _displayDialog(context),
       ),
     );
   }
 
-  _addPedido(context) {
-    Alert(
+
+  _displayDialog(BuildContext context) async {
+    return showDialog(
         context: context,
-        title: "Agregar",
-        content: Column(
-          children: <Widget>[
-            StreamBuilder<List<Producto>>(
-                stream: blocProductData.getProducts,
-                builder: (context, snapshot) {
-                  if (!snapshot.hasData)
-                    return Center(
-                        child: CircularProgressIndicator(
-                      valueColor: new AlwaysStoppedAnimation<Color>(
-                          MyTheme.Colors.dark),
-                    ));
-                  else
-                    return DropdownButton(
-                      items: snapshot.data.map((Producto item) {
-                        return DropdownMenuItem<String>(
-                          value: item.idProducto,
-                          child: Text(item.name),
-                        );
-                      }).toList(),
-                      onChanged: (newVal) {
+        builder: (context) {
+          return AlertDialog(
+            title: Text('Agregar producto'),
+            content: new SingleChildScrollView(
+              child: new Material(
+                child: new MyDialogContent()
+              )
+            ),
+            actions: <Widget>[
+              Center(
+                child: new FlatButton(
+                  child: new Text('Aceptar'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              )
+            ],
+          );
+        });
+  }
+}
+
+class MyDialogContent extends StatefulWidget{
+  @override
+  _MyDialogContentState createState() => new _MyDialogContentState();
+}
+class _MyDialogContentState extends State<MyDialogContent>{
+
+  TextEditingController _textFieldController = TextEditingController();
+  Producto _mySelection;
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+              children: <Widget>[
+                TextField(
+                  controller: _textFieldController,
+                  decoration: InputDecoration(hintText: "Ingrese cantidad"),
+                ),
+                StreamBuilder<List<Producto>>(
+                  stream: blocProductData.getProducts,
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData) return Text('Cargando...');
+                    return DropdownButton<Producto>(
+                      items: snapshot.data
+                          .map((product) => DropdownMenuItem<Producto>(
+                                child: Text(product.name),
+                                value: product,
+                              ))
+                          .toList(),
+                      onChanged: (Producto value) {
                         setState(() {
-                          _mySelection = newVal;
+                          _mySelection = value;
                         });
                       },
                       value: _mySelection,
+                      isExpanded: false,
+                      hint: Text("Seleccionar"),
                     );
-                }),
-          ],
-        ),
-        buttons: [
-          DialogButton(
-            color: MyTheme.Colors.dark,
-            onPressed: () => Navigator.pop(context),
-            child: Text(
-              "Agregar",
-              style: TextStyle(color: Colors.white, fontSize: 20),
-            ),
-          )
-        ]).show();
+                  },
+                )
+              ],
+            );
   }
+
 }
