@@ -24,6 +24,7 @@ class ProductDataBloc {
           producto.ultimaActualizacion = doc.documents[i].data['ultimaActualizacion'];
           producto.unidadMedida = doc.documents[i].data['unidadMedida'];
           producto.image = doc.documents[i].data['image'];
+          producto.opcionCantidad = doc.documents[i].data['opcionCantidad'];
           list.add(producto);
       }
       addProducts(list);

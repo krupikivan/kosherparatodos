@@ -9,6 +9,7 @@ class Producto{
   int cantidad;
   String unidadMedida;
   String image;
+  List opcionCantidad;
 
   Producto({
     this.idProducto,
@@ -18,5 +19,6 @@ class Producto{
     this.cantidad,
     this.unidadMedida,
     this.image,
+    this.opcionCantidad,
   });
 }

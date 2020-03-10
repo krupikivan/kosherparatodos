@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kosherparatodos/src/Widget/new_item_widget.dart';
+import 'package:kosherparatodos/src/models/detalle_pedido.dart';
 import 'package:kosherparatodos/src/models/pedido.dart';
 import 'package:kosherparatodos/src/models/product.dart';
 import 'package:kosherparatodos/src/pages/home_pages/bloc/new_pedido_bloc.dart';
@@ -21,7 +22,6 @@ class _NewPedidoPageState extends State<NewPedidoPage> {
     super.initState();
   }
 
-  // Producto _mySelection;
   Widget _productItems() {
     return StreamBuilder<Pedido>(
         stream: blocNewPedido.getPedido,
@@ -126,7 +126,7 @@ class _NewPedidoPageState extends State<NewPedidoPage> {
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: Text('Agregar producto'),
+            title: Text('Cargar producto'),
             content: new SingleChildScrollView(
               child: new Material(
                 child: new MyDialogContent()
@@ -137,7 +137,7 @@ class _NewPedidoPageState extends State<NewPedidoPage> {
                 child: new FlatButton(
                   child: new Text('Aceptar'),
                   onPressed: () {
-                    Navigator.of(context).pop();
+                    blocNewPedido.onNewProduct();
                   },
                 ),
               )
@@ -153,40 +153,80 @@ class MyDialogContent extends StatefulWidget{
 }
 class _MyDialogContentState extends State<MyDialogContent>{
 
-  TextEditingController _textFieldController = TextEditingController();
+  // TextEditingController _textFieldController = TextEditingController();
   Producto _mySelection;
+  int _cantSelected;
+
+  var unidad = '';
+
+  List _cantList = [];
+
   @override
   Widget build(BuildContext context) {
-    return Column(
-              children: <Widget>[
-                TextField(
-                  controller: _textFieldController,
-                  decoration: InputDecoration(hintText: "Ingrese cantidad"),
-                ),
-                StreamBuilder<List<Producto>>(
-                  stream: blocProductData.getProducts,
-                  builder: (context, snapshot) {
-                    if (!snapshot.hasData) return Text('Cargando...');
-                    return DropdownButton<Producto>(
-                      items: snapshot.data
-                          .map((product) => DropdownMenuItem<Producto>(
-                                child: Text(product.name),
-                                value: product,
-                              ))
-                          .toList(),
-                      onChanged: (Producto value) {
-                        setState(() {
-                          _mySelection = value;
-                        });
-                      },
-                      value: _mySelection,
-                      isExpanded: false,
-                      hint: Text("Seleccionar"),
-                    );
-                  },
-                )
-              ],
-            );
+    return StreamBuilder<List<Producto>>(
+      stream: blocProductData.getProducts,
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) return Text('Cargando...');
+        return Column(
+                  children: <Widget>[
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Text('Producto:'),
+                            DropdownButton<Producto>(
+                              items: snapshot.data
+                                  .map((product) => DropdownMenuItem<Producto>(
+                                        child: Text(product.name),
+                                        value: product,
+                                      ))
+                                  .toList(),
+                              onChanged: (Producto value) {
+                                setState(() {
+                                  _mySelection = value;
+                                  blocNewPedido.addPedido(_getDetail(value));
+                                  unidad = value.unidadMedida;
+                                  _cantList = value.opcionCantidad;
+                                  _cantSelected = value.opcionCantidad[0];
+                                });
+                              },
+                              value: _mySelection,
+                              isExpanded: false,
+                            ),
+                          ],
+                        ),
+                        _cantList.isEmpty ? SizedBox(height: 1,) : 
+                         Row(
+                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                           children: <Widget>[
+                             Text('Cantidad:'),
+                             DropdownButton<int>(
+                              items: _cantList
+                                  .map((number) => DropdownMenuItem<int>(
+                                        child: Text(number.toString()),
+                                        value: number,
+                                      ))
+                                  .toList(),
+                              onChanged: (int value) {
+                                setState(() {
+                                  blocNewPedido.addCantidadSeleccionada(value);
+                                  _cantSelected = value;
+                                });
+                              },
+                              value: _cantSelected,
+                              isExpanded: false,
+                        ),
+                           ],
+                         ),
+                  ],
+                );
+      }
+    );
   }
+DetallePedido _getDetail(Producto producto){
+   DetallePedido det = DetallePedido();
+   det.name = producto.name;
+   det.unidad = producto.unidadMedida;
+   return det;
+}
 
 }

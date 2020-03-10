@@ -193,7 +193,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       height: 20,
                     ),
                     user.status == Status.Registering
-                        ? Center(child: CircularProgressIndicator())
+                        ? Center(child: CircularProgressIndicator(valueColor: new AlwaysStoppedAnimation<Color>(MyTheme.Colors.light),))
                         : _submitButton(user),
                     Expanded(
                       flex: 2,
