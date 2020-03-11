@@ -23,8 +23,8 @@ class _NewPedidoPageState extends State<NewPedidoPage> {
   }
 
   Widget _productItems() {
-    return StreamBuilder<Pedido>(
-        stream: blocNewPedido.getPedido,
+    return StreamBuilder<List<DetallePedido>>(
+        stream: blocNewPedido.getFromPedido,
         builder: (context, snapshot) {
           if (!snapshot.hasData)
             return Center(
@@ -34,10 +34,10 @@ class _NewPedidoPageState extends State<NewPedidoPage> {
           else
             return Expanded(
               child: ListView.builder(
-                itemCount: snapshot.data.detallePedido.length,
+                itemCount: snapshot.data.length,
                 itemBuilder: (BuildContext context, int index) {
                   return NewItemWidget(
-                    item: snapshot.data.detallePedido[index],
+                    item: snapshot.data[index],
                   );
                 },
               ),
@@ -183,7 +183,7 @@ class _MyDialogContentState extends State<MyDialogContent>{
                               onChanged: (Producto value) {
                                 setState(() {
                                   _mySelection = value;
-                                  blocNewPedido.addDetallePedido(_getDetail(value));
+                                  // blocNewPedido.addDetallePedido(_getDetail(value));
                                   unidad = value.unidadMedida;
                                   _cantList = value.opcionCantidad;
                                   _cantSelected = value.opcionCantidad[0];
@@ -207,8 +207,8 @@ class _MyDialogContentState extends State<MyDialogContent>{
                                       ))
                                   .toList(),
                               onChanged: (int value) {
+                                blocNewPedido.addDetallePedido(_getDetail(value));
                                 setState(() {
-                                  blocNewPedido.addCantidadSeleccionada(value);
                                   _cantSelected = value;
                                 });
                               },
@@ -222,10 +222,11 @@ class _MyDialogContentState extends State<MyDialogContent>{
       }
     );
   }
-DetallePedido _getDetail(Producto producto){
+DetallePedido _getDetail(int value){
    DetallePedido det = DetallePedido();
-   det.name = producto.name;
-   det.unidad = producto.unidadMedida;
+   det.name = _mySelection.name;
+   det.unidad = _mySelection.unidadMedida;
+   det.cantidad = value;
    return det;
 }
 
