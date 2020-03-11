@@ -22,7 +22,7 @@ class NewItemWidget extends StatelessWidget {
                     decoration: BoxDecoration(
                         color: MyTheme.Colors.light,
                         borderRadius: BorderRadius.circular(10)),
-                    child: Text('x${item.cantidad}'),
+                    child: Text('${item.cantidad}'),
                   ));
   }
 }

@@ -137,7 +137,7 @@ class _NewPedidoPageState extends State<NewPedidoPage> {
                 child: new FlatButton(
                   child: new Text('Aceptar'),
                   onPressed: () {
-                    blocNewPedido.onNewProduct();
+                    blocNewPedido.onNewDetalle();
                   },
                 ),
               )
@@ -183,7 +183,7 @@ class _MyDialogContentState extends State<MyDialogContent>{
                               onChanged: (Producto value) {
                                 setState(() {
                                   _mySelection = value;
-                                  blocNewPedido.addPedido(_getDetail(value));
+                                  blocNewPedido.addDetallePedido(_getDetail(value));
                                   unidad = value.unidadMedida;
                                   _cantList = value.opcionCantidad;
                                   _cantSelected = value.opcionCantidad[0];

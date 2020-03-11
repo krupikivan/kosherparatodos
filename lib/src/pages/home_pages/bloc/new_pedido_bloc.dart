@@ -1,4 +1,5 @@
 import 'package:kosherparatodos/src/models/detalle_pedido.dart';
+import 'package:kosherparatodos/src/models/pedido.dart';
 import 'package:rxdart/rxdart.dart';
 
 class NewPedidoBloc {
@@ -9,20 +10,24 @@ class NewPedidoBloc {
   Observable<List<DetallePedido>> get getFromPedido => _docPedidoCart.stream;
   Function(List<DetallePedido>) get addToPedido => _docPedidoCart.sink.add;
 
-  final _docNewPedido = BehaviorSubject<DetallePedido>();
-  Observable<DetallePedido> get getPedido => _docNewPedido.stream;
-  Function(DetallePedido) get addPedido => _docNewPedido.sink.add;
+  final _docNewDetallePedido = BehaviorSubject<DetallePedido>();
+  Observable<DetallePedido> get getDetallePedido => _docNewDetallePedido.stream;
+  Function(DetallePedido) get addDetallePedido => _docNewDetallePedido.sink.add;
+
+  final _docNewPedido = BehaviorSubject<Pedido>();
+  Observable<Pedido> get getPedido => _docNewPedido.stream;
+  Function(Pedido) get addPedido => _docNewPedido.sink.add;
 
   addCantidadSeleccionada(int value){
-    getPedido.listen((detalle) {
+    getDetallePedido.listen((detalle) {
       DetallePedido det = detalle;
       detalle.cantidad = value;
-      addPedido(det);
+      addDetallePedido(det);
     });
   }
 
-  onNewProduct(){
-    getPedido.listen((detalle) {
+  onNewDetalle(){
+    getDetallePedido.listen((detalle) {
       _list.add(detalle);
       addToPedido(_list);
     });
@@ -33,6 +38,9 @@ class NewPedidoBloc {
     _docPedidoCart.close();
         await _docNewPedido.drain();
     _docNewPedido.close();
+    _docPedidoCart.close();
+        await _docNewDetallePedido.drain();
+    _docNewDetallePedido.close();
   }
 }
 
