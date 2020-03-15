@@ -19,27 +19,31 @@ class HistoryPage extends StatelessWidget {
                     new AlwaysStoppedAnimation<Color>(MyTheme.Colors.dark),
               ));
             else
-              return ListView.separated(
+              return ListView.builder(
                 itemCount: snapshot.data.length,
                 itemBuilder: (BuildContext context, int index) {
-                  return ListTile(
-                    title: Text(_getFecha(snapshot.data[index].fecha) +
-                        ' - Total: \$ ' +
-                        snapshot.data[index].total.toString()),
-                    subtitle: Text(
-                      _getEstado(snapshot.data[index].estado),
-                      style: TextStyle(
-                          color: snapshot.data[index].estado == Estado.PAGADO
-                              ? MyTheme.Colors.check
-                              : MyTheme.Colors.warning),
+                  return Card(
+
+                    elevation: 2,
+                                      child: ListTile(
+                      title: Text(_getFecha(snapshot.data[index].fecha) +
+                          ' - Total: \$ ' +
+                          snapshot.data[index].total.toString()),
+                      subtitle: Text(
+                        _getEstado(snapshot.data[index].estado),
+                        style: TextStyle(
+                            color: snapshot.data[index].estado == Estado.PAGADO
+                                ? MyTheme.Colors.check
+                                : MyTheme.Colors.warning),
+                      ),
+                      trailing: Icon(Icons.arrow_forward),
+                      onTap: () => _goToDetails(context, snapshot.data[index].idPedido),
                     ),
-                    trailing: Icon(Icons.arrow_forward),
-                    onTap: () => _goToDetails(context, snapshot.data[index].idPedido),
                   );
                 },
-                separatorBuilder: (context, index) => Divider(
-                  color: Colors.black,
-                ),
+                // separatorBuilder: (context, index) => Divider(
+                //   color: Colors.black,
+                // ),
               );
           }),
     );
