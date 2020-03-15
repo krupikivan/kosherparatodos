@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:kosherparatodos/src/models/pedido.dart';
 import 'package:kosherparatodos/src/pages/home_pages/bloc/user_data_bloc.dart';
 import 'package:kosherparatodos/src/pages/pedido_pages/order_details_page.dart';
@@ -23,21 +24,29 @@ class HistoryPage extends StatelessWidget {
                 itemCount: snapshot.data.length,
                 itemBuilder: (BuildContext context, int index) {
                   return Card(
-
                     elevation: 2,
-                                      child: ListTile(
+                    child: ListTile(
+                      leading: 
+                      snapshot.data[index].pagado == Estado.PAGADO
+                        ? FaIcon(FontAwesomeIcons.moneyBillAlt, size: 35, color: MyTheme.Colors.check,)
+                        : FaIcon(FontAwesomeIcons.moneyBillAlt, size: 35, color: MyTheme.Colors.yellowWarning,),
+                      
                       title: Text(_getFecha(snapshot.data[index].fecha) +
                           ' - Total: \$ ' +
                           snapshot.data[index].total.toString()),
                       subtitle: Text(
-                        _getEstado(snapshot.data[index].estado),
-                        style: TextStyle(
-                            color: snapshot.data[index].estado == Estado.PAGADO
-                                ? MyTheme.Colors.check
-                                : MyTheme.Colors.warning),
+                        
+                        snapshot.data[index].estado
+
+
+                        // style: TextStyle(
+                        //     color: snapshot.data[index].pagado == Estado.PAGADO
+                        //         ? MyTheme.Colors.check
+                        //         : MyTheme.Colors.warning),
                       ),
                       trailing: Icon(Icons.arrow_forward),
-                      onTap: () => _goToDetails(context, snapshot.data[index].idPedido),
+                      onTap: () =>
+                          _goToDetails(context, snapshot.data[index].idPedido),
                     ),
                   );
                 },
