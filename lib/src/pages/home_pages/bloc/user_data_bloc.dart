@@ -56,9 +56,12 @@ class UserDataBloc {
       for (int i = 0; i < queryDetalle.documents.length; i++) {
         DocumentSnapshot doc = queryDetalle.documents[i];
         DetallePedido detalle = new DetallePedido();
-        detalle.name = doc.documentID;
-        detalle.unidad = doc.data['unidadMedida'];
-        detalle.cantidad = doc.data['cantidad'];
+        detalle.nombre = doc.data['nombre'];
+        detalle.tipo = doc.data['tipo']; 
+        detalle.cantidad = doc.data['cantidad']; 
+        detalle.precioUnitario = doc.data['precioUnitario']; 
+        detalle.unidades = doc.data['unidades']; 
+        detalle.unidadMedida = doc.data['unidadMedida']; 
         listDetallePedido.add(detalle);
       }
       addDetalle(listDetallePedido);

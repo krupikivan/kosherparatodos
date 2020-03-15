@@ -4,7 +4,7 @@ import 'package:kosherparatodos/src/models/detalle_pedido.dart';
 import 'package:kosherparatodos/src/models/product.dart';
 import 'package:kosherparatodos/src/pages/home_pages/bloc/new_pedido_bloc.dart';
 import 'package:kosherparatodos/src/pages/home_pages/bloc/product_data_bloc.dart';
-import 'package:kosherparatodos/src/pages/pedido_pages/pedido_cart.dart';
+import 'package:kosherparatodos/src/pages/home_pages/pedido_pages/pedido_cart.dart';
 import 'package:kosherparatodos/style/theme.dart' as MyTheme;
 
 class NewPedidoPage extends StatelessWidget {

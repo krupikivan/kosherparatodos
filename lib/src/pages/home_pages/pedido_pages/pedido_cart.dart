@@ -7,19 +7,20 @@ import 'package:kosherparatodos/style/theme.dart' as MyTheme;
 
 class PedidoCart extends StatelessWidget {
   Widget _addHeader() {
-    return Expanded(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Text('Producto'),
-            Text('Cantidad'),
-            Text('Total')
-          ],
-        ),
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: <Widget>[
+          _getRowText('Producto'),
+          _getRowText('Total')
+        ],
       ),
     );
+  }
+
+  _getRowText(text){
+    return Text(text, style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500));
   }
 
   Widget _productItems() {
@@ -27,10 +28,7 @@ class PedidoCart extends StatelessWidget {
         stream: blocNewPedido.getDetalleList,
         builder: (context, snapshot) {
           if (!snapshot.hasData)
-            return Center(
-                child: Center(
-              child: Text('No hay pedido'),
-            ));
+            return Container();
           else
             return Expanded(
               child: ListView.builder(
@@ -84,7 +82,7 @@ class PedidoCart extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: MyTheme.Colors.dark,
-        title: Text("Nuevo pedido"),
+        title: Text("Detalle del Pedido"),
       ),
       body: Container(
         padding: EdgeInsets.all(10),

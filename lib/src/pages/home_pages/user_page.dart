@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:kosherparatodos/src/Widget/popup_menu.dart';
 import 'package:kosherparatodos/src/pages/home_pages/bloc/user_data_bloc.dart';
-import 'package:kosherparatodos/src/pages/home_pages/history_page.dart';
+import 'package:kosherparatodos/src/pages/home_pages/historial_page/history_page.dart';
 import 'package:kosherparatodos/src/pages/home_pages/product_list_page.dart';
 import 'package:kosherparatodos/src/utils/item.dart';
 import 'package:kosherparatodos/style/theme.dart' as MyTheme;

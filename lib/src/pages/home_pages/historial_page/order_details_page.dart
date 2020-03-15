@@ -27,8 +27,8 @@ class OrderDetailsPage extends StatelessWidget {
                 return ListView.builder(
                   itemCount: snapshot.data.length,
                   itemBuilder: (BuildContext context, int index) => ListTile(
-                    title: Text(snapshot.data[index].name),
-                    subtitle: Text(snapshot.data[index].cantidad.toString() + ' ' + snapshot.data[index].unidad),
+                    title: Text(snapshot.data[index].tipo),
+                    subtitle: Text(snapshot.data[index].tipo),
                   ),
                 );
             }),

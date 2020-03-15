@@ -17,14 +17,16 @@ class ProductDataBloc {
     _repository.getProductList().then((doc) {
       for(int i=0; i<doc.documents.length; i++){
           Producto producto = new Producto();
-          producto.cantidad = doc.documents[i].data['cantidad'];
-          producto.name = doc.documents[i].data['name'];
-          producto.costo = doc.documents[i].data['costo'];
+          producto.precioUnitario = doc.documents[i].data['precioUnitario'].toDouble();
+          producto.nombre = doc.documents[i].data['nombre'];
+          producto.bulto = doc.documents[i].data['bulto'];
           producto.idProducto = doc.documents[i].documentID;
           producto.ultimaActualizacion = doc.documents[i].data['ultimaActualizacion'];
           producto.unidadMedida = doc.documents[i].data['unidadMedida'];
           producto.image = doc.documents[i].data['image'];
+          producto.descripcion = doc.documents[i].data['descripcion'];
           producto.opcionCantidad = doc.documents[i].data['opcionCantidad'];
+          producto.tipo = doc.documents[i].data['tipo'];
           list.add(producto);
       }
       addProducts(list);

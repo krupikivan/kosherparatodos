@@ -3,22 +3,26 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class Producto{
   
   String idProducto;
-  String name;
-  int costo;
+  String bulto;
+  String nombre;
+  double precioUnitario;
   Timestamp ultimaActualizacion;
-  int cantidad;
   String unidadMedida;
   String image;
+  String descripcion;
+  String tipo;
   List opcionCantidad;
 
   Producto({
     this.idProducto,
-    this.name,
-    this.costo,
+    this.bulto,
+    this.nombre,
+    this.precioUnitario,
     this.ultimaActualizacion,
-    this.cantidad,
     this.unidadMedida,
     this.image,
+    this.descripcion,
+    this.tipo,
     this.opcionCantidad,
   });
 }

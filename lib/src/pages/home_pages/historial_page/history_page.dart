@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:kosherparatodos/src/models/pedido.dart';
+import 'package:kosherparatodos/src/pages/home_pages/historial_page/order_details_page.dart';
 import 'package:kosherparatodos/src/pages/home_pages/bloc/user_data_bloc.dart';
-import 'package:kosherparatodos/src/pages/pedido_pages/order_details_page.dart';
 import 'package:kosherparatodos/style/theme.dart' as MyTheme;
 
 class HistoryPage extends StatelessWidget {
