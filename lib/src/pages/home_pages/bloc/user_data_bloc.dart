@@ -40,7 +40,7 @@ class UserDataBloc {
         pedido.idPedido = value.documents[i].documentID;
         pedido.cliente = value.documents[i].data['cliente'];
         pedido.fecha = value.documents[i].data['fecha'];
-        pedido.total = value.documents[i].data['total'];
+        pedido.total = value.documents[i].data['total'].toDouble();
         pedido.estado = value.documents[i].data['estado'] == 'pagado'
             ? Estado.PAGADO
             : Estado.NOPAGADO;
@@ -56,9 +56,12 @@ class UserDataBloc {
       for (int i = 0; i < queryDetalle.documents.length; i++) {
         DocumentSnapshot doc = queryDetalle.documents[i];
         DetallePedido detalle = new DetallePedido();
-        detalle.name = doc.documentID;
-        detalle.unidad = doc.data['unidadMedida'];
-        detalle.cantidad = doc.data['cantidad'];
+        detalle.nombre = doc.data['nombre'];
+        detalle.tipo = doc.data['tipo']; 
+        detalle.cantidad = doc.data['cantidad']; 
+        detalle.precioUnitario = doc.data['precioUnitario']; 
+        detalle.unidades = doc.data['unidades']; 
+        detalle.unidadMedida = doc.data['unidadMedida']; 
         listDetallePedido.add(detalle);
       }
       addDetalle(listDetallePedido);

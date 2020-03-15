@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kosherparatodos/src/pages/home_pages/bloc/product_data_bloc.dart';
-import 'package:kosherparatodos/src/pages/home_pages/new_pedido_page.dart';
+import 'package:kosherparatodos/src/pages/home_pages/pedido_pages/new_pedido_page.dart';
 import 'package:kosherparatodos/src/utils/item.dart';
 import 'package:kosherparatodos/user_repository.dart';
 import 'package:provider/provider.dart';
@@ -35,7 +35,7 @@ class _PopupMenuState extends State<PopupMenu> {
 
   void choiceActionMenu(Item choice) {
     if (choice.title.data == widget.choices[0].title.data) {
-        blocProductData.getProductList();
+      blocProductData.getProductList();
           Navigator.push(
         context,
         MaterialPageRoute(
