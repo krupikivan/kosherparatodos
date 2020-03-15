@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:kosherparatodos/src/models/pedido.dart';
 import 'package:kosherparatodos/src/pages/home_pages/historial_page/order_details_page.dart';
 import 'package:kosherparatodos/src/pages/home_pages/bloc/user_data_bloc.dart';
@@ -19,27 +20,39 @@ class HistoryPage extends StatelessWidget {
                     new AlwaysStoppedAnimation<Color>(MyTheme.Colors.dark),
               ));
             else
-              return ListView.separated(
+              return ListView.builder(
                 itemCount: snapshot.data.length,
                 itemBuilder: (BuildContext context, int index) {
-                  return ListTile(
-                    title: Text(_getFecha(snapshot.data[index].fecha) +
-                        ' - Total: \$ ' +
-                        snapshot.data[index].total.toString()),
-                    subtitle: Text(
-                      _getEstado(snapshot.data[index].estado),
-                      style: TextStyle(
-                          color: snapshot.data[index].estado == Estado.PAGADO
-                              ? MyTheme.Colors.check
-                              : MyTheme.Colors.warning),
+                  return Card(
+                    elevation: 2,
+                    child: ListTile(
+                      leading: 
+                      snapshot.data[index].pagado == Estado.PAGADO
+                        ? FaIcon(FontAwesomeIcons.moneyBillAlt, size: 35, color: MyTheme.Colors.check,)
+                        : FaIcon(FontAwesomeIcons.moneyBillAlt, size: 35, color: MyTheme.Colors.yellowWarning,),
+                      
+                      title: Text(_getFecha(snapshot.data[index].fecha) +
+                          ' - Total: \$ ' +
+                          snapshot.data[index].total.toString()),
+                      subtitle: Text(
+                        
+                        snapshot.data[index].estado
+
+
+                        // style: TextStyle(
+                        //     color: snapshot.data[index].pagado == Estado.PAGADO
+                        //         ? MyTheme.Colors.check
+                        //         : MyTheme.Colors.warning),
+                      ),
+                      trailing: Icon(Icons.arrow_forward),
+                      onTap: () =>
+                          _goToDetails(context, snapshot.data[index].idPedido),
                     ),
-                    trailing: Icon(Icons.arrow_forward),
-                    onTap: () => _goToDetails(context, snapshot.data[index].idPedido),
                   );
                 },
-                separatorBuilder: (context, index) => Divider(
-                  color: Colors.black,
-                ),
+                // separatorBuilder: (context, index) => Divider(
+                //   color: Colors.black,
+                // ),
               );
           }),
     );
