@@ -4,25 +4,27 @@ import 'package:kosherparatodos/src/models/detalle_pedido.dart';
 import 'package:kosherparatodos/src/models/pedido.dart';
 import 'package:kosherparatodos/src/pages/home_pages/bloc/new_pedido_bloc.dart';
 import 'package:kosherparatodos/style/theme.dart' as MyTheme;
-class PedidoCart extends StatefulWidget {
-  const PedidoCart({Key key}) : super(key: key);
 
-  @override
-  _PedidoCartState createState() => _PedidoCartState();
-}
-
-class _PedidoCartState extends State<PedidoCart> {
-
-  // TextEditingController _textFieldController = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
+class PedidoCart extends StatelessWidget {
+  Widget _addHeader() {
+    return Expanded(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Text('Producto'),
+            Text('Cantidad'),
+            Text('Total')
+          ],
+        ),
+      ),
+    );
   }
 
   Widget _productItems() {
     return StreamBuilder<List<DetallePedido>>(
-        stream: blocNewPedido.getFromPedido,
+        stream: blocNewPedido.getDetalleList,
         builder: (context, snapshot) {
           if (!snapshot.hasData)
             return Center(
@@ -77,14 +79,6 @@ class _PedidoCartState extends State<PedidoCart> {
         ));
   }
 
-  double getPrice() {
-    double price = 0;
-    // AppData.cartList.forEach((x) {
-    //   price += x.price * x.id;
-    // });
-    return price;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -96,6 +90,7 @@ class _PedidoCartState extends State<PedidoCart> {
         padding: EdgeInsets.all(10),
         child: Column(
           children: <Widget>[
+            _addHeader(),
             _productItems(),
             Divider(
               thickness: 1,
@@ -107,16 +102,6 @@ class _PedidoCartState extends State<PedidoCart> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(
-          Icons.add,
-          color: MyTheme.Colors.light,
-        ),
-        backgroundColor: MyTheme.Colors.dark,
-        onPressed: () => null,
-      ),
     );
   }
-
-
 }

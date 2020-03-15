@@ -8,21 +8,29 @@ class NewItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-                  title: Text(item.name),
-                  subtitle: Row(
-                    children: <Widget>[
-                      Text('\$ '),
-                    ],
-                  ),
-                  trailing: Container(
-                    width: 35,
-                    height: 35,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                        color: MyTheme.Colors.light,
-                        borderRadius: BorderRadius.circular(10)),
-                    child: Text('${item.cantidad}'),
-                  ));
+    return Padding(
+      padding: const EdgeInsets.all(10),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Text(item.name),
+          Text(item.cantidad.toString()),
+          Text('\$${item.total}'),
+          // ListTile(
+          //     title: Text(item.name),
+          //     subtitle: Row(
+          //       children: <Widget>[
+          //         Text('\$${item.total} '),
+          //       ],
+          //     ),
+          //     trailing: Container(
+          //       width: 35,
+          //       height: 35,
+          //       alignment: Alignment.center,
+          //       child: Text('\$${item.total}'),
+          //     )),
+        ],
+      ),
+    );
   }
 }

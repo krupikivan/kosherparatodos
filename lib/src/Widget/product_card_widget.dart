@@ -43,12 +43,19 @@ _displayDialog(BuildContext context) async {
             ),
             actions: <Widget>[
               Center(
-                child: new FlatButton(
-                  child: new Text('Agregar al pedido'),
-                  onPressed: () {
-                    blocNewPedido.onNewDetalle(producto);
-                    Navigator.pop(context);
-                  },
+                child: StreamBuilder<int>(
+                  stream: blocNewPedido.getCantidad,
+                  builder: (context, snapshot) {
+                    return new FlatButton(
+                      child: new Text('Agregar al pedido'),
+                      onPressed: () {
+                        if(snapshot.hasData){                      
+                          blocNewPedido.onNewDetalle(producto, snapshot.data);
+                          Navigator.pop(context);
+                        }
+                      },
+                    );
+                  }
                 ),
               )
             ],
@@ -83,7 +90,7 @@ class _MyDialogContentState extends State<MyDialogContent>{
                          Row(
                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                            children: <Widget>[
-                             Text('Cantidad:'),
+                             Text('Kilos:'),
                              DropdownButton<int>(
                               items: onProduct.opcionCantidad
                                   .map((number) => DropdownMenuItem<int>(
@@ -105,13 +112,4 @@ class _MyDialogContentState extends State<MyDialogContent>{
                   ],
                 );
   }
-
-// DetallePedido _getDetail(int value){
-//    DetallePedido det = DetallePedido();
-//    det.name = onProduct.name;
-//    det.unidad = onProduct.unidadMedida;
-//    det.cantidad = value;
-//    return det;
-// }
-
 }

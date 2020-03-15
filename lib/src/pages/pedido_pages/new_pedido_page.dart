@@ -4,20 +4,10 @@ import 'package:kosherparatodos/src/models/detalle_pedido.dart';
 import 'package:kosherparatodos/src/models/product.dart';
 import 'package:kosherparatodos/src/pages/home_pages/bloc/new_pedido_bloc.dart';
 import 'package:kosherparatodos/src/pages/home_pages/bloc/product_data_bloc.dart';
+import 'package:kosherparatodos/src/pages/pedido_pages/pedido_cart.dart';
 import 'package:kosherparatodos/style/theme.dart' as MyTheme;
 
-class NewPedidoPage extends StatefulWidget {
-  const NewPedidoPage({Key key}) : super(key: key);
-
-  @override
-  _NewPedidoPageState createState() => _NewPedidoPageState();
-}
-
-class _NewPedidoPageState extends State<NewPedidoPage> {
-  @override
-  void initState() {
-    super.initState();
-  }
+class NewPedidoPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
@@ -36,12 +26,12 @@ class _NewPedidoPageState extends State<NewPedidoPage> {
                   width: 30.0,
                   child: new GestureDetector(
                     onTap: () {
-                      // Navigator.of(context).push(
-                      //     new MaterialPageRoute(
-                      //         builder:(BuildContext context) =>
-                      //         new CartItemsScreen()
-                      //     )
-                      // );
+                      Navigator.of(context).push(
+                          new MaterialPageRoute(
+                              builder:(BuildContext context) =>
+                              new PedidoCart()
+                          )
+                      );
                     },
                     child: new Stack(
                       children: <Widget>[
@@ -62,7 +52,7 @@ class _NewPedidoPageState extends State<NewPedidoPage> {
                                 right: 4.0,
                                 child: new Center(
                                   child: StreamBuilder<List<DetallePedido>>(
-                                      stream: blocNewPedido.getFromPedido,
+                                      stream: blocNewPedido.getDetalleList,
                                       builder: (context, snapshot) {
                                         if (!snapshot.hasData)
                                           return Text('0');

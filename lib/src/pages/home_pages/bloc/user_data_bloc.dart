@@ -40,7 +40,7 @@ class UserDataBloc {
         pedido.idPedido = value.documents[i].documentID;
         pedido.cliente = value.documents[i].data['cliente'];
         pedido.fecha = value.documents[i].data['fecha'];
-        pedido.total = value.documents[i].data['total'];
+        pedido.total = value.documents[i].data['total'].toDouble();
         pedido.estado = value.documents[i].data['estado'] == 'pagado'
             ? Estado.PAGADO
             : Estado.NOPAGADO;

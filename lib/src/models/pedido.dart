@@ -10,7 +10,7 @@ class Pedido{
   String idPedido;
   String cliente;
   Timestamp fecha;
-  int total;
+  double total;
   Estado estado;
   List detallePedido;
 
