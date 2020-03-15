@@ -40,7 +40,7 @@ class _UserPageState extends State<UserPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: MyTheme.Colors.dark,
-        title: ListTile(title: Text("Kosher para todos", style: style,), subtitle: Text(widget.user.email, style: style,), leading: Icon(Icons.account_circle, color: MyTheme.Colors.light,),),
+        title: Text("Kosher para todos", style: style,),
         actions: <Widget>[
           PopupMenu(choices: choices),
         ],
@@ -48,7 +48,7 @@ class _UserPageState extends State<UserPage> {
       body: _children[_currentIndex],
       //Bottom Navigation ----------------------------------------
       bottomNavigationBar: BottomNavigationBar(
-        selectedItemColor: MyTheme.Colors.dark,
+        selectedItemColor: MyTheme.Colors.primary,
         onTap: onTabTapped, // new
         currentIndex: _currentIndex, // this will be set when a new tab is tapped
         items: [

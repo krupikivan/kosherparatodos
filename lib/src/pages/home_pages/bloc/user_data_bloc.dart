@@ -41,9 +41,10 @@ class UserDataBloc {
         pedido.cliente = value.documents[i].data['cliente'];
         pedido.fecha = value.documents[i].data['fecha'];
         pedido.total = value.documents[i].data['total'].toDouble();
-        pedido.estado = value.documents[i].data['estado'] == 'pagado'
+        pedido.pagado = value.documents[i].data['pagado'] == true
             ? Estado.PAGADO
             : Estado.NOPAGADO;
+        pedido.estado = value.documents[i].data['estado'];
         listPedido.add(pedido);
       }
       addPedidos(listPedido);
@@ -59,9 +60,10 @@ class UserDataBloc {
         detalle.nombre = doc.data['nombre'];
         detalle.tipo = doc.data['tipo']; 
         detalle.cantidad = doc.data['cantidad']; 
-        detalle.precioUnitario = doc.data['precioUnitario']; 
+        detalle.precioUnitario = doc.data['precioUnitario'].toDouble(); 
         detalle.unidades = doc.data['unidades']; 
         detalle.unidadMedida = doc.data['unidadMedida']; 
+        detalle.precioTotal = doc.data['precioTotal'].toDouble(); 
         listDetallePedido.add(detalle);
       }
       addDetalle(listDetallePedido);

@@ -11,7 +11,8 @@ class Pedido{
   String cliente;
   Timestamp fecha;
   double total;
-  Estado estado;
+  Estado pagado;
+  String estado;
   List detallePedido;
 
   Pedido({
@@ -19,6 +20,7 @@ class Pedido{
     this.cliente,
     this.fecha,
     this.total,
+    this.pagado,
     this.estado,
     this.detallePedido,
   });
