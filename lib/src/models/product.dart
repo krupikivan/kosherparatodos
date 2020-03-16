@@ -1,28 +1,25 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:kosherparatodos/src/models/producto_concreto.dart';
 
 class Producto{
   
   String idProducto;
   String bulto;
   String nombre;
-  double precioUnitario;
-  Timestamp ultimaActualizacion;
-  String unidadMedida;
-  String image;
   String descripcion;
-  String tipo;
-  List opcionCantidad;
+  Timestamp ultimaActualizacion;
+  List<ProductoConcreto> concreto;
+  String imagen;
+  bool habilitado;
 
   Producto({
     this.idProducto,
     this.bulto,
     this.nombre,
-    this.precioUnitario,
     this.ultimaActualizacion,
-    this.unidadMedida,
-    this.image,
+    this.imagen,
     this.descripcion,
-    this.tipo,
-    this.opcionCantidad,
+    this.concreto,
+    this.habilitado,
   });
 }

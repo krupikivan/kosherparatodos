@@ -2,11 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:kosherparatodos/src/models/detalle_pedido.dart';
 import 'package:kosherparatodos/src/models/pedido.dart';
 import 'package:kosherparatodos/src/models/user_data.dart';
+import 'package:kosherparatodos/src/repository/firestore_provider.dart';
 import 'package:kosherparatodos/src/repository/repo.dart';
 import 'package:rxdart/rxdart.dart';
 
 class UserDataBloc {
-  final _repository = Repository();
+  final Repository _repository = FirestoreProvider();
 
   final _docUserData = BehaviorSubject<UserData>();
   Observable<UserData> get getUserData => _docUserData.stream;
@@ -57,13 +58,13 @@ class UserDataBloc {
       for (int i = 0; i < queryDetalle.documents.length; i++) {
         DocumentSnapshot doc = queryDetalle.documents[i];
         DetallePedido detalle = new DetallePedido();
-        detalle.nombre = doc.data['nombre'];
-        detalle.tipo = doc.data['tipo']; 
-        detalle.cantidad = doc.data['cantidad']; 
-        detalle.precioUnitario = doc.data['precioUnitario'].toDouble(); 
-        detalle.unidades = doc.data['unidades']; 
-        detalle.unidadMedida = doc.data['unidadMedida']; 
-        detalle.precioTotal = doc.data['precioTotal'].toDouble(); 
+        // detalle.nombre = doc.data['nombre'];
+        // detalle.descripcion = doc.data['descripcion']; 
+        detalle.cantidad = doc.data['cantidad'].toDouble(); 
+        // detalle.precioUnitario = doc.data['precioUnitario'].toDouble(); 
+        // detalle.unidades = doc.data['unidades']; 
+        // detalle.unidadMedida = doc.data['unidadMedida']; 
+        detalle.precioDetalle = doc.data['precioDetalle'].toDouble(); 
         listDetallePedido.add(detalle);
       }
       addDetalle(listDetallePedido);

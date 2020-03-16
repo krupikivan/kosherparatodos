@@ -17,7 +17,7 @@ class AddRemoveButton extends StatelessWidget {
       elevation: 1.0,
       shape: CircleBorder(),
       fillColor: MyTheme.Colors.dark,
-      onPressed: () => action == 'add' ? blocNewPedido.addingCurrentDetalle(producto, index) : blocNewPedido.removeCurrentDetalle(producto, index),
+      onPressed: () => action == 'add' ? blocNewPedido.addingCurrentDetalle(producto, index) : blocNewPedido.removeDetalle(producto, index),
       child: Icon(
         icon,
         color: Colors.white,

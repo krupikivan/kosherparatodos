@@ -1,9 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:kosherparatodos/src/Widget/popup_menu.dart';
+import 'package:kosherparatodos/src/models/detalle_pedido.dart';
+import 'package:kosherparatodos/src/pages/home_pages/bloc/new_pedido_bloc.dart';
 import 'package:kosherparatodos/src/pages/home_pages/bloc/user_data_bloc.dart';
 import 'package:kosherparatodos/src/pages/home_pages/historial_page/history_page.dart';
-import 'package:kosherparatodos/src/pages/home_pages/product_list_page.dart';
+import 'package:kosherparatodos/src/pages/home_pages/pedido_pages/new_pedido_page.dart';
+import 'package:kosherparatodos/src/pages/home_pages/pedido_pages/pedido_cart.dart';
 import 'package:kosherparatodos/src/utils/item.dart';
 import 'package:kosherparatodos/style/theme.dart' as MyTheme;
 
@@ -21,7 +24,7 @@ class _UserPageState extends State<UserPage> {
   int _currentIndex = 0;
   final List<Widget> _children = [
     HistoryPage(),
-    ProductListPage(),
+    NewPedidoPage(),
   ];
 
   TextStyle style;
@@ -42,6 +45,7 @@ class _UserPageState extends State<UserPage> {
         backgroundColor: MyTheme.Colors.dark,
         title: Text("Kosher para todos", style: style,),
         actions: <Widget>[
+          _badgeIcon(),
           PopupMenu(choices: choices),
         ],
       ),
@@ -73,13 +77,65 @@ class _UserPageState extends State<UserPage> {
     });
   }
 
+Widget _badgeIcon(){
+  return new Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: new Container(
+                  height: 150.0,
+                  width: 30.0,
+                  child: new GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).push(
+                          new MaterialPageRoute(
+                              builder:(BuildContext context) =>
+                              new PedidoCart()
+                          )
+                      );
+                    },
+                    child: new Stack(
+                      children: <Widget>[
+                        new IconButton(
+                          icon: new Icon(
+                            Icons.shopping_cart,
+                            color: Colors.white,
+                          ),
+                          onPressed: null,
+                        ),
+                        new Positioned(
+                            child: new Stack(
+                          children: <Widget>[
+                            new Icon(Icons.brightness_1,
+                                size: 20.0, color: Colors.green[800]),
+                            new Positioned(
+                                top: 3.0,
+                                right: 4.0,
+                                child: new Center(
+                                  child: StreamBuilder<List<DetallePedido>>(
+                                      stream: blocNewPedido.getDetalle,
+                                      builder: (context, snapshot) {
+                                        if (!snapshot.hasData)
+                                          return Text('0');
+                                        else
+                                          return new Text(
+                                            snapshot.data.
+                                                length.toString(),
+                                            style: new TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 11.0,
+                                                fontWeight: FontWeight.w500),
+                                          );
+                                      }),
+                                )),
+                          ],
+                        )),
+                      ],
+                    ),
+                  )));
+}
+
   ///PUPUP menu
   _fillPopupData() {
     choices = <Item>[
-      Item(
-          Text('Nuevo pedido',
-              style: TextStyle(fontFamily: MyTheme.Fonts.primaryFont)),
-          Icon(Icons.add)),
     Item(
           Text('Cerrar Sesion',
               style: TextStyle(fontFamily: MyTheme.Fonts.primaryFont)),
