@@ -16,68 +16,76 @@ class WelcomePage extends StatefulWidget {
 
 class _WelcomePageState extends State<WelcomePage> {
   Widget _submitButton() {
-    return InkWell(
-      onTap: () {
-         Provider.of<UserRepository>(context, listen: false).goLogin();
+    return MaterialButton(
+      onPressed: () {
+        Provider.of<UserRepository>(context, listen: false).goLogin();
       },
-      child: LoginButton(name: 'Ingresar',),
+      color: MyTheme.Colors.secondaryColor,
+      child: Text(
+        'INGRESAR',
+        style: TextStyle(fontSize: 20),
+      ),
+      minWidth: MediaQuery.of(context).size.width,
+      height: 60,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
     );
   }
 
   Widget _signUpButton() {
-    return InkWell(
-      onTap: () {
-               Provider.of<UserRepository>(context, listen: false).goSignup();
+    return MaterialButton(
+      onPressed: () {
+        Provider.of<UserRepository>(context, listen: false).goSignup();
       },
-      child: Container(
-        width: MediaQuery.of(context).size.width,
-        padding: EdgeInsets.symmetric(vertical: 13),
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(5)),
-          border: Border.all(color: Colors.white, width: 2),
-        ),
-        child: Text(
-          'Registrate',
-          style: TextStyle(fontSize: 20, color: Colors.white),
-        ),
+      color: MyTheme.Colors.dark,
+      child: Text(
+        'REGISTRARSE',
+        style: TextStyle(fontSize: 20),
       ),
+      minWidth: MediaQuery.of(context).size.width,
+      height: 60,
+      textColor: MyTheme.Colors.secondaryColor,
+      elevation: 0,
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+          side: BorderSide(width: 2, color: MyTheme.Colors.secondaryColor)),
     );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body:SingleChildScrollView(
-        child:Container(
-            padding: EdgeInsets.symmetric(horizontal: 20),
-            height: MediaQuery.of(context).size.height,
-            decoration: BoxDecoration(
-              color: MyTheme.Colors.dark,
-                borderRadius: BorderRadius.all(Radius.circular(5)),
-                boxShadow: <BoxShadow>[
-                  BoxShadow(
-                      color: Colors.grey.shade200,
-                      offset: Offset(2, 4),
-                      blurRadius: 5,
-                      spreadRadius: 2)
-                ],),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                TitleLabel(),
-                SizedBox(
-                  height: 80,
-                ),
-                _submitButton(),
-                SizedBox(
-                  height: 20,
-                ),
-                _signUpButton(),
-              ],
-            ),
+      body: SingleChildScrollView(
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 20),
+          height: MediaQuery.of(context).size.height,
+          decoration: new BoxDecoration(
+            gradient: new LinearGradient(
+                colors: [MyTheme.Colors.dark, MyTheme.Colors.primary],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                stops: [0.4, 1.0],
+                tileMode: TileMode.clamp),
           ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: <Widget>[
+              SizedBox(
+                height: 1,
+              ),
+              TitleLabel(),
+              Column(
+                children: <Widget>[
+                  _submitButton(),
+                  SizedBox(
+                    height: 30,
+                  ),
+                  _signUpButton(),
+                ],
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

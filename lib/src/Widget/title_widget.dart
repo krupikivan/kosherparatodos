@@ -15,9 +15,9 @@ class TitleLabel extends StatelessWidget {
               text: 'Kosher Para Todos',
               style: GoogleFonts.portLligatSans(
                 textStyle: Theme.of(context).textTheme.display1,
-                fontSize: 30,
+                fontSize: 40,
                 fontWeight: FontWeight.w700,
-                color: MyTheme.Colors.light,
+                color: MyTheme.Colors.secondaryColor,
               ),),
         ),
                 RichText(
@@ -28,7 +28,7 @@ class TitleLabel extends StatelessWidget {
                 textStyle: Theme.of(context).textTheme.display1,
                 fontSize: 15,
                 fontWeight: FontWeight.w700,
-                color: MyTheme.Colors.light,
+                color: MyTheme.Colors.secondaryColor,
               ),),
         ),
       ],
