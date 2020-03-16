@@ -101,22 +101,22 @@ class NewDetallePedido extends StatelessWidget {
             //         );
             //       }),
             // ),
-            FlatButton(
-                onPressed: () {
-                  // blocNewPedido.onNewDetalle(producto);
-                  Navigator.pop(context);
-                },
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15)),
-                color: MyTheme.Colors.dark,
-                child: Container(
-                  alignment: Alignment.center,
-                  padding: EdgeInsets.symmetric(vertical: 12),
-                  child: Text(
-                    'Agregar al pedido',
-                    style: TextStyle(color: MyTheme.Colors.light),
-                  ),
-                ))
+            // FlatButton(
+            //     onPressed: () {
+            //       // blocNewPedido.onNewDetalle(producto);
+            //       Navigator.pop(context);
+            //     },
+            //     shape: RoundedRectangleBorder(
+            //         borderRadius: BorderRadius.circular(15)),
+            //     color: MyTheme.Colors.dark,
+            //     child: Container(
+            //       alignment: Alignment.center,
+            //       padding: EdgeInsets.symmetric(vertical: 12),
+            //       child: Text(
+            //         'Agregar al pedido',
+            //         style: TextStyle(color: MyTheme.Colors.light),
+            //       ),
+            //     ))
           ],
         ),
       ),

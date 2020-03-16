@@ -19,7 +19,7 @@ class Pedido{
     this.idPedido,
     this.cliente,
     this.fecha,
-    this.total,
+    this.total =0,
     this.pagado,
     this.estado,
     this.detallePedido,

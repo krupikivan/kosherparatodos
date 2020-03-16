@@ -24,6 +24,7 @@ class NewPedidoBloc {
   addingCurrentDetalle(Producto producto, int index) {
     ProductoConcreto pc = producto.concreto[index];
     if(_detalleList.isEmpty || !_detalleList.any((value)=> value.concreto.id == pc.id)){
+      pedido = new Pedido();
             DetallePedido nuevoDetalle = DetallePedido();
             nuevoDetalle.concreto = pc;
             nuevoDetalle.cantidad = 1;
@@ -35,17 +36,16 @@ class NewPedidoBloc {
       found.precioDetalle = pc.precioTotal * found.cantidad;
     }
     addDetalle(_detalleList);
+    actualizarPedidotTotal();
   }
-
 
 //Eliminar del detalle general
   removeOnPedido(DetallePedido det) {
-  //   _detalleList.removeWhere((item) =>
-  //       item.descripcion == det.descripcion &&
-  //       item.precioDetalle == det.precioDetalle);
-  //   addDetalleList(_detalleList);
-  //   pedido.total = _getPedidoTotal();
-  //   addPedido(pedido);
+    _detalleList.removeWhere((item) =>
+        item.concreto.id == det.concreto.id);
+    actualizarPedidotTotal();
+    addDetalle(_detalleList);
+    addPedido(pedido);
   }
 
 //Boton -
@@ -54,10 +54,23 @@ class NewPedidoBloc {
     if(_detalleList.any((value)=> value.concreto.id == pc.id)){
       var found = _detalleList.firstWhere((value) => value.concreto.id == pc.id);
       found.cantidad --;
+      found.precioDetalle -= producto.concreto[index].precioTotal;
       if(found.cantidad == 0)
       _detalleList.removeWhere((value)=> value.concreto.id == pc.id);
     }
+    actualizarPedidotTotal();
     addDetalle(_detalleList);
+  }
+
+  actualizarPedidotTotal(){
+    double _total = 0;
+    // DetallePedido det = _detalleList.isNotEmpty ? _detalleList.firstWhere((item) => item.concreto.id == pc.id) : null;
+    // suma == true && det !=null ? pedido.total += det.precioDetalle : det !=null ?  pedido.total -= det.precioDetalle : det = null;
+    _detalleList.forEach((item) => _total += item.precioDetalle);
+    // pedido.total = _total;
+    pedido.detallePedido = _detalleList;
+    pedido.total = _total;
+    addPedido(pedido);
   }
 
   _getPedidoTotal() {
