@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:kosherparatodos/src/Widget/login_button.dart';
 import 'package:kosherparatodos/src/Widget/title_widget.dart';
 import 'package:kosherparatodos/user_repository.dart';
 import 'package:provider/provider.dart';
@@ -17,7 +16,10 @@ class SignUpPage extends StatefulWidget {
 class _SignUpPageState extends State<SignUpPage> {
   final _formKey = GlobalKey<FormState>();
   final _key = GlobalKey<ScaffoldState>();
-  TextStyle style = TextStyle(color: MyTheme.Colors.light, fontFamily: MyTheme.Fonts.primaryFont, fontSize: 20.0);
+  TextStyle style = TextStyle(
+      color: MyTheme.Colors.secondaryColor,
+      fontFamily: MyTheme.Fonts.primaryFont,
+      fontSize: 20.0);
   TextEditingController _name;
   TextEditingController _email;
   TextEditingController _password;
@@ -30,77 +32,45 @@ class _SignUpPageState extends State<SignUpPage> {
     _password = TextEditingController(text: "");
   }
 
-  Widget _backButton() {
-    return InkWell(
-      onTap: () {
-        Provider.of<UserRepository>(context, listen: false).goWelcome();
-      },
-      child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 10),
-        child: Row(
-          children: <Widget>[
-            Container(
-              padding: EdgeInsets.only(left: 0, top: 10, bottom: 10),
-              child:
-                  Icon(Icons.keyboard_arrow_left, color: MyTheme.Colors.light),
-            ),
-            Text('Volver',
-                style: TextStyle(
-                    color: MyTheme.Colors.light,
-                    fontSize: 12,
-                    fontWeight: FontWeight.w500))
-          ],
-        ),
-      ),
-    );
-  }
-
   Widget _entryField(String title, controller, {bool isPassword = false}) {
-    return Container(
-      margin: EdgeInsets.symmetric(vertical: 10),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text(
-            title,
-            style: TextStyle(
-                color: MyTheme.Colors.light,
-                fontWeight: FontWeight.bold,
-                fontSize: 15),
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          TextFormField(
-              validator: (value) => (value.isEmpty) ? "Ingrese datos" : null,
-              controller: controller,
-              style: style,
-              cursorColor: MyTheme.Colors.light,
-              obscureText: isPassword,
-              decoration: InputDecoration(
-              errorStyle: TextStyle(color: MyTheme.Colors.light),
-              labelStyle: TextStyle(color: MyTheme.Colors.light),
-                 focusedErrorBorder: OutlineInputBorder(borderSide: BorderSide(color: MyTheme.Colors.light)),
-                enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: MyTheme.Colors.light)),
-                errorBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: MyTheme.Colors.light)),
-                focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: MyTheme.Colors.light)),
-              ))
-        ],
-      ),
-    );
+    return TextFormField(
+        obscureText: isPassword,
+        controller: controller,
+        validator: (value) => (value.isEmpty) ? "Ingrese $title" : null,
+        style: style,
+        cursorColor: MyTheme.Colors.secondaryColor,
+        decoration: InputDecoration(
+          labelText: title,
+          labelStyle: TextStyle(color: MyTheme.Colors.secondaryColor),
+          errorStyle: TextStyle(color: MyTheme.Colors.secondaryColor),
+          focusedErrorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(15),
+              borderSide: BorderSide(color: MyTheme.Colors.secondaryColor)),
+          enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(15),
+              borderSide: BorderSide(color: MyTheme.Colors.secondaryColor)),
+          errorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(15),
+              borderSide: BorderSide(color: MyTheme.Colors.yellowWarning)),
+          focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(15),
+              borderSide: BorderSide(color: MyTheme.Colors.secondaryColor)),
+        ));
   }
 
   Widget _submitButton(UserRepository user) {
-    return InkWell(
-      onTap: () async {
+    return MaterialButton(
+      child: Text(
+        "REGISTRARSE",
+        style: TextStyle(fontSize: 20),
+      ),
+      color: MyTheme.Colors.secondaryColor,
+      onPressed: () async {
         if (_formKey.currentState.validate()) {
           await user
               .signup(_name.text, _email.text, _password.text)
               .then((onValue) {
-             user.signOutOnRegister();
+            user.signOutOnRegister();
             _key.currentState.showSnackBar(SnackBar(
               content: Text("Usuario creado, espere confirmacion."),
             ));
@@ -111,8 +81,10 @@ class _SignUpPageState extends State<SignUpPage> {
           });
         }
       },
-      child: LoginButton(
-        name: 'Registrate',
+      minWidth: MediaQuery.of(context).size.width,
+      height: 60,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15),
       ),
     );
   }
@@ -125,14 +97,14 @@ class _SignUpPageState extends State<SignUpPage> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Text(
-            'Ya tienes cuenta?',
+            'Ya tienes una cuenta?',
             style: TextStyle(
-                color: MyTheme.Colors.light,
+                color: MyTheme.Colors.secondaryColor,
                 fontSize: 13,
                 fontWeight: FontWeight.w600),
           ),
           SizedBox(
-            width: 10,
+            width: 5,
           ),
           InkWell(
             onTap: () {
@@ -141,7 +113,7 @@ class _SignUpPageState extends State<SignUpPage> {
             child: Text(
               'Ingresar',
               style: TextStyle(
-                  color: MyTheme.Colors.light,
+                  color: MyTheme.Colors.yellowWarning,
                   fontSize: 13,
                   fontWeight: FontWeight.w600),
             ),
@@ -156,8 +128,14 @@ class _SignUpPageState extends State<SignUpPage> {
       key: _formKey,
       child: Column(
         children: <Widget>[
-          _entryField("Nombre", _name),
+          _entryField("Nombre", _name, ),
+          SizedBox(
+            height: 20,
+          ),
           _entryField("Email", _email),
+          SizedBox(
+            height: 20,
+          ),
           _entryField("Contraseña", _password, isPassword: true),
         ],
       ),
@@ -167,49 +145,72 @@ class _SignUpPageState extends State<SignUpPage> {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<UserRepository>(context);
-    return Scaffold(
-        key: _key,
-        body: SingleChildScrollView(
-            child: Container(
+
+    return Stack(
+      children: <Widget>[
+        Container(
+          padding: EdgeInsets.symmetric(horizontal: 20),
           height: MediaQuery.of(context).size.height,
-          child: Stack(
-            children: <Widget>[
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Expanded(
-                      flex: 3,
-                      child: SizedBox(),
-                    ),
-                    TitleLabel(),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    _emailPasswordWidget(),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    user.status == Status.Registering
-                        ? Center(child: CircularProgressIndicator(valueColor: new AlwaysStoppedAnimation<Color>(MyTheme.Colors.light),))
-                        : _submitButton(user),
-                    Expanded(
-                      flex: 2,
-                      child: SizedBox(),
-                    )
-                  ],
-                ),
-                decoration: BoxDecoration(color: MyTheme.Colors.dark),
-              ),
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: _loginAccountLabel(),
-              ),
-              Positioned(top: 40, left: 0, child: _backButton()),
-            ],
+          decoration: new BoxDecoration(
+            gradient: new LinearGradient(
+                colors: [MyTheme.Colors.dark, MyTheme.Colors.primary],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                stops: [0.30, 1.0],
+                tileMode: TileMode.clamp),
           ),
-        )));
+        ),
+        Scaffold(
+          backgroundColor: Colors.transparent,
+          appBar: AppBar(
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            leading: BackButton(
+              onPressed: () {
+                Provider.of<UserRepository>(context, listen: false).goWelcome();
+              },
+            ),
+          ),
+          body: SingleChildScrollView(
+            physics: NeverScrollableScrollPhysics(),
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              height: MediaQuery.of(context).size.height,
+              child: user.status == Status.Authenticating
+                  ? Center(
+                      child: CircularProgressIndicator(
+                        valueColor: new AlwaysStoppedAnimation<Color>(
+                            MyTheme.Colors.secondaryColor),
+                      ),
+                    )
+                  : Form(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                           SizedBox(
+                            height: 20,
+                          ),
+                          TitleLabel(),
+                          Column(
+                            children: <Widget>[
+                              _emailPasswordWidget(),
+                              SizedBox(
+                                height: 40,
+                              ),
+                              _submitButton(user)
+                            ],
+                          ),
+                          _loginAccountLabel(),
+                          SizedBox(
+                            height: 10,
+                          ),
+                        ],
+                      ),
+                    ),
+            ),
+          ),
+        ),
+      ],
+    );
   }
 }

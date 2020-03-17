@@ -5,6 +5,10 @@ import 'package:kosherparatodos/src/pages/home_pages/user_page.dart';
 import 'package:kosherparatodos/user_repository.dart';
 import 'package:provider/provider.dart';
 
+import 'src/pages/auth_pages/export.dart';
+import 'src/pages/auth_pages/export.dart';
+import 'src/pages/auth_pages/export.dart';
+
 class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

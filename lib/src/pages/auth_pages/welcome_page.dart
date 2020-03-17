@@ -27,7 +27,7 @@ class _WelcomePageState extends State<WelcomePage> {
       ),
       minWidth: MediaQuery.of(context).size.width,
       height: 60,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
     );
   }
 
@@ -44,9 +44,9 @@ class _WelcomePageState extends State<WelcomePage> {
       minWidth: MediaQuery.of(context).size.width,
       height: 60,
       textColor: MyTheme.Colors.secondaryColor,
-      elevation: 0,
+      
       shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(15),
           side: BorderSide(width: 2, color: MyTheme.Colors.secondaryColor)),
     );
   }
@@ -63,7 +63,7 @@ class _WelcomePageState extends State<WelcomePage> {
                 colors: [MyTheme.Colors.dark, MyTheme.Colors.primary],
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
-                stops: [0.4, 1.0],
+                stops: [0.15, 1.0],
                 tileMode: TileMode.clamp),
           ),
           child: Column(
