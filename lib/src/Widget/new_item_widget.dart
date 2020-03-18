@@ -13,13 +13,13 @@ class NewItemWidget extends StatelessWidget {
       padding: const EdgeInsets.all(10),
       child: ListTile(
           leading: IconButton(icon: Icon(Icons.remove), onPressed: ()=> blocNewPedido.removeOnPedido(item),),
-          title: Text(item.nombre),
-          subtitle: Text(item.unidades.toString() + ' ' + item.bulto + ' ' + item.tipo + ' ' + item.cantidad.toString() + ' ' + item.unidadMedida),
+          title: Text(item.concreto.descripcion),
+          subtitle: Text(item.cantidad.toString() + ' unid.'),
           trailing: Container(
             width: 70,
             height: 70,
             alignment: Alignment.center,
-            child: Text('\$${item.precioTotal}'),
+            child: Text('\$${item.precioDetalle}'),
           )),
     );
   }

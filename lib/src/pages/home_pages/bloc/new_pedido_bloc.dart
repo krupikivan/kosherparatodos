@@ -1,22 +1,14 @@
 import 'package:kosherparatodos/src/models/detalle_pedido.dart';
 import 'package:kosherparatodos/src/models/pedido.dart';
 import 'package:kosherparatodos/src/models/product.dart';
+import 'package:kosherparatodos/src/models/producto_concreto.dart';
 import 'package:rxdart/rxdart.dart';
 
 class NewPedidoBloc {
   List<DetallePedido> _detalleList = []; //La lista de todos los detalles
-  List<DetallePedido> _currentDetalle = []; //La lista del detalle por tipo de producto
+
   Pedido pedido = Pedido();
 
-//Este es el stream que va manejando todos los detalles
-  final _docPedidoCart = BehaviorSubject<List<DetallePedido>>();
-  Observable<List<DetallePedido>> get getDetalleList => _docPedidoCart.stream;
-  Function(List<DetallePedido>) get addDetalleList => _docPedidoCart.sink.add;
-
-//Este es el stream que va esuchando el numero del dropdown para luego agregarlo al detalle
-  final _cantidad = BehaviorSubject<int>();
-  Observable<int> get getCantidad => _cantidad.stream;
-  Function(int) get addCantidad => _cantidad.sink.add;
 
 //Este es el stream que va a guardar en el historial de pedidos una vez finalizado
   final _docNewPedido = BehaviorSubject<Pedido>();
@@ -28,77 +20,62 @@ class NewPedidoBloc {
   Observable<List<DetallePedido>> get getDetalle => _detallePedido.stream;
   Function(List<DetallePedido>) get addDetalle => _detallePedido.sink.add;
 
-  onNewDetalle(Producto producto) {
-        for(int i=0; i<_currentDetalle.length; i++){
-            DetallePedido det = DetallePedido();
-            det.bulto = _currentDetalle[i].bulto;
-            det.unidadMedida = _currentDetalle[i].unidadMedida;
-            det.tipo = _currentDetalle[i].tipo;
-            det.cantidad = _currentDetalle[i].cantidad;
-            det.nombre = producto.nombre;
-            det.unidades = _currentDetalle[i].unidades;
-            det.precioUnitario = producto.precioUnitario * det.cantidad;
-            det.precioTotal = det.precioUnitario * det.unidades;
-            _detalleList.add(det);
-        }
-        _currentDetalle.clear();
-        addDetalleList(_detalleList);
-        pedido.detallePedido = _detalleList;
-        pedido.total = _getPedidoTotal();
-        addPedido(pedido);
-  }
-
+//Boton +
   addingCurrentDetalle(Producto producto, int index) {
-    bool added = false;
-    for (int i = 0; i < _currentDetalle.length; i++) {
-      if (_currentDetalle[i].cantidad == producto.opcionCantidad[index]) {
-            _currentDetalle[i].unidades += 1;   
-             added = true;
-      }
+    ProductoConcreto pc = producto.concreto[index];
+    if(_detalleList.isEmpty || !_detalleList.any((value)=> value.concreto.id == pc.id)){
+      pedido = new Pedido();
+            DetallePedido nuevoDetalle = DetallePedido();
+            nuevoDetalle.concreto = pc;
+            nuevoDetalle.cantidad = 1;
+            nuevoDetalle.precioDetalle = pc.precioTotal * nuevoDetalle.cantidad;
+            _detalleList.add(nuevoDetalle);
+    }else{
+      var found = _detalleList.firstWhere((value) => value.concreto.id == pc.id);
+      found.cantidad ++;
+      found.precioDetalle = pc.precioTotal * found.cantidad;
     }
-    added == false ? _addNewOnSearching(producto, index) : added = false;
-    addDetalle(_currentDetalle);
+    addDetalle(_detalleList);
+    actualizarPedidotTotal();
   }
 
-  _addNewOnSearching(Producto producto, index) {
-    // if(_detalleList.firstWhere((item) {
-    //   item.tipo.contains(producto.tipo);
-    // } ))
-    {
-      DetallePedido det = DetallePedido();
-      det.nombre = producto.nombre;
-      det.cantidad = producto.opcionCantidad[index];
-      det.tipo = producto.tipo;
-      det.unidadMedida = producto.unidadMedida;
-      det.bulto = producto.bulto;
-      det.precioUnitario = producto.precioUnitario * det.cantidad;
-      det.unidades = 1;
-      _currentDetalle.add(det);
-    }
-  }
-
-  removeOnPedido(DetallePedido det){
-    _detalleList.removeWhere((item) => item.tipo == det.tipo && item.precioTotal == det.precioTotal);
-    addDetalleList(_detalleList);
-    pedido.total = _getPedidoTotal();
+//Eliminar del detalle general
+  removeOnPedido(DetallePedido det) {
+    _detalleList.removeWhere((item) =>
+        item.concreto.id == det.concreto.id);
+    actualizarPedidotTotal();
+    addDetalle(_detalleList);
     addPedido(pedido);
   }
 
-  removeCurrentDetalle(Producto producto, int index) {
-    for (int i = 0; i < _currentDetalle.length; i++) {
-      if (_currentDetalle[i].cantidad == producto.opcionCantidad[index]) {
-        _currentDetalle[i].unidades > 1
-            ? _currentDetalle[i].unidades -= 1
-            : _currentDetalle.removeAt(i);
-      }
+//Boton -
+  removeDetalle(Producto producto, int index) {
+    ProductoConcreto pc = producto.concreto[index];
+    if(_detalleList.any((value)=> value.concreto.id == pc.id)){
+      var found = _detalleList.firstWhere((value) => value.concreto.id == pc.id);
+      found.cantidad --;
+      found.precioDetalle -= producto.concreto[index].precioTotal;
+      if(found.cantidad == 0)
+      _detalleList.removeWhere((value)=> value.concreto.id == pc.id);
     }
-    addDetalle(_currentDetalle);
+    actualizarPedidotTotal();
+    addDetalle(_detalleList);
+  }
+
+  actualizarPedidotTotal(){
+    double _total = 0;
+    // DetallePedido det = _detalleList.isNotEmpty ? _detalleList.firstWhere((item) => item.concreto.id == pc.id) : null;
+    // suma == true && det !=null ? pedido.total += det.precioDetalle : det !=null ?  pedido.total -= det.precioDetalle : det = null;
+    _detalleList.forEach((item) => _total += item.precioDetalle);
+    // pedido.total = _total;
+    pedido.detallePedido = _detalleList;
+    pedido.total = _total;
+    addPedido(pedido);
   }
 
   _getPedidoTotal() {
     double _total = 0;
-    _detalleList.forEach(
-      (item) => _total += item.precioTotal);
+    _detalleList.forEach((item) => _total += item.precioDetalle);
     // for (int i = 0; i < _currentDetalle.length; i++) {
     //   _total += _list[i].total;
     // }
@@ -106,15 +83,10 @@ class NewPedidoBloc {
   }
 
   void dispose() async {
-    await _docPedidoCart.drain();
-    _docPedidoCart.close();
     await _docNewPedido.drain();
     _docNewPedido.close();
-    _docPedidoCart.close();
     await _detallePedido.drain();
     _detallePedido.close();
-    await _cantidad.drain();
-    _cantidad.close();
   }
 }
 

@@ -25,7 +25,7 @@ class PedidoCart extends StatelessWidget {
 
   Widget _productItems() {
     return StreamBuilder<List<DetallePedido>>(
-        stream: blocNewPedido.getDetalleList,
+        stream: blocNewPedido.getDetalle,
         builder: (context, snapshot) {
           if (!snapshot.hasData)
             return Container();

@@ -12,6 +12,7 @@ class ProductCardWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
+        
         Navigator.of(context).push(new MaterialPageRoute(
             builder: (BuildContext context) => new NewDetallePedido(
                   producto: producto,
@@ -22,7 +23,7 @@ class ProductCardWidget extends StatelessWidget {
         child: Stack(
           children: <Widget>[
             Positioned.fill(
-                child: Image.network(producto.image, fit: BoxFit.scaleDown)),
+                child: Image.network(producto.imagen, fit: BoxFit.scaleDown)),
             Positioned(
                 child: FittedBox(
                     // fit: BoxFit.contain,

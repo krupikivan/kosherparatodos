@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:kosherparatodos/src/Widget/title_widget.dart';
+import 'package:kosherparatodos/src/repository/firestore_provider.dart';
 import 'package:kosherparatodos/src/repository/repo.dart';
 import 'package:kosherparatodos/user_repository.dart';
 import 'package:provider/provider.dart';
@@ -16,6 +17,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final Repository repo = FirestoreProvider();
   TextEditingController _email;
   TextEditingController _password;
   final _formKey = GlobalKey<FormState>();
