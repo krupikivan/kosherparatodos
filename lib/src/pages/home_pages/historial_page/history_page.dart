@@ -64,10 +64,10 @@ class HistoryPage extends StatelessWidget {
     return 'Fecha: ${date.day}/${date.month}/${date.year}';
   }
 
-///TODO No se esta usando?
-  _getEstado(Estado estado) {
-    return estado == Estado.PAGADO ? 'Pagado' : 'No Pagado';
-  }
+// ///TODO No se esta usando?
+//   _getEstado(Estado estado) {
+//     return estado == Estado.PAGADO ? 'Pagado' : 'No Pagado';
+//   }
 
   _goToDetails(context, uid) {
     blocUserData.getDetallePedido(uid);

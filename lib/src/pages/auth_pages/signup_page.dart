@@ -172,7 +172,7 @@ class _SignUpPageState extends State<SignUpPage> {
             ),
           ),
           body: SingleChildScrollView(
-            physics: NeverScrollableScrollPhysics(),
+            // physics: NeverScrollableScrollPhysics(),
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: 20),
               height: MediaQuery.of(context).size.height,
@@ -187,9 +187,9 @@ class _SignUpPageState extends State<SignUpPage> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                           SizedBox(
-                            height: 20,
-                          ),
+                          //  SizedBox(
+                          //   height: 20,
+                          // ),
                           TitleLabel(),
                           Column(
                             children: <Widget>[

@@ -58,18 +58,22 @@ class UserDataBloc {
       for (int i = 0; i < queryDetalle.documents.length; i++) {
         DocumentSnapshot doc = queryDetalle.documents[i];
         DetallePedido detalle = new DetallePedido();
-        // detalle.nombre = doc.data['nombre'];
-        // detalle.descripcion = doc.data['descripcion']; 
         detalle.cantidad = doc.data['cantidad'].toDouble(); 
-        // detalle.precioUnitario = doc.data['precioUnitario'].toDouble(); 
-        // detalle.unidades = doc.data['unidades']; 
-        // detalle.unidadMedida = doc.data['unidadMedida']; 
-        detalle.precioDetalle = doc.data['precioDetalle'].toDouble(); 
+        detalle.precioDetalle = doc.data['precioDetalle'].toDouble();
+        detalle.descripcion = doc.data['descripcion'];
+        // print(doc.data);
+        // _repository.getProductoConcreto(doc.data['idProducto']).then((docConc){
+        //  detalle.concreto = _fillProductoConcreto(docConc.documents[0]);
+        // });
         listDetallePedido.add(detalle);
       }
       addDetalle(listDetallePedido);
     });
   }
+
+  // _fillProductoConcreto(doc){
+  //   ProductoConcreto con = ProductoConcreto();
+  // }
 
   void dispose() async {
     await _docUserData.drain();

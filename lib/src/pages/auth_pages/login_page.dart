@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:kosherparatodos/src/Widget/title_widget.dart';
 import 'package:kosherparatodos/src/repository/firestore_provider.dart';
 import 'package:kosherparatodos/src/repository/repo.dart';
 import 'package:kosherparatodos/user_repository.dart';
@@ -30,8 +29,8 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
-    _email = TextEditingController(text: "");
-    _password = TextEditingController(text: "");
+    _email = TextEditingController(text: "admin@admin.com");
+    _password = TextEditingController(text: "admin123");
   }
 
   Widget _submitButton(user) {
@@ -73,7 +72,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget _createAccountLabel() {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 20),
+      margin: EdgeInsets.symmetric(vertical: 5),
       alignment: Alignment.bottomCenter,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -188,6 +187,7 @@ class _LoginPageState extends State<LoginPage> {
           appBar: AppBar(
             backgroundColor: Colors.transparent,
             elevation: 0,
+            title: Text('Inicio de sesion'),
             leading: BackButton(
               onPressed: () {
                 Provider.of<UserRepository>(context, listen: false).goWelcome();
@@ -196,54 +196,56 @@ class _LoginPageState extends State<LoginPage> {
           ),
           body: SingleChildScrollView(
             physics: NeverScrollableScrollPhysics(),
-            child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 20),
-              height: MediaQuery.of(context).size.height,
-              child: user.status == Status.Authenticating
-                  ? Center(
-                      child: CircularProgressIndicator(
-                      valueColor: new AlwaysStoppedAnimation<Color>(
-                          MyTheme.Colors.secondaryColor),
-                    ))
-                  : Form(
-                      key: _formKey,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          SizedBox(
-                            height: 20,
-                          ),
-                          TitleLabel(),
-                          Column(
-                            children: <Widget>[
-                              _emailWidget(),
-                              SizedBox(
-                                height: 20,
-                              ),
-                              _passwordWidget(),
-                              SizedBox(
-                                height: 40,
-                              ),
-                              _submitButton(user),
-                              Container(
-                                padding: EdgeInsets.symmetric(vertical: 10),
-                                alignment: Alignment.centerRight,
-                                child: Text('Has olvidado la contraseña?',
-                                    style: TextStyle(
-                                        color: MyTheme.Colors.secondaryColor,
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w500)),
-                              ),
-                            ],
-                          ),
-                          _createAccountLabel(),
-                          SizedBox(
-                            height: 1,
-                          )
-                        ],
+            child:
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 20),
+                height: MediaQuery.of(context).size.height,
+                child: user.status == Status.Authenticating
+                    ? Center(
+                        child: CircularProgressIndicator(
+                        valueColor: new AlwaysStoppedAnimation<Color>(
+                            MyTheme.Colors.secondaryColor),
+                      ))
+                    : 
+                    Form(
+                        key: _formKey,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Column(
+                              children: <Widget>[
+                                _emailWidget(),
+                                SizedBox(
+                                  height: 20,
+                                ),
+                                _passwordWidget(),
+                                SizedBox(
+                                  height: 40,
+                                ),
+                                _submitButton(user),
+                                FlatButton(onPressed: ()=>user.signOut(), child: Text('out'),),
+                                Container(
+                                  padding: EdgeInsets.symmetric(vertical: 5),
+                                  alignment: Alignment.centerRight,
+                                  child: Text('Has olvidado la contraseña?',
+                                      style: TextStyle(
+                                          color: MyTheme.Colors.secondaryColor,
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w500)),
+                                ),
+                              ],
+                            ),
+                            _createAccountLabel(),
+                            SizedBox(
+                              height: 1,
+                            )
+                          ],
+                        ),
                       ),
-                    ),
-            ),
+              ),
           ),
         ),
       ],

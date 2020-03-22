@@ -29,4 +29,25 @@ class FirestoreProvider implements Repository {
     return _firestore.collection('producto').document(productoID).collection('productoConcreto').getDocuments();
   }
 
+  Future<bool> getUserAdmin(String id)  {
+   return  _firestore.collection('root').document('rootUser').get()
+   .then((value){
+     for(int i=0;i<value.data['userID'].length;i++){
+       if(value.data['userID'][i] == id ){
+         return true;
+       }
+     }
+     return false;
+   });
+  }
+
+  Future<QuerySnapshot> getClientes() {
+    return _firestore.collection('users').getDocuments();
+  }
+
+  Stream<DocumentSnapshot> getUsersAdmin() {
+    return _firestore.collection('root').document('rootUser').snapshots();
+  }
+
+
 }

@@ -22,4 +22,9 @@ abstract class Repository {
   Future<QuerySnapshot> getProductoConcreto(String productoID);
       // _firestoreProvider.getProductoConcreto(productoID);
 
+  Future<bool> getUserAdmin(String id);
+
+  Future<QuerySnapshot> getClientes();
+
+  Stream<DocumentSnapshot> getUsersAdmin();
 }

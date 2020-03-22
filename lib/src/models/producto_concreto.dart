@@ -1,6 +1,7 @@
 class ProductoConcreto{
   
   String id;
+  String productoId;
   double cantidad;
   double precioTotal;
   double precioUnitario;
@@ -10,6 +11,7 @@ class ProductoConcreto{
 
   ProductoConcreto({
     this.id,
+    this.productoId,
     this.cantidad,
     this.precioTotal,
     this.descripcion,
