@@ -29,8 +29,8 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
-    _email = TextEditingController(text: "admin@admin.com");
-    _password = TextEditingController(text: "admin123");
+    _email = TextEditingController(text: "");
+    _password = TextEditingController(text: "");
   }
 
   Widget _submitButton(user) {
@@ -217,6 +217,12 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                             Column(
                               children: <Widget>[
+                                Row(
+                                  children: <Widget>[
+                                    IconButton(color: Colors.white, icon: Icon(Icons.account_circle), onPressed: () => setState(() {_email.text = 'admin@admin.com'; _password.text = 'admin123';}),),
+                                    IconButton(color: Colors.white, icon: Icon(Icons.account_circle), onPressed: () => setState(() {_email.text = 'test@test.com'; _password.text = 'test123';}),),
+                                  ],
+                                ),
                                 _emailWidget(),
                                 SizedBox(
                                   height: 20,
@@ -226,7 +232,6 @@ class _LoginPageState extends State<LoginPage> {
                                   height: 40,
                                 ),
                                 _submitButton(user),
-                                FlatButton(onPressed: ()=>user.signOut(), child: Text('out'),),
                                 Container(
                                   padding: EdgeInsets.symmetric(vertical: 5),
                                   alignment: Alignment.centerRight,

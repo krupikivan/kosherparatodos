@@ -18,7 +18,6 @@ class AdminPage extends StatefulWidget {
 }
 
 class _AdminPageState extends State<AdminPage> {
-
   int _currentIndex = 0;
   final List<Widget> _children = [
     ClientePage(),
@@ -29,7 +28,7 @@ class _AdminPageState extends State<AdminPage> {
   List<Item> choices;
 
   @override
-  void initState(){
+  void initState() {
     style = TextStyle(color: MyTheme.Colors.light);
     super.initState();
   }
@@ -38,25 +37,30 @@ class _AdminPageState extends State<AdminPage> {
   Widget build(BuildContext context) {
     _fillPopupData();
     return MultiProvider(
-        providers: [
-          ChangeNotifierProvider(create: (context) => ClienteNotifier.instance()),
-        ],
-          child: MaterialApp(
-
-                      home: Scaffold(
-        appBar: AppBar(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => ClienteNotifier.init()),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: Scaffold(
+          appBar: AppBar(
             backgroundColor: MyTheme.Colors.dark,
-            title: Text("Kosher para todos", style: style,),
+            title: Text(
+              "Kosher para todos",
+              style: style,
+            ),
             actions: <Widget>[
               PopupMenu(choices: choices),
             ],
-        ),
-        body: _children[_currentIndex],
-        //Bottom Navigation ----------------------------------------
-        bottomNavigationBar: BottomNavigationBar(
+          ),
+          body: _children[_currentIndex],
+          //Bottom Navigation ----------------------------------------
+          bottomNavigationBar: BottomNavigationBar(
             selectedItemColor: MyTheme.Colors.primary,
             onTap: onTabTapped, // new
-            currentIndex: _currentIndex, // this will be set when a new tab is tapped
+            currentIndex:
+                _currentIndex, // this will be set when a new tab is tapped
             items: [
               BottomNavigationBarItem(
                 icon: new Icon(Icons.history),
@@ -67,10 +71,10 @@ class _AdminPageState extends State<AdminPage> {
                 title: new Text('Pedidos'),
               )
             ],
-        ),
-        //Bottom Navigation ----------------------------------------
-      ),
           ),
+          //Bottom Navigation ----------------------------------------
+        ),
+      ),
     );
   }
 
@@ -83,7 +87,7 @@ class _AdminPageState extends State<AdminPage> {
   ///PUPUP menu
   _fillPopupData() {
     choices = <Item>[
-    Item(
+      Item(
           Text('Cerrar Sesion',
               style: TextStyle(fontFamily: MyTheme.Fonts.primaryFont)),
           Icon(Icons.account_circle)),

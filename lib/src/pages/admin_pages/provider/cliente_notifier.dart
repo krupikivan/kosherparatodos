@@ -14,19 +14,21 @@ class ClienteNotifier with ChangeNotifier {
   UnmodifiableListView<Cliente> get clienteList =>
       UnmodifiableListView(_clienteList);
 
-  ClienteNotifier.instance() {
+  ClienteNotifier.init() {
     getClientes();
   }
 
   getClientes() async {
     List<Cliente> _list = [];
-    await _repository.getClientes().then((snapshot) {
+    await _repository.getClientes().then((snapshot) async{
       snapshot.documents.forEach((documents) {
         Cliente cliente = Cliente.fromMap(documents.data);
         _list.add(cliente);
       });
-    });
-    this._clienteList = _list;
+    }).whenComplete(() {
+     _clienteList = _list;
+     notifyListeners();
+    });  
   }
 
   Cliente get clienteActual => _clienteActual;
