@@ -20,7 +20,6 @@ class UserPage extends StatefulWidget {
 }
 
 class _UserPageState extends State<UserPage> {
-
   int _currentIndex = 0;
   final List<Widget> _children = [
     HistoryPage(),
@@ -31,7 +30,7 @@ class _UserPageState extends State<UserPage> {
   List<Item> choices;
 
   @override
-  void initState(){
+  void initState() {
     blocUserData.getUserDataFromFirebase(widget.user.uid);
     style = TextStyle(color: MyTheme.Colors.light);
     super.initState();
@@ -43,7 +42,10 @@ class _UserPageState extends State<UserPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: MyTheme.Colors.dark,
-        title: Text("Kosher para todos", style: style,),
+        title: Text(
+          "Kosher para todos",
+          style: style,
+        ),
         actions: <Widget>[
           _badgeIcon(),
           PopupMenu(choices: choices),
@@ -54,7 +56,8 @@ class _UserPageState extends State<UserPage> {
       bottomNavigationBar: BottomNavigationBar(
         selectedItemColor: MyTheme.Colors.primary,
         onTap: onTabTapped, // new
-        currentIndex: _currentIndex, // this will be set when a new tab is tapped
+        currentIndex:
+            _currentIndex, // this will be set when a new tab is tapped
         items: [
           BottomNavigationBarItem(
             icon: new Icon(Icons.history),
@@ -73,70 +76,73 @@ class _UserPageState extends State<UserPage> {
   void onTabTapped(int index) {
     setState(() {
       _currentIndex = index;
-
     });
   }
 
-Widget _badgeIcon(){
-  return new Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: new Container(
-                  height: 150.0,
-                  width: 30.0,
-                  child: new GestureDetector(
-                    onTap: () {
-                      Navigator.of(context).push(
-                          new MaterialPageRoute(
-                              builder:(BuildContext context) =>
-                              new PedidoCart()
-                          )
-                      );
-                    },
-                    child: new Stack(
-                      children: <Widget>[
-                        new IconButton(
-                          icon: new Icon(
-                            Icons.shopping_cart,
-                            color: Colors.white,
-                          ),
-                          onPressed: null,
-                        ),
-                        new Positioned(
-                            child: new Stack(
-                          children: <Widget>[
-                            new Icon(Icons.brightness_1,
-                                size: 20.0, color: Colors.green[800]),
-                            new Positioned(
-                                top: 3.0,
-                                right: 4.0,
-                                child: new Center(
-                                  child: StreamBuilder<List<DetallePedido>>(
-                                      stream: blocNewPedido.getDetalle,
-                                      builder: (context, snapshot) {
-                                        if (!snapshot.hasData)
-                                          return Text('0');
-                                        else
-                                          return new Text(
-                                            snapshot.data.
-                                                length.toString(),
-                                            style: new TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 11.0,
-                                                fontWeight: FontWeight.w500),
-                                          );
-                                      }),
-                                )),
-                          ],
-                        )),
-                      ],
+  Widget _badgeIcon() {
+    return new Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: new Container(
+            height: 150.0,
+            width: 30.0,
+            child: new GestureDetector(
+              onTap: () {
+                Navigator.of(context).push(new MaterialPageRoute(
+                    builder: (BuildContext context) => new PedidoCart()));
+              },
+              child: new Stack(
+                children: <Widget>[
+                  new IconButton(
+                    icon: new Icon(
+                      Icons.shopping_cart,
+                      color: Colors.white,
                     ),
-                  )));
-}
+                    onPressed: null,
+                  ),
+                  new Positioned(
+                      child: new Stack(
+                    children: <Widget>[
+                      new Icon(Icons.brightness_1,
+                          size: 20.0, color: Colors.green[800]),
+                      new Positioned(
+                          top: 3.0,
+                          right: 4.0,
+                          child: new Center(
+                            //TODO: esta feo que se haga aca este calculo.
+                            //pero considerando que queremos que se haga lo mas rapido posible
+                            //entonces lo hacemos aca \_'.'_/ 
+                            child: StreamBuilder<List<DetallePedido>>(
+                                stream: blocNewPedido.getDetalle,
+                                builder: (context, snapshot) {
+                                  double number = 0;
+                                  if (!snapshot.hasData)
+                                    return Text('0');
+                                  else {
+                                    for (var prod in snapshot.data) {
+                                      number += prod.cantidad;
+                                    }
+
+                                    return new Text(
+                                      number.toInt().toString(),
+                                      style: new TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 11.0,
+                                          fontWeight: FontWeight.w500),
+                                    );
+                                  }
+                                }),
+                          )),
+                    ],
+                  )),
+                ],
+              ),
+            )));
+  }
 
   ///PUPUP menu
   _fillPopupData() {
     choices = <Item>[
-    Item(
+      Item(
           Text('Cerrar Sesion',
               style: TextStyle(fontFamily: MyTheme.Fonts.primaryFont)),
           Icon(Icons.account_circle)),
