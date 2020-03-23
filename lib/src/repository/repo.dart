@@ -26,5 +26,9 @@ abstract class Repository {
 
   Future<QuerySnapshot> getClientes();
 
+  Future<QuerySnapshot> getPedidos();
+
   Stream<DocumentSnapshot> getUsersAdmin();
+
+  Future<DocumentSnapshot> getClienteSpecific(String id);
 }

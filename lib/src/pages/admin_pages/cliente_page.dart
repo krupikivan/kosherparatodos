@@ -2,28 +2,40 @@ import 'package:flutter/material.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/cliente_detail_page.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/provider/cliente_notifier.dart';
 import 'package:provider/provider.dart';
+import 'package:kosherparatodos/style/theme.dart' as MyTheme;
+
 
 class ClientePage extends StatelessWidget {
+  
   @override
   Widget build(BuildContext context) {
-    return Consumer<ClienteNotifier>(
-      builder: (context, cliente, _) => RefreshIndicator(
-        child: ListView.separated(
-          itemBuilder: (BuildContext context, int index) => ListTile(
-            leading: Icon(Icons.account_circle),
-            title: Text(cliente.clienteList[index].name),
-            subtitle: Text(cliente.clienteList[index].email),
-            onTap: () {
-              cliente.clienteActual = cliente.clienteList[index];
-              _goToDetails(context);
-            },
-          ),
-          itemCount: cliente.clienteList.length,
-          separatorBuilder: (BuildContext context, int index) => Divider(
-            color: Colors.grey,
-          ),
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: MyTheme.Colors.dark,
+        title: Text(
+          "Clientes",
+          style: TextStyle(color: MyTheme.Colors.light),
         ),
-        onRefresh: () => _refreshList(cliente),
+      ),
+      body: Consumer<ClienteNotifier>(
+        builder: (context, cliente, _) => RefreshIndicator(
+          child: ListView.separated(
+            itemBuilder: (BuildContext context, int index) => ListTile(
+              leading: Icon(Icons.account_circle),
+              title: Text(cliente.clienteList[index].name),
+              subtitle: Text(cliente.clienteList[index].email),
+              onTap: () {
+                cliente.clienteActual = cliente.clienteList[index];
+                _goToDetails(context);
+              },
+            ),
+            itemCount: cliente.clienteList.length,
+            separatorBuilder: (BuildContext context, int index) => Divider(
+              color: Colors.grey,
+            ),
+          ),
+          onRefresh: () => _refreshList(cliente),
+        ),
       ),
     );
   }

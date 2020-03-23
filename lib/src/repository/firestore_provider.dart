@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:kosherparatodos/src/models/cliente.dart';
 import 'package:kosherparatodos/src/repository/repo.dart';
 
 class FirestoreProvider implements Repository {
@@ -45,9 +46,16 @@ class FirestoreProvider implements Repository {
     return _firestore.collection('users').getDocuments();
   }
 
+  Future<QuerySnapshot> getPedidos() {
+    return _firestore.collection('historial').getDocuments();
+  }
+
   Stream<DocumentSnapshot> getUsersAdmin() {
     return _firestore.collection('root').document('rootUser').snapshots();
   }
 
+  Future<DocumentSnapshot> getClienteSpecific(String id)  {
+   return  _firestore.collection('users').document(id).get();
+  }
 
 }

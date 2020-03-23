@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:kosherparatodos/src/models/cliente.dart';
 
 enum Estado {
   PAGADO, NOPAGADO
@@ -8,7 +9,7 @@ enum Estado {
 class Pedido{
 
   String idPedido;
-  String cliente;
+  Cliente cliente;
   Timestamp fecha;
   double total;
   Estado pagado;
@@ -19,11 +20,19 @@ class Pedido{
     this.idPedido,
     this.cliente,
     this.fecha,
-    this.total =0,
+    this.total,
     this.pagado,
     this.estado,
     this.detallePedido,
   });
 
+  Pedido.fromMap(Map<String, dynamic> data, id, clie){
+    idPedido = id;
+    cliente = clie;
+    fecha = data['fecha'];
+    estado = data['estado'];
+    total = data['total'].toDouble();
+    pagado = data['pagado'] == true ? Estado.PAGADO : Estado.NOPAGADO;
+  }
   
 }
