@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:kosherparatodos/src/pages/admin_pages/admin_page.dart';
+import 'package:kosherparatodos/src/pages/auth_pages/welcome_page.dart';
 import 'app.dart';
 
 void main() => runApp(MyApp());
@@ -10,10 +12,9 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       // initialRoute: "/",
       // routes: {
-      //   '/': (context) => WelcomePage(),
-      //   '/home': (context) => HomePage(),
-      //   '/login': (context) => LoginPage(),
-      //   '/signup': (context) => SignUpPage(),
+      //   // '/': (context) => WelcomePage(),
+      //   '/admin': (context) => AdminPage(),
+
       // },
       theme: ThemeData(
         primarySwatch: Colors.red,

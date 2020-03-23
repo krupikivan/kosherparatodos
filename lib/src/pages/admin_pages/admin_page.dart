@@ -39,36 +39,38 @@ class _AdminPageState extends State<AdminPage> {
     _fillPopupData();
     return MultiProvider(
         providers: [
-          ChangeNotifierProvider(create: (_) => ClienteNotifier.instance()),
-          // ChangeNotifierProvider(create: (BuildContext context) => ClienteNotifier()),
+          ChangeNotifierProvider(create: (context) => ClienteNotifier.instance()),
         ],
-          child: Scaffold(
+          child: MaterialApp(
+
+                      home: Scaffold(
         appBar: AppBar(
-          backgroundColor: MyTheme.Colors.dark,
-          title: Text("Kosher para todos", style: style,),
-          actions: <Widget>[
-            PopupMenu(choices: choices),
-          ],
+            backgroundColor: MyTheme.Colors.dark,
+            title: Text("Kosher para todos", style: style,),
+            actions: <Widget>[
+              PopupMenu(choices: choices),
+            ],
         ),
         body: _children[_currentIndex],
         //Bottom Navigation ----------------------------------------
         bottomNavigationBar: BottomNavigationBar(
-          selectedItemColor: MyTheme.Colors.primary,
-          onTap: onTabTapped, // new
-          currentIndex: _currentIndex, // this will be set when a new tab is tapped
-          items: [
-            BottomNavigationBarItem(
-              icon: new Icon(Icons.history),
-              title: new Text('Clientes'),
-            ),
-            BottomNavigationBarItem(
-              icon: new Icon(Icons.fastfood),
-              title: new Text('Pedidos'),
-            )
-          ],
+            selectedItemColor: MyTheme.Colors.primary,
+            onTap: onTabTapped, // new
+            currentIndex: _currentIndex, // this will be set when a new tab is tapped
+            items: [
+              BottomNavigationBarItem(
+                icon: new Icon(Icons.history),
+                title: new Text('Clientes'),
+              ),
+              BottomNavigationBarItem(
+                icon: new Icon(Icons.fastfood),
+                title: new Text('Pedidos'),
+              )
+            ],
         ),
         //Bottom Navigation ----------------------------------------
       ),
+          ),
     );
   }
 
