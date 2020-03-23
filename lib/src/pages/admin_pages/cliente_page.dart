@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/cliente_detail_page.dart';
-import 'package:kosherparatodos/src/pages/admin_pages/provider/admin_provider.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/provider/cliente_notifier.dart';
 import 'package:provider/provider.dart';
 
@@ -35,6 +34,6 @@ class ClientePage extends StatelessWidget {
   }
 
   Future<void> _refreshList(cliente) async {
-    adminProvider.getClientes(cliente);
+    cliente.getClientes(cliente);
   }
 }
