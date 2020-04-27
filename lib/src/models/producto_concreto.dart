@@ -1,22 +1,30 @@
-class ProductoConcreto{
-  
-  String id;
+class ProductoConcreto {
+  String idConcreto;
   String productoId;
-  double cantidad;
+  int cantidad;
   double precioTotal;
-  double precioUnitario;
   String descripcion;
-  String unidadMedida;
-  int cantidadPedido;
+  var cantidadPedido;
 
   ProductoConcreto({
-    this.id,
+    this.idConcreto,
     this.productoId,
     this.cantidad,
     this.precioTotal,
     this.descripcion,
-    this.precioUnitario,
-    this.unidadMedida,
     this.cantidadPedido = 0,
   });
+
+  ProductoConcreto.fromMap(Map<String, dynamic> data, id) {
+    idConcreto = id;
+    cantidad = data['cantidad'].toInt();
+    precioTotal = data['precioTotal'].toDouble();
+    descripcion = data['descripcion'];
+  }
+
+  ProductoConcreto.fromNewConcreto(ProductoConcreto concreto, precio) {
+    cantidad = concreto.cantidad;
+    descripcion = concreto.descripcion;
+    precioTotal = precio == 0.0 ? concreto.precioTotal : precio;
+  }
 }

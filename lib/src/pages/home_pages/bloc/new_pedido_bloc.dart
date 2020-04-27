@@ -1,6 +1,6 @@
 import 'package:kosherparatodos/src/models/detalle_pedido.dart';
 import 'package:kosherparatodos/src/models/pedido.dart';
-import 'package:kosherparatodos/src/models/product.dart';
+import 'package:kosherparatodos/src/models/producto.dart';
 import 'package:kosherparatodos/src/models/producto_concreto.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -23,7 +23,7 @@ class NewPedidoBloc {
 //Boton +
   addingCurrentDetalle(Producto producto, int index) {
     ProductoConcreto pc = producto.concreto[index];
-    if(_detalleList.isEmpty || !_detalleList.any((value)=> value.concreto.id == pc.id)){
+    if(_detalleList.isEmpty || !_detalleList.any((value)=> value.concreto.idConcreto == pc.idConcreto)){
       pedido = new Pedido();
             DetallePedido nuevoDetalle = DetallePedido();
             nuevoDetalle.concreto = pc;
@@ -31,7 +31,7 @@ class NewPedidoBloc {
             nuevoDetalle.precioDetalle = pc.precioTotal * nuevoDetalle.cantidad;
             _detalleList.add(nuevoDetalle);
     }else{
-      var found = _detalleList.firstWhere((value) => value.concreto.id == pc.id);
+      var found = _detalleList.firstWhere((value) => value.concreto.idConcreto == pc.idConcreto);
       found.cantidad ++;
       found.precioDetalle = pc.precioTotal * found.cantidad;
     }
@@ -42,7 +42,7 @@ class NewPedidoBloc {
 //Eliminar del detalle general
   removeOnPedido(DetallePedido det) {
     _detalleList.removeWhere((item) =>
-        item.concreto.id == det.concreto.id);
+        item.concreto.idConcreto == det.concreto.idConcreto);
     actualizarPedidotTotal();
     addDetalle(_detalleList);
     addPedido(pedido);
@@ -51,12 +51,12 @@ class NewPedidoBloc {
 //Boton -
   removeDetalle(Producto producto, int index) {
     ProductoConcreto pc = producto.concreto[index];
-    if(_detalleList.any((value)=> value.concreto.id == pc.id)){
-      var found = _detalleList.firstWhere((value) => value.concreto.id == pc.id);
+    if(_detalleList.any((value)=> value.concreto.idConcreto == pc.idConcreto)){
+      var found = _detalleList.firstWhere((value) => value.concreto.idConcreto == pc.idConcreto);
       found.cantidad --;
       found.precioDetalle -= producto.concreto[index].precioTotal;
       if(found.cantidad == 0)
-      _detalleList.removeWhere((value)=> value.concreto.id == pc.id);
+      _detalleList.removeWhere((value)=> value.concreto.idConcreto == pc.idConcreto);
     }
     actualizarPedidotTotal();
     addDetalle(_detalleList);
@@ -73,7 +73,7 @@ class NewPedidoBloc {
     addPedido(pedido);
   }
 
-  _getPedidoTotal() {
+  getPedidoTotal() {
     double _total = 0;
     _detalleList.forEach((item) => _total += item.precioDetalle);
     // for (int i = 0; i < _currentDetalle.length; i++) {

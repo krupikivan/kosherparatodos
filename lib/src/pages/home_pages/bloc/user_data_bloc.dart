@@ -39,7 +39,6 @@ class UserDataBloc {
       for (int i = 0; i < value.documents.length; i++) {
         Pedido pedido = new Pedido();
         pedido.idPedido = value.documents[i].documentID;
-        pedido.cliente = value.documents[i].data['cliente'];
         pedido.fecha = value.documents[i].data['fecha'];
         pedido.total = value.documents[i].data['total'].toDouble();
         pedido.pagado = value.documents[i].data['pagado'] == true
@@ -58,7 +57,6 @@ class UserDataBloc {
       for (int i = 0; i < queryDetalle.documents.length; i++) {
         DocumentSnapshot doc = queryDetalle.documents[i];
         DetallePedido detalle = new DetallePedido();
-        detalle.cantidad = doc.data['cantidad'].toDouble(); 
         detalle.precioDetalle = doc.data['precioDetalle'].toDouble();
         detalle.descripcion = doc.data['descripcion'];
         // print(doc.data);

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kosherparatodos/src/models/product.dart';
+import 'package:kosherparatodos/src/models/producto.dart';
 import 'package:kosherparatodos/src/pages/home_pages/bloc/new_pedido_bloc.dart';
 import 'package:kosherparatodos/style/theme.dart' as MyTheme;
 

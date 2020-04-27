@@ -1,7 +1,8 @@
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
+import 'package:kosherparatodos/src/models/pedido.dart';
+import 'package:kosherparatodos/src/pages/admin_pages/pedido_detail_page.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/provider/pedido_notifier.dart';
-import 'package:kosherparatodos/style/theme.dart' as MyTheme;
 import 'package:provider/provider.dart';
 
 class PedidosPage extends StatelessWidget {
@@ -9,15 +10,8 @@ class PedidosPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: MyTheme.Colors.dark,
-        title: Text(
-          "Pedidos",
-          style: TextStyle(color: MyTheme.Colors.light),
-        ),
-      ),
-      body: Consumer<PedidoNotifier>(
+    return Container(
+      child: Consumer<PedidoNotifier>(
         builder: (context, pedido, _) => RefreshIndicator(
           child: ListView.separated(
             itemBuilder: (BuildContext context, int index) => ListTile(
@@ -29,6 +23,7 @@ class PedidosPage extends StatelessWidget {
                 pedido.pedidoActual = pedido.pedidoList[index];
                 _goToDetails(context);
               },
+              trailing: Icon(Icons.payment, color: pedido.pedidoList[index].pagado == Estado.PAGADO ? Colors.green : Colors.red,),
             ),
             itemCount: pedido.pedidoList.length,
             separatorBuilder: (BuildContext context, int index) => Divider(
@@ -47,12 +42,13 @@ class PedidosPage extends StatelessWidget {
   }
 
   _goToDetails(context) {
+    Provider.of<PedidoNotifier>(context, listen: false).getDetallePedido();
     Navigator.push(
-        context, MaterialPageRoute(builder: (context) => null));
+        context, MaterialPageRoute(builder: (context) => PedidoDetailPage()));
   }
 
-  Future<void> _refreshList(pedido) async {
-    pedido.getPedidos(pedido);
+  Future<void> _refreshList(PedidoNotifier pedido) async {
+    pedido.getPedidos();
   }
 
 }

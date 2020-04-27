@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kosherparatodos/src/models/product.dart';
+import 'package:kosherparatodos/src/models/producto.dart';
 import 'package:kosherparatodos/src/pages/home_pages/pedido_pages/new_detalle_pedido.dart';
 import 'package:kosherparatodos/style/theme.dart' as MyTheme;
 
@@ -12,7 +12,6 @@ class ProductCardWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        
         Navigator.of(context).push(new MaterialPageRoute(
             builder: (BuildContext context) => new NewDetallePedido(
                   producto: producto,
@@ -22,11 +21,8 @@ class ProductCardWidget extends StatelessWidget {
         color: MyTheme.Colors.dark,
         child: Stack(
           children: <Widget>[
-            Positioned.fill(
-                child: Image.network(producto.imagen, fit: BoxFit.scaleDown)),
             Positioned(
                 child: FittedBox(
-                    // fit: BoxFit.contain,
                     alignment: Alignment.bottomLeft,
                     child: Text(producto.nombre,
                         style: TextStyle(

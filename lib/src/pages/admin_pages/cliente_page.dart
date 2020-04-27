@@ -4,20 +4,11 @@ import 'package:kosherparatodos/src/pages/admin_pages/provider/cliente_notifier.
 import 'package:provider/provider.dart';
 import 'package:kosherparatodos/style/theme.dart' as MyTheme;
 
-
 class ClientePage extends StatelessWidget {
-  
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: MyTheme.Colors.dark,
-        title: Text(
-          "Clientes",
-          style: TextStyle(color: MyTheme.Colors.light),
-        ),
-      ),
-      body: Consumer<ClienteNotifier>(
+    return Container(
+      child: Consumer<ClienteNotifier>(
         builder: (context, cliente, _) => RefreshIndicator(
           child: ListView.separated(
             itemBuilder: (BuildContext context, int index) => ListTile(
@@ -26,7 +17,7 @@ class ClientePage extends StatelessWidget {
               subtitle: Text(cliente.clienteList[index].email),
               onTap: () {
                 cliente.clienteActual = cliente.clienteList[index];
-                _goToDetails(context);
+                _goToDetails(context, cliente);
               },
             ),
             itemCount: cliente.clienteList.length,
@@ -40,7 +31,8 @@ class ClientePage extends StatelessWidget {
     );
   }
 
-  _goToDetails(context) {
+  _goToDetails(context, ClienteNotifier cliente) {
+    cliente.pedidoListClear();
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => ClienteDetailPage()));
   }

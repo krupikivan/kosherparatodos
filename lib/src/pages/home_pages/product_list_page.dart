@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kosherparatodos/src/Widget/item_card_widget.dart';
-import 'package:kosherparatodos/src/models/product.dart';
+import 'package:kosherparatodos/src/models/producto.dart';
 import 'package:kosherparatodos/src/pages/home_pages/bloc/product_data_bloc.dart';
 import 'package:kosherparatodos/style/theme.dart' as MyTheme;
 

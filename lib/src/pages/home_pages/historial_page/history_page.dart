@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:intl/intl.dart';
 import 'package:kosherparatodos/src/models/pedido.dart';
 import 'package:kosherparatodos/src/pages/home_pages/historial_page/order_details_page.dart';
 import 'package:kosherparatodos/src/pages/home_pages/bloc/user_data_bloc.dart';
@@ -31,9 +32,14 @@ class HistoryPage extends StatelessWidget {
                         ? FaIcon(FontAwesomeIcons.moneyBillAlt, size: 35, color: MyTheme.Colors.check,)
                         : FaIcon(FontAwesomeIcons.moneyBillAlt, size: 35, color: MyTheme.Colors.yellowWarning,),
                       
-                      title: Text(_getFecha(snapshot.data[index].fecha) +
-                          ' - Total: \$ ' +
-                          snapshot.data[index].total.toString()),
+                      title: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(DateFormat("dd/MM/yyyy").format(snapshot.data[index].fecha.toDate())),
+                              Text('Total: \$ ' +
+                              snapshot.data[index].total.toString()),
+                        ],
+                      ),
                       subtitle: Text(
                         
                         snapshot.data[index].estado
@@ -56,12 +62,6 @@ class HistoryPage extends StatelessWidget {
               );
           }),
     );
-  }
-
-  _getFecha(Timestamp fecha) {
-    DateTime date =
-        new DateTime.fromMillisecondsSinceEpoch(fecha.millisecondsSinceEpoch);
-    return 'Fecha: ${date.day}/${date.month}/${date.year}';
   }
 
 // ///TODO No se esta usando?
