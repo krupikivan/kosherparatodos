@@ -1,18 +1,18 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:kosherparatodos/src/models/pedido.dart';
-import 'package:kosherparatodos/src/pages/home_pages/historial_page/order_details_page.dart';
-import 'package:kosherparatodos/src/pages/home_pages/bloc/user_data_bloc.dart';
+import 'package:kosherparatodos/src/pages/user_pages/historial_pedidos/historial.dart';
 import 'package:kosherparatodos/style/theme.dart' as MyTheme;
 
-class HistoryPage extends StatelessWidget {
+import 'bloc/bloc.dart';
+
+class HistorialListadoPedidoPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
       child: StreamBuilder<List<Pedido>>(
-          stream: blocUserData.getPedidos,
+          stream: blocUserData.getListPedidos,
           builder: (context, snapshot) {
             if (!snapshot.hasData)
               return Center(
@@ -28,7 +28,7 @@ class HistoryPage extends StatelessWidget {
                     elevation: 2,
                     child: ListTile(
                       leading: 
-                      snapshot.data[index].pagado == Estado.PAGADO
+                      snapshot.data[index].pagado == Pagado.PAGADO
                         ? FaIcon(FontAwesomeIcons.moneyBillAlt, size: 35, color: MyTheme.Colors.check,)
                         : FaIcon(FontAwesomeIcons.moneyBillAlt, size: 35, color: MyTheme.Colors.yellowWarning,),
                       
@@ -42,7 +42,7 @@ class HistoryPage extends StatelessWidget {
                       ),
                       subtitle: Text(
                         
-                        snapshot.data[index].estado
+                       Pedido().getEstadoString(snapshot.data[index].estado)
 
 
                         // style: TextStyle(
@@ -63,7 +63,6 @@ class HistoryPage extends StatelessWidget {
           }),
     );
   }
-
 // ///TODO No se esta usando?
 //   _getEstado(Estado estado) {
 //     return estado == Estado.PAGADO ? 'Pagado' : 'No Pagado';
@@ -74,7 +73,7 @@ class HistoryPage extends StatelessWidget {
     Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) => OrderDetailsPage(
+            builder: (context) => HistorialDetallePedido(
                   uid: uid,
                 )));
   }

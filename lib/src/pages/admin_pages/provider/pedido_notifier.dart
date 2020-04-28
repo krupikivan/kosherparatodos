@@ -45,10 +45,10 @@ class PedidoNotifier with ChangeNotifier {
   }
 
   setPagado(){
-    bool pagado = _pedidoActual.pagado == Estado.PAGADO ? false : true;
+    bool pagado = _pedidoActual.pagado == Pagado.PAGADO ? false : true;
     try{
     _repository.setPagado(_pedidoActual.idPedido, pagado);
-    _pedidoActual.pagado = pagado == true ? Estado.PAGADO : Estado.NOPAGADO;
+    _pedidoActual.pagado = pagado == true ? Pagado.PAGADO : Pagado.NOPAGADO;
     getPedidos();
     }catch(e){}
   }

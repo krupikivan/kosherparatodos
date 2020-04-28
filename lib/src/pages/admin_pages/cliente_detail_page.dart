@@ -71,7 +71,7 @@ class ClienteDetailPage extends StatelessWidget {
                         trailing: Icon(
                           Icons.check_circle,
                           color:
-                              cliente.pedidoList[index].pagado == Estado.PAGADO
+                              cliente.pedidoList[index].pagado == Pagado.PAGADO
                                   ? Colors.green
                                   : Colors.red,
                         ),

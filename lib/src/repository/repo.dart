@@ -1,6 +1,6 @@
 import 'dart:async';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:kosherparatodos/src/models/pedido.dart';
 import 'package:kosherparatodos/src/models/producto.dart';
 // import 'package:kosherparatodos/src/repository/firestore_provider.dart';
 
@@ -15,7 +15,7 @@ abstract class Repository {
   Stream<DocumentSnapshot> getUserData(String userUID);
       // _firestoreProvider.getUserData(userUID);
 
-  Future<QuerySnapshot> getPedido(String userUID);
+  StreamSubscription<QuerySnapshot> getPedido(String userUID);
       // _firestoreProvider.getPedido(userUID);
 
   Future<QuerySnapshot> getDetallePedido(String userUID);
@@ -28,6 +28,11 @@ abstract class Repository {
       // _firestoreProvider.getProductoConcreto(productoID);
 
   Future<bool> getUserAdmin(String id);
+
+  Future<void> addNewPedido(Pedido pedido, String userId);
+  
+  Future<void> deletePedido(String idPedido);
+
 
 //ADMIN---------------------------------------------------------------------ADMIN
 

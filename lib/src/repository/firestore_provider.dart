@@ -1,10 +1,8 @@
 import 'dart:async';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:kosherparatodos/src/models/cliente.dart';
+import 'package:kosherparatodos/src/models/detalle_pedido.dart';
 import 'package:kosherparatodos/src/models/pedido.dart';
 import 'package:kosherparatodos/src/models/producto.dart';
-import 'package:kosherparatodos/src/pages/admin_pages/provider/pedido_notifier.dart';
 import 'package:kosherparatodos/src/repository/repo.dart';
 
 class FirestoreProvider implements Repository {
@@ -21,16 +19,17 @@ class FirestoreProvider implements Repository {
     return _firestore.collection('users').document(userUID).snapshots();
   }
 
-  Future<QuerySnapshot> getPedido(String userUID) {
+  StreamSubscription<QuerySnapshot> getPedido(String userUID) {
     return _firestore
-        .collection('historial')
+        .collection('pedidos')
         .where('cliente', isEqualTo: userUID)
-        .getDocuments();
+        .snapshots()
+        .listen((event) {});
   }
 
   Future<QuerySnapshot> getDetallePedido(String pedidoID) {
     return _firestore
-        .collection('historial')
+        .collection('pedidos')
         .document(pedidoID)
         .collection('detalle')
         .getDocuments();
@@ -47,6 +46,81 @@ class FirestoreProvider implements Repository {
         .collection('productoConcreto')
         .snapshots()
         .listen((event) {});
+  }
+
+  Future<void> addNewPedido(Pedido pedido, String userId) async {
+    if (pedido.idPedido != null) {
+      _updatePedido(pedido, userId);
+    } else {
+      DocumentReference docRef = await _firestore.collection('pedidos').add({
+        'cliente': userId,
+        'estado': Pedido().getEstadoString(Estado.ENPROCESO),
+        'fecha': Timestamp.now(),
+        'pagado': false,
+        'total': pedido.total,
+      });
+      for (int i = 0; i < pedido.detallePedido.length; i++) {
+        await _firestore
+            .collection('pedidos')
+            .document(docRef.documentID)
+            .collection('detalle')
+            .document()
+            .setData({
+          'cantidad': pedido.detallePedido[i].cantidad,
+          'descripcion': pedido.detallePedido[i].concreto.descripcion,
+          'idConcreto': pedido.detallePedido[i].concreto.idConcreto,
+          'idProducto': pedido.detallePedido[i].concreto.idProducto,
+          'precioDetalle': pedido.detallePedido[i].precioDetalle,
+          'precioUnitario': pedido.detallePedido[i].concreto.precioTotal,
+        });
+      }
+    }
+  }
+
+  Future _updatePedido(
+      Pedido pedido, String userId) async {
+    await _firestore.collection('pedidos').document(pedido.idPedido).updateData({
+      'total': pedido.total,
+    }).then((value) {
+      _removeIfWasDeleted(pedido).whenComplete(() {
+
+              pedido.detallePedido.forEach((detallePedido) async{ 
+         await _firestore
+            .collection('pedidos')
+            .document(pedido.idPedido)
+            .collection('detalle')
+            .document(detallePedido.idDetallePedido)
+            .setData({
+          'cantidad': detallePedido.cantidad,
+          'descripcion': detallePedido.descripcion,
+          'idConcreto': detallePedido.concreto.idConcreto,
+          'idProducto': detallePedido.concreto.idProducto,
+          'precioDetalle': detallePedido.precioDetalle,
+          'precioUnitario': detallePedido.precioUnitario,
+        });
+      });
+
+      });
+    });
+  }
+
+  Future<void> _removeIfWasDeleted(Pedido pedido) async{
+    await _firestore.collection('pedidos')
+    .document(pedido.idPedido)
+    .collection("detalle")
+    .getDocuments().then((doc) {
+      for (DocumentSnapshot dsnap in doc.documents){
+        if(pedido.detallePedido.every((element) => element.idDetallePedido != dsnap.documentID)){
+          dsnap.reference.delete();
+        }
+      }
+    });
+  }
+
+  Future<void> deletePedido(String idPedido) async{
+      await _firestore.collection('pedidos')
+    .document(idPedido)
+    .delete();
   }
 
   Future<bool> getUserAdmin(String id) {
@@ -69,18 +143,18 @@ class FirestoreProvider implements Repository {
   }
 
   // Future<QuerySnapshot> getPedidos() {
-  //   return _firestore.collection('historial').getDocuments();
+  //   return _firestore.collection('pedidos').getDocuments();
   // }
 
   StreamSubscription<QuerySnapshot> getPedidos() {
-    return _firestore.collection('historial').snapshots().listen((doc) {
+    return _firestore.collection('pedidos').snapshots().listen((doc) {
       doc.documents.forEach((pedido) {});
     });
   }
 
   StreamSubscription<QuerySnapshot> getDetallePedidoActual(String idPedido) {
     return _firestore
-        .collection('historial')
+        .collection('pedidos')
         .document(idPedido)
         .collection('detalle')
         .snapshots()
@@ -107,7 +181,7 @@ class FirestoreProvider implements Repository {
 
   Future<void> setPagado(String idPedido, bool pagado) async {
     await _firestore
-        .collection('historial')
+        .collection('pedidos')
         .document(idPedido)
         .updateData({'pagado': pagado});
   }
@@ -130,22 +204,22 @@ class FirestoreProvider implements Repository {
       'precioUnitario': producto.precioUnitario,
       'ultimaActualizacion': Timestamp.now(),
     }).then((value) {
-      producto.concreto.forEach((element) async{
-           await _firestore
-          .collection('producto')
-          .document(producto.idProducto)
-          .collection('productoConcreto')
-          .document(element.idConcreto)
-          .updateData({
-        'cantidad': element.cantidad,
-        'descripcion': element.descripcion,
-        'precioTotal': element.precioTotal,
-        'productoId': producto.idProducto,
-      });
+      producto.concreto.forEach((element) async {
+        await _firestore
+            .collection('producto')
+            .document(producto.idProducto)
+            .collection('productoConcreto')
+            .document(element.idConcreto)
+            .updateData({
+          'cantidad': element.cantidad,
+          'descripcion': element.descripcion,
+          'precioTotal': element.precioTotal,
+          'productoId': producto.idProducto,
+        });
       });
     });
     // for (int i = 0; i < producto.concreto.length; i++) {
-   
+
     // }
   }
 

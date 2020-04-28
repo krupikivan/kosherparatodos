@@ -1,6 +1,6 @@
 class ProductoConcreto {
   String idConcreto;
-  String productoId;
+  String idProducto;
   int cantidad;
   double precioTotal;
   String descripcion;
@@ -8,7 +8,7 @@ class ProductoConcreto {
 
   ProductoConcreto({
     this.idConcreto,
-    this.productoId,
+    this.idProducto,
     this.cantidad,
     this.precioTotal,
     this.descripcion,
@@ -26,5 +26,18 @@ class ProductoConcreto {
     cantidad = concreto.cantidad;
     descripcion = concreto.descripcion;
     precioTotal = precio == 0.0 ? concreto.precioTotal : precio;
+  }
+
+  ProductoConcreto.fromEditPedido(data) {
+    idConcreto = data['idConcreto'];
+    idProducto = data['idProducto'];
+  }
+
+  ProductoConcreto.fromFirebase(data, id, idProd) {
+    precioTotal = data['precioTotal'].toDouble(); 
+    cantidad = data['cantidad'].toInt();
+    descripcion = data['descripcion'];
+    idConcreto = id;
+    idProducto = idProd;
   }
 }

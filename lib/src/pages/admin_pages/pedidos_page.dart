@@ -23,7 +23,7 @@ class PedidosPage extends StatelessWidget {
                 pedido.pedidoActual = pedido.pedidoList[index];
                 _goToDetails(context);
               },
-              trailing: Icon(Icons.payment, color: pedido.pedidoList[index].pagado == Estado.PAGADO ? Colors.green : Colors.red,),
+              trailing: Icon(Icons.payment, color: pedido.pedidoList[index].pagado == Pagado.PAGADO ? Colors.green : Colors.red,),
             ),
             itemCount: pedido.pedidoList.length,
             separatorBuilder: (BuildContext context, int index) => Divider(

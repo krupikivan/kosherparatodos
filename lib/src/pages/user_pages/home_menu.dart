@@ -1,14 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:kosherparatodos/src/Widget/popup_menu.dart';
-import 'package:kosherparatodos/src/models/detalle_pedido.dart';
-import 'package:kosherparatodos/src/pages/home_pages/bloc/new_pedido_bloc.dart';
-import 'package:kosherparatodos/src/pages/home_pages/bloc/user_data_bloc.dart';
-import 'package:kosherparatodos/src/pages/home_pages/historial_page/history_page.dart';
-import 'package:kosherparatodos/src/pages/home_pages/pedido_pages/new_pedido_page.dart';
-import 'package:kosherparatodos/src/pages/home_pages/pedido_pages/pedido_cart.dart';
+import 'package:kosherparatodos/src/models/pedido.dart';
+import 'package:kosherparatodos/src/pages/user_pages/historial_pedidos/historial.dart';
+import 'package:kosherparatodos/src/pages/user_pages/pedido/bloc/bloc.dart';
+import 'package:kosherparatodos/src/pages/user_pages/pedido/pedido.dart';
 import 'package:kosherparatodos/src/utils/item.dart';
 import 'package:kosherparatodos/style/theme.dart' as MyTheme;
+import 'historial_pedidos/bloc/bloc.dart';
 
 class UserPage extends StatefulWidget {
   final FirebaseUser user;
@@ -22,9 +21,10 @@ class UserPage extends StatefulWidget {
 class _UserPageState extends State<UserPage> {
 
   int _currentIndex = 0;
+  
   final List<Widget> _children = [
-    HistoryPage(),
-    NewPedidoPage(),
+    HistorialListadoPedidoPage(),
+    ProductoGridPage(),
   ];
 
   TextStyle style;
@@ -45,7 +45,7 @@ class _UserPageState extends State<UserPage> {
         backgroundColor: MyTheme.Colors.dark,
         title: Text("Kosher para todos", style: style,),
         actions: <Widget>[
-          _badgeIcon(),
+          _iconCartPage(),
           PopupMenu(choices: choices),
         ],
       ),
@@ -77,7 +77,7 @@ class _UserPageState extends State<UserPage> {
     });
   }
 
-Widget _badgeIcon(){
+Widget _iconCartPage(){
   return new Padding(
               padding: const EdgeInsets.all(10.0),
               child: new Container(
@@ -88,7 +88,7 @@ Widget _badgeIcon(){
                       Navigator.of(context).push(
                           new MaterialPageRoute(
                               builder:(BuildContext context) =>
-                              new PedidoCart()
+                              new DetallePedidoListPage()
                           )
                       );
                     },
@@ -110,15 +110,16 @@ Widget _badgeIcon(){
                                 top: 3.0,
                                 right: 4.0,
                                 child: new Center(
-                                  child: StreamBuilder<List<DetallePedido>>(
-                                      stream: blocNewPedido.getDetalle,
+                                  child: StreamBuilder<Pedido>(
+                                      stream: blocPedidoVigente.getPedido,
                                       builder: (context, snapshot) {
-                                        if (!snapshot.hasData)
+                                        if (!snapshot.hasData || snapshot.data.detallePedido == null)
                                           return Text('0');
                                         else
                                           return new Text(
-                                            snapshot.data.
-                                                length.toString(),
+                                            snapshot.data
+                                            .detallePedido
+                                                .length.toString(),
                                             style: new TextStyle(
                                                 color: Colors.white,
                                                 fontSize: 11.0,

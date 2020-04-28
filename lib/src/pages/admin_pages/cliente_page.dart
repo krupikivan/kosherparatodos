@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/cliente_detail_page.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/provider/cliente_notifier.dart';
 import 'package:provider/provider.dart';
-import 'package:kosherparatodos/style/theme.dart' as MyTheme;
 
 class ClientePage extends StatelessWidget {
   @override

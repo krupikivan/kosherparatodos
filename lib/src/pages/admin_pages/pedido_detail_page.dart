@@ -80,14 +80,14 @@ class PedidoDetailPage extends StatelessWidget {
       padding: EdgeInsets.all(20),
       child: ListTile(
                  title: TitleText(
-               text: pedido.pedidoActual.pagado == Estado.PAGADO
+               text: pedido.pedidoActual.pagado == Pagado.PAGADO
                    ? 'El pedido se encuentra Pagado'
                    : 'El pedido se encuentra No pagado',
                color: MyTheme.Colors.dark,
                fontSize: 14,
                fontWeight: FontWeight.w500,
              ),
-             trailing: IconButton(icon: Icon(Icons.check_circle, color: pedido.pedidoActual.pagado == Estado.PAGADO ? Colors.green : Colors.red,), onPressed: ()=>_setPagado(pedido)),
+             trailing: IconButton(icon: Icon(Icons.check_circle, color: pedido.pedidoActual.pagado == Pagado.PAGADO ? Colors.green : Colors.red,), onPressed: ()=>_setPagado(pedido)),
       ),
     );
   }

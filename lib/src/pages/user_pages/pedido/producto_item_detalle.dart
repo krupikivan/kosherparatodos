@@ -2,19 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:kosherparatodos/src/Widget/add_remove_button_widget.dart';
 import 'package:kosherparatodos/src/Widget/title_text.dart';
 import 'package:kosherparatodos/src/models/detalle_pedido.dart';
+import 'package:kosherparatodos/src/models/pedido.dart';
 import 'package:kosherparatodos/src/models/producto.dart';
-import 'package:kosherparatodos/src/pages/home_pages/bloc/new_pedido_bloc.dart';
-import 'package:kosherparatodos/src/pages/home_pages/bloc/product_data_bloc.dart';
 import 'package:kosherparatodos/style/theme.dart' as MyTheme;
 
-class NewDetallePedido extends StatelessWidget {
+import 'bloc/bloc.dart';
+
+class ProductoItemDetalle extends StatelessWidget {
   final Producto producto;
 
-  const NewDetallePedido({Key key, this.producto}) : super(key: key);
+  const ProductoItemDetalle({Key key, this.producto}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    blocProductData.getProductoConcretoList(producto.idProducto);
+    blocProductosFirebase.getProductoConcretoFirebase(producto.idProducto);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: MyTheme.Colors.dark,
@@ -34,10 +35,10 @@ class NewDetallePedido extends StatelessWidget {
             ),
           ),
           SizedBox(height: 15),
-          Padding(
-            padding: const EdgeInsets.only(left: 20),
-            child: Expanded(
-              flex: 1,
+          Expanded(
+            flex: 1,
+            child: Padding(
+              padding: const EdgeInsets.only(left: 20),
               child: TitleText(
                 text: producto.descripcion,
                 fontSize: 17,
@@ -60,8 +61,8 @@ class NewDetallePedido extends StatelessWidget {
           Expanded(
             flex: 5,
             child: StreamBuilder<List<Producto>>(
-              stream: blocProductData.getProducts,
-              builder: (context, snapshot) => producto.concreto.isEmpty
+              stream: blocProductosFirebase.getProductosVigentes,
+              builder: (context, snapshot) => !snapshot.hasData
                   ? Center(
                       child: CircularProgressIndicator(
                         valueColor: new AlwaysStoppedAnimation<Color>(
@@ -81,33 +82,30 @@ class NewDetallePedido extends StatelessWidget {
                     ),
             ),
           ),
-          Expanded(
-            flex: 1,
-            child: Container(
-              decoration: BoxDecoration(color: MyTheme.Colors.dark),
-              padding: EdgeInsets.all(10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  StreamBuilder<List<DetallePedido>>(
-                      stream: blocNewPedido.getDetalle,
-                      builder: (context, snapshot) {
-                        double total = 0;
-                        if (snapshot.hasData) {
-                          snapshot.data.forEach(
-                              (element) {
-                                total += element.precioDetalle != null ? element.precioDetalle : 0;
-                              }); 
-                          }
-                          return TitleText(
-                                  text: 'Total del pedido: ${total.toString()}',
-                                  color: MyTheme.Colors.minLight,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w500,
-                                );
-                      }),
-                ],
-              ),
+          Container(
+            decoration: BoxDecoration(color: MyTheme.Colors.dark),
+            padding: EdgeInsets.all(10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                StreamBuilder<Pedido>(
+                    stream: blocPedidoVigente.getPedido,
+                    builder: (context, snapshot) {
+                      double total = 0;
+                      if (snapshot.hasData && snapshot.data.detallePedido != null) {
+                        snapshot.data.detallePedido.forEach(
+                            (element) {
+                              total += element.precioDetalle != null ? element.precioDetalle : 0;
+                            }); 
+                        }
+                        return TitleText(
+                                text: 'Total del pedido: ${total.toString()}',
+                                color: MyTheme.Colors.minLight,
+                                fontSize: 18,
+                                fontWeight: FontWeight.w500,
+                              );
+                    }),
+              ],
             ),
           ),
         ],
@@ -116,15 +114,16 @@ class NewDetallePedido extends StatelessWidget {
   }
 
   Widget _getCantidad(index) {
-    return StreamBuilder<List<DetallePedido>>(
-        stream: blocNewPedido.getDetalle,
+    return StreamBuilder<Pedido>(
+        stream: blocPedidoVigente.getPedido,
         builder: (context, snapshot) {
-          if (!snapshot.hasData || snapshot.data.isEmpty)
+          if (!snapshot.hasData || snapshot.data.detallePedido ==  null)
             return Text('');
-          else if (snapshot.data.any((value) =>
+          else if (snapshot.data.detallePedido.any((value) =>
               value.concreto.idConcreto == producto.concreto[index].idConcreto))
             return Text('Cantidad: ' +
                 snapshot.data
+                .detallePedido
                     .firstWhere((value) =>
                         value.concreto.idConcreto ==
                         producto.concreto[index].idConcreto)

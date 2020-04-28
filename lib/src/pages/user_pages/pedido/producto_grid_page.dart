@@ -1,21 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:kosherparatodos/src/Widget/product_card_widget.dart';
+import 'package:kosherparatodos/src/Widget/producto_item_widget.dart';
 import 'package:kosherparatodos/src/models/producto.dart';
-import 'package:kosherparatodos/src/pages/home_pages/bloc/product_data_bloc.dart';
 import 'package:kosherparatodos/style/theme.dart' as MyTheme;
 
-class NewPedidoPage extends StatefulWidget {
+import 'bloc/bloc.dart';
+
+class ProductoGridPage extends StatefulWidget {
 
   @override
-  _NewPedidoPageState createState() => _NewPedidoPageState();
+  _ProductoGridPageState createState() => _ProductoGridPageState();
 }
 
-class _NewPedidoPageState extends State<NewPedidoPage> {
+class _ProductoGridPageState extends State<ProductoGridPage> {
 
 @override
 void initState() { 
   super.initState();
-  blocProductData.getProductList();
+  blocProductosFirebase.getProductosFirebase();
 }
 
   @override
@@ -23,7 +24,7 @@ void initState() {
     return Container(
         padding: EdgeInsets.all(10),
         child: StreamBuilder<List<Producto>>(
-            stream: blocProductData.getProducts,
+            stream: blocProductosFirebase.getProductosVigentes,
             builder: (context, snapshot) {
               if (!snapshot.hasData)
                 return Center(
@@ -37,7 +38,7 @@ void initState() {
                     gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2),
                     itemBuilder: (BuildContext context, int index) {
-                      return ProductCardWidget(producto: snapshot.data[index]);
+                      return ProductoItemWidget(producto: snapshot.data[index]);
                     });
             }),
       );
