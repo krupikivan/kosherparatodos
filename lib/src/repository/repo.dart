@@ -1,8 +1,13 @@
+import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:kosherparatodos/src/models/pedido.dart';
+import 'package:kosherparatodos/src/models/producto.dart';
 // import 'package:kosherparatodos/src/repository/firestore_provider.dart';
 
 abstract class Repository {
   // final _firestoreProvider = FirestoreProvider();
+  
+//USER---------------------------------------------------------------------USER
 
   Future<QuerySnapshot> isAuthenticated(String email); 
       // _firestoreProvider.isAuthenticated(email);
@@ -10,21 +15,48 @@ abstract class Repository {
   Stream<DocumentSnapshot> getUserData(String userUID);
       // _firestoreProvider.getUserData(userUID);
 
-  Future<QuerySnapshot> getPedido(String userUID);
+  StreamSubscription<QuerySnapshot> getPedido(String userUID);
       // _firestoreProvider.getPedido(userUID);
 
   Future<QuerySnapshot> getDetallePedido(String userUID);
       // _firestoreProvider.getDetallePedido(userUID);
   
-  Future<QuerySnapshot> getProductList();
+  StreamSubscription<QuerySnapshot> getProductList();
       // _firestoreProvider.getProductList();
 
-  Future<QuerySnapshot> getProductoConcreto(String productoID);
+  StreamSubscription<QuerySnapshot> getProductoConcreto(String productoID);
       // _firestoreProvider.getProductoConcreto(productoID);
 
   Future<bool> getUserAdmin(String id);
 
+  Future<void> addNewPedido(Pedido pedido, String userId);
+  
+  Future<void> deletePedido(String idPedido);
+
+
+//ADMIN---------------------------------------------------------------------ADMIN
+
   Future<QuerySnapshot> getClientes();
 
+  // Future<QuerySnapshot> getPedidos();
+
+  StreamSubscription<QuerySnapshot> getPedidos();
+  
+  StreamSubscription<QuerySnapshot> getDetallePedidoActual(String idPedido);
+
+  StreamSubscription<DocumentSnapshot> getClientePedido(String idCliente);
+
   Stream<DocumentSnapshot> getUsersAdmin();
+
+  // Future<DocumentSnapshot> getClienteSpecific(String id);
+
+  Future<void> setPagado(String idPedido, bool pagado);
+
+  Future<void> addNewProducto(Producto newProducto);
+  
+  Future<void> deleteProducto(String idProducto);
+
+  Future<void> setHabilitado(String idProducto, bool habilitado);
+  
+  Future<void> updateAllData(Producto producto);
 }

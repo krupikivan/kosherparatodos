@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:kosherparatodos/src/models/detalle_pedido.dart';
-import 'package:kosherparatodos/src/pages/home_pages/bloc/new_pedido_bloc.dart';
-// import 'package:kosherparatodos/style/theme.dart' as MyTheme;
+import 'package:kosherparatodos/src/pages/user_pages/pedido/bloc/bloc.dart';
 
-class NewItemWidget extends StatelessWidget {
-  const NewItemWidget({Key key, this.item}) : super(key: key);
+class ItemDetallePedidoWidget extends StatelessWidget {
+  const ItemDetallePedidoWidget({Key key, this.item}) : super(key: key);
   final DetallePedido item;
 
   @override
@@ -12,8 +11,8 @@ class NewItemWidget extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(10),
       child: ListTile(
-          leading: IconButton(icon: Icon(Icons.remove), onPressed: ()=> blocNewPedido.removeOnPedido(item),),
-          title: Text(item.concreto.descripcion),
+          leading: IconButton(icon: Icon(Icons.remove), onPressed: ()=> blocPedidoVigente.removeOnPedido(item),),
+          title: Text(item.descripcion),
           subtitle: Text(item.cantidad.toString() + ' unid.'),
           trailing: Container(
             width: 70,

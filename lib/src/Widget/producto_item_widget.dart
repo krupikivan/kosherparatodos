@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:kosherparatodos/src/models/product.dart';
-import 'package:kosherparatodos/src/pages/home_pages/pedido_pages/new_detalle_pedido.dart';
+import 'package:kosherparatodos/src/models/producto.dart';
+import 'package:kosherparatodos/src/pages/user_pages/pedido/pedido.dart';
 import 'package:kosherparatodos/style/theme.dart' as MyTheme;
 
-class ProductCardWidget extends StatelessWidget {
+class ProductoItemWidget extends StatelessWidget {
   final Producto producto;
 
-  const ProductCardWidget({Key key, this.producto}) : super(key: key);
+  const ProductoItemWidget({Key key, this.producto}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        
         Navigator.of(context).push(new MaterialPageRoute(
-            builder: (BuildContext context) => new NewDetallePedido(
+            builder: (BuildContext context) => new ProductoItemDetalle(
                   producto: producto,
                 )));
       },
@@ -22,15 +21,12 @@ class ProductCardWidget extends StatelessWidget {
         color: MyTheme.Colors.dark,
         child: Stack(
           children: <Widget>[
-            Positioned.fill(
-                child: Image.network(producto.imagen, fit: BoxFit.scaleDown)),
             Positioned(
                 child: FittedBox(
-                    // fit: BoxFit.contain,
                     alignment: Alignment.bottomLeft,
                     child: Text(producto.nombre,
                         style: TextStyle(
-                            color: MyTheme.Colors.light,
+                            color: MyTheme.Colors.warning,
                             fontSize: 30,
                             fontWeight: FontWeight.bold)))),
           ],

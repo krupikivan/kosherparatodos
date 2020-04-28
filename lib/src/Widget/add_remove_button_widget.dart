@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:kosherparatodos/src/models/product.dart';
-import 'package:kosherparatodos/src/pages/home_pages/bloc/new_pedido_bloc.dart';
+import 'package:kosherparatodos/src/models/producto.dart';
+import 'package:kosherparatodos/src/pages/user_pages/pedido/bloc/bloc.dart';
 import 'package:kosherparatodos/style/theme.dart' as MyTheme;
 
 class AddRemoveButton extends StatelessWidget {
@@ -17,7 +17,7 @@ class AddRemoveButton extends StatelessWidget {
       elevation: 1.0,
       shape: CircleBorder(),
       fillColor: MyTheme.Colors.dark,
-      onPressed: () => action == 'add' ? blocNewPedido.addingCurrentDetalle(producto, index) : blocNewPedido.removeDetalle(producto, index),
+      onPressed: () => action == 'add' ? blocPedidoVigente.addingCurrentDetalle(producto, index) : blocPedidoVigente.removeDetalle(producto, index),
       child: Icon(
         icon,
         color: Colors.white,

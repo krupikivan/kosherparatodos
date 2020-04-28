@@ -6,29 +6,32 @@ import 'package:provider/provider.dart';
 class ClientePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Consumer<ClienteNotifier>(
-      builder: (context, cliente, _) => RefreshIndicator(
-        child: ListView.separated(
-          itemBuilder: (BuildContext context, int index) => ListTile(
-            leading: Icon(Icons.account_circle),
-            title: Text(cliente.clienteList[index].name),
-            subtitle: Text(cliente.clienteList[index].email),
-            onTap: () {
-              cliente.clienteActual = cliente.clienteList[index];
-              _goToDetails(context);
-            },
+    return Container(
+      child: Consumer<ClienteNotifier>(
+        builder: (context, cliente, _) => RefreshIndicator(
+          child: ListView.separated(
+            itemBuilder: (BuildContext context, int index) => ListTile(
+              leading: Icon(Icons.account_circle),
+              title: Text(cliente.clienteList[index].name),
+              subtitle: Text(cliente.clienteList[index].email),
+              onTap: () {
+                cliente.clienteActual = cliente.clienteList[index];
+                _goToDetails(context, cliente);
+              },
+            ),
+            itemCount: cliente.clienteList.length,
+            separatorBuilder: (BuildContext context, int index) => Divider(
+              color: Colors.grey,
+            ),
           ),
-          itemCount: cliente.clienteList.length,
-          separatorBuilder: (BuildContext context, int index) => Divider(
-            color: Colors.grey,
-          ),
+          onRefresh: () => _refreshList(cliente),
         ),
-        onRefresh: () => _refreshList(cliente),
       ),
     );
   }
 
-  _goToDetails(context) {
+  _goToDetails(context, ClienteNotifier cliente) {
+    cliente.pedidoListClear();
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => ClienteDetailPage()));
   }

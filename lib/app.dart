@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:kosherparatodos/splash_screen.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/admin_page.dart';
 import 'package:kosherparatodos/src/pages/auth_pages/export.dart';
-import 'package:kosherparatodos/src/pages/home_pages/user_page.dart';
+import 'package:kosherparatodos/src/pages/user_pages/home_menu.dart';
 import 'package:kosherparatodos/user_repository.dart';
 import 'package:provider/provider.dart';
 import 'src/pages/auth_pages/export.dart';

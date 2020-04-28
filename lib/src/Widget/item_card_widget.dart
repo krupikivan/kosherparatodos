@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kosherparatodos/src/models/product.dart';
+import 'package:kosherparatodos/src/models/producto.dart';
 
 class ItemCard extends StatelessWidget {
   ItemCard({Key key, @required this.item}) : super(key: key);

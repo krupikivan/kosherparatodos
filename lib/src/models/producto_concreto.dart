@@ -1,22 +1,43 @@
-class ProductoConcreto{
-  
-  String id;
-  String productoId;
-  double cantidad;
+class ProductoConcreto {
+  String idConcreto;
+  String idProducto;
+  int cantidad;
   double precioTotal;
-  double precioUnitario;
   String descripcion;
-  String unidadMedida;
-  int cantidadPedido;
+  var cantidadPedido;
 
   ProductoConcreto({
-    this.id,
-    this.productoId,
+    this.idConcreto,
+    this.idProducto,
     this.cantidad,
     this.precioTotal,
     this.descripcion,
-    this.precioUnitario,
-    this.unidadMedida,
     this.cantidadPedido = 0,
   });
+
+  ProductoConcreto.fromMap(Map<String, dynamic> data, id) {
+    idConcreto = id;
+    cantidad = data['cantidad'].toInt();
+    precioTotal = data['precioTotal'].toDouble();
+    descripcion = data['descripcion'];
+  }
+
+  ProductoConcreto.fromNewConcreto(ProductoConcreto concreto, precio) {
+    cantidad = concreto.cantidad;
+    descripcion = concreto.descripcion;
+    precioTotal = precio == 0.0 ? concreto.precioTotal : precio;
+  }
+
+  ProductoConcreto.fromEditPedido(data) {
+    idConcreto = data['idConcreto'];
+    idProducto = data['idProducto'];
+  }
+
+  ProductoConcreto.fromFirebase(data, id, idProd) {
+    precioTotal = data['precioTotal'].toDouble(); 
+    cantidad = data['cantidad'].toInt();
+    descripcion = data['descripcion'];
+    idConcreto = id;
+    idProducto = idProd;
+  }
 }

@@ -10,6 +10,7 @@ class Colors{
   static const Color warning = const Color(0xFFCC0000);
   static const Color check = const Color(0xFF86af49);
   static const Color light = const Color(0xFFf7f7f7);
+  static const Color minLight = const Color(0xFFf7f7f7);
   static const Color secondaryColor = const Color(0xFFf7f7f7);
 }
 
