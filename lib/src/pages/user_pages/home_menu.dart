@@ -1,83 +1,119 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:kosherparatodos/src/Widget/popup_menu.dart';
 import 'package:kosherparatodos/src/models/pedido.dart';
 import 'package:kosherparatodos/src/pages/user_pages/historial_pedidos/historial.dart';
 import 'package:kosherparatodos/src/pages/user_pages/pedido/bloc/bloc.dart';
 import 'package:kosherparatodos/src/pages/user_pages/pedido/pedido.dart';
-import 'package:kosherparatodos/src/utils/item.dart';
 import 'package:kosherparatodos/style/theme.dart' as MyTheme;
+import 'package:provider/provider.dart';
+import '../../../user_repository.dart';
 import 'historial_pedidos/bloc/bloc.dart';
+import 'package:kosherparatodos/src/Widget/drawer_icon_widget.dart';
 
-class UserPage extends StatefulWidget {
+class UserPage extends StatelessWidget {
   final FirebaseUser user;
 
-  const UserPage({Key key, this.user}) : super(key: key);
 
-  @override
-  _UserPageState createState() => _UserPageState();
-}
+  // @override
+  // _UserPageState createState() => _UserPageState();
 
-class _UserPageState extends State<UserPage> {
+// class _UserPageState extends State<UserPage> {
 
-  int _currentIndex = 0;
+  // int _currentIndex = 0;
   
-  final List<Widget> _children = [
-    HistorialListadoPedidoPage(),
-    ProductoGridPage(),
-  ];
+  // final List<Widget> _children = [
+  //   HistorialListadoPedidoPage(),
+  //   ProductoGridPage(),
+  // ];
 
   TextStyle style;
-  List<Item> choices;
 
-  @override
-  void initState(){
-    blocUserData.getUserDataFromFirebase(widget.user.uid);
-    style = TextStyle(color: MyTheme.Colors.light);
-    super.initState();
-  }
+  UserPage({Key key, this.user}) : super(key: key);
+  // List<Item> choices;
+
+  // @override
+  // void initState(){
+  //   blocUserData.getUserDataFromFirebase(widget.user.uid);
+  //   style = TextStyle(color: MyTheme.Colors.light);
+  //   super.initState();
+  // }
 
   @override
   Widget build(BuildContext context) {
-    _fillPopupData();
+    blocUserData.getUserDataFromFirebase(user.uid);
+    style = TextStyle(color: MyTheme.Colors.light);
+    // _fillPopupData();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: MyTheme.Colors.dark,
         title: Text("Kosher para todos", style: style,),
         actions: <Widget>[
-          _iconCartPage(),
-          PopupMenu(choices: choices),
+          _iconCartPage(context),
+          // PopupMenu(choices: choices),
         ],
       ),
-      body: _children[_currentIndex],
-      //Bottom Navigation ----------------------------------------
-      bottomNavigationBar: BottomNavigationBar(
-        selectedItemColor: MyTheme.Colors.primary,
-        onTap: onTabTapped, // new
-        currentIndex: _currentIndex, // this will be set when a new tab is tapped
-        items: [
-          BottomNavigationBarItem(
-            icon: new Icon(Icons.history),
-            title: new Text('Historial'),
+          drawer: Builder(
+            builder: (context) => Drawer(
+              child: ListView(padding: EdgeInsets.zero, children: <Widget>[
+                UserAccountsDrawerHeader(
+                  currentAccountPicture: Icon(
+                    Icons.account_circle,
+                    size: 50,
+                    color: MyTheme.Colors.light,
+                  ),
+                  accountName: Text(
+                    'Bienvenido',
+                    style: TextStyle(fontSize: 25),
+                  ),
+                  accountEmail: Text(
+                    user.email,
+                    style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600),
+                  ),
+                  decoration: new BoxDecoration(
+                      image: new DecorationImage(
+                          fit: BoxFit.fill,
+                          image: new AssetImage('assets/back-drawer.jpg'))),
+                ),
+                // _createHeader(),
+                DrawerIconWidget(
+                    icon: Icons.history,
+                    text: 'Historial de pedidos',
+                    onTap: () {
+                      Navigator.of(context).pop();
+                      blocNav.updateNavigation('Historial');
+                    }),
+                DrawerIconWidget(
+                    icon: Icons.fastfood,
+                    text: 'Pedidos',
+                    onTap: () {
+                      Navigator.of(context).pop();
+                      blocNav.updateNavigation('Productos');
+                    }),
+                DrawerIconWidget(
+                    icon: Icons.exit_to_app,
+                    text: 'Cerrar Sesion',
+                    onTap: () =>
+                              Provider.of<UserRepository>(context, listen: false).signOut()),
+              ]),
+            ),
           ),
-          BottomNavigationBarItem(
-            icon: new Icon(Icons.fastfood),
-            title: new Text('Productos'),
-          )
-        ],
-      ),
-      //Bottom Navigation ----------------------------------------
+                    body: StreamBuilder(
+            stream: blocNav.getNavigation,
+            initialData: blocNav.navigationProvider.currentNavigation,
+            builder: (context, snapshot) {
+              if (blocNav.navigationProvider.currentNavigation == "Historial") {
+                return HistorialListadoPedidoPage();
+              }
+              if (blocNav.navigationProvider.currentNavigation == "Productos") {
+                return ProductoGridPage();
+              }
+              return HistorialListadoPedidoPage();
+            },
+          ),
     );
   }
 
-  void onTabTapped(int index) {
-    setState(() {
-      _currentIndex = index;
-
-    });
-  }
-
-Widget _iconCartPage(){
+Widget _iconCartPage(context){
   return new Padding(
               padding: const EdgeInsets.all(10.0),
               child: new Container(
@@ -133,14 +169,4 @@ Widget _iconCartPage(){
                     ),
                   )));
 }
-
-  ///PUPUP menu
-  _fillPopupData() {
-    choices = <Item>[
-    Item(
-          Text('Cerrar Sesion',
-              style: TextStyle(fontFamily: MyTheme.Fonts.primaryFont)),
-          Icon(Icons.account_circle)),
-    ];
-  }
 }

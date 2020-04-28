@@ -39,13 +39,13 @@ class HistorialDetallePedido extends StatelessWidget {
                       ),
                     ),
             ),
-            floatingActionButton: _bntExpanded(context, snapshot.data.estado),
+            floatingActionButton: !snapshot.hasData ? Container() : _bntExpanded(context, snapshot.data.estado),
           );
         });
   }
 
   Widget _bntExpanded(context, Estado estado) {
-    return SpeedDial(
+        return SpeedDial(
       marginRight: 10,
       visible: estado != Estado.ENTREGADO ? true : false,
       overlayOpacity: 0.3,

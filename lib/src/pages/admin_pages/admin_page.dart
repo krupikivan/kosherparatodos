@@ -9,6 +9,7 @@ import 'package:kosherparatodos/src/pages/admin_pages/provider/cliente_notifier.
 import 'package:kosherparatodos/src/pages/admin_pages/provider/pedido_notifier.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/provider/producto_notifier.dart';
 import 'package:kosherparatodos/style/theme.dart' as MyTheme;
+import 'package:kosherparatodos/src/Widget/drawer_icon_widget.dart';
 import 'package:kosherparatodos/user_repository.dart';
 import 'package:provider/provider.dart';
 
@@ -71,7 +72,7 @@ class AdminPage extends StatelessWidget {
                           image: new AssetImage('assets/back-drawer.jpg'))),
                 ),
                 // _createHeader(),
-                _createDrawerItem(
+                DrawerIconWidget(
                     icon: Icons.contacts,
                     text: 'Clientes',
                     onTap: () {
@@ -80,7 +81,7 @@ class AdminPage extends StatelessWidget {
                       // Navigator.of(context).push(MaterialPageRoute(
                       //     builder: (BuildContext context) => ClientePage()));
                     }),
-                _createDrawerItem(
+                DrawerIconWidget(
                     icon: Icons.view_list,
                     text: 'Pedidos',
                     onTap: () {
@@ -89,7 +90,7 @@ class AdminPage extends StatelessWidget {
                       // Navigator.of(context).push(MaterialPageRoute(
                       //     builder: (BuildContext context) => PedidosPage()));
                     }),
-                _createDrawerItem(
+                DrawerIconWidget(
                     icon: Icons.shopping_basket,
                     text: 'Administrar productos',
                     onTap: () {
@@ -98,7 +99,7 @@ class AdminPage extends StatelessWidget {
                       // Navigator.of(context).push(MaterialPageRoute(
                       //     builder: (BuildContext context) => PedidosPage()));
                     }),
-                _createDrawerItem(
+                DrawerIconWidget(
                     icon: Icons.exit_to_app,
                     text: 'Cerrar Sesion',
                     onTap: () =>
@@ -142,20 +143,4 @@ _getTitle(title) {
   else{
     return 'Kosher Para Todos';
   }
-}
-
-Widget _createDrawerItem(
-    {IconData icon, String text, GestureTapCallback onTap}) {
-  return ListTile(
-    title: Row(
-      children: <Widget>[
-        Icon(icon),
-        Padding(
-          padding: EdgeInsets.only(left: 8.0),
-          child: Text(text),
-        )
-      ],
-    ),
-    onTap: onTap,
-  );
 }
