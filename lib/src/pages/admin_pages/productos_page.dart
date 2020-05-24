@@ -18,12 +18,12 @@ class ProductosPage extends StatelessWidget {
                 child: ListView.separated(
                   itemBuilder: (BuildContext context, int index) => Dismissible(
                     background: Container(color: Colors.red,alignment: AlignmentDirectional.centerStart, padding: EdgeInsets.symmetric(horizontal: 20), child: Icon(Icons.delete, color: Colors.white,),),
-                    key: Key(producto.productoList[index].idProducto),
-                    confirmDismiss: (direction) => _deleteProducto(producto.productoList[index].idProducto, context),
+                    key: Key(producto.productoList[index].productoID),
+                    confirmDismiss: (direction) => _deleteProducto(producto.productoList[index].productoID, context),
                                       child: ListTile(
                       leading: Icon(Icons.list),
                       // title: Text(DateFormat("HH:mm - dd/MM/yyyy").format(pedido.pedidoList[index].fecha.toDate())),
-                      title: Text(producto.productoList[index].nombre),
+                      title: Text(producto.productoList[index].descripcion),
                       onTap: () {
                         producto.productoActual = producto.productoList[index];
                         _goToDetails(context);
@@ -73,7 +73,7 @@ Future<bool> _deleteProducto(String idPorducto, context1) async{
 }
 
   _goToDetails(context) {
-    Provider.of<ProductoNotifier>(context, listen: false).getDetalleProducto();
+    // Provider.of<ProductoNotifier>(context, listen: false).getDetalleProducto();
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => ProductoDetailPage()));
   }

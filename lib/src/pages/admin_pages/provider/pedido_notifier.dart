@@ -1,6 +1,5 @@
 import 'dart:collection';
 import 'package:flutter/cupertino.dart';
-import 'package:kosherparatodos/src/models/detalle_pedido.dart';
 import 'package:kosherparatodos/src/models/pedido.dart';
 import 'package:kosherparatodos/src/repository/firestore_provider.dart';
 import 'package:kosherparatodos/src/repository/repo.dart';
@@ -21,34 +20,36 @@ class PedidoNotifier with ChangeNotifier {
     List<Pedido> _list = [];
     _repository.getPedidos().onData((listPed) {
       listPed.documents.forEach((pedido) {
-        _repository.getClientePedido(pedido.data['cliente']).onData((cliente) {
+
+        // _repository.getClientePedido(pedido.data['cliente']['clienteID']).onData((cliente) {
           Pedido _pedido =
-              Pedido.fromMap(pedido.data, pedido.documentID, cliente.data);
+              Pedido.fromPedidos(pedido.data, pedido.documentID);
           _list.add(_pedido);
           _pedidoList = _list;
           notifyListeners();
-        });
+        // });
+
       });
     });
   }
-  getDetallePedido() {
-    List<DetallePedido> _list = [];
-    _repository.getDetallePedidoActual(_pedidoActual.idPedido).onData((detalleList) {
-      detalleList.documents.forEach((detalle) {
-      DetallePedido detallePedido =
-              DetallePedido.fromMap(detalle.data);
-          _list.add(detallePedido);
-          _pedidoActual.detallePedido = _list;
-          notifyListeners();
-      });
-    });
-  }
+  // getDetallePedido() {
+  //   List<DetallePedido> _list = [];
+  //   _repository.getDetallePedidoActual(_pedidoActual.idPedido).onData((detalleList) {
+  //     detalleList.documents.forEach((detalle) {
+  //     DetallePedido detallePedido =
+  //             DetallePedido.fromMap(detalle.data);
+  //         _list.add(detallePedido);
+  //         _pedidoActual.detallePedido = _list;
+  //         notifyListeners();
+  //     });
+  //   });
+  // }
 
   setPagado(){
-    bool pagado = _pedidoActual.pagado == Pagado.PAGADO ? false : true;
+    bool pagado = _pedidoActual.pagado;
     try{
     _repository.setPagado(_pedidoActual.idPedido, pagado);
-    _pedidoActual.pagado = pagado == true ? Pagado.PAGADO : Pagado.NOPAGADO;
+    _pedidoActual.pagado = pagado;
     getPedidos();
     }catch(e){}
   }

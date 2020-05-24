@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:kosherparatodos/src/Widget/title_text.dart';
-import 'package:kosherparatodos/src/models/pedido.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/provider/cliente_notifier.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/provider/pedido_notifier.dart';
 import 'package:provider/provider.dart';
@@ -34,7 +33,7 @@ class ClienteDetailPage extends StatelessWidget {
               child: Padding(
                 padding: EdgeInsets.all(10),
                 child: ListTile(
-                  title: Text(cliente.clienteActual.name),
+                  title: Text(cliente.clienteActual.nombre),
                   leading: Icon(Icons.account_circle),
                 ),
               ),
@@ -71,7 +70,7 @@ class ClienteDetailPage extends StatelessWidget {
                         trailing: Icon(
                           Icons.check_circle,
                           color:
-                              cliente.pedidoList[index].pagado == Pagado.PAGADO
+                              cliente.pedidoList[index].pagado == true
                                   ? Colors.green
                                   : Colors.red,
                         ),

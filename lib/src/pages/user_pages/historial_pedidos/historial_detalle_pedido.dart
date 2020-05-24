@@ -28,13 +28,13 @@ class HistorialDetallePedido extends StatelessWidget {
                           MyTheme.Colors.dark),
                     ))
                   : ListView.builder(
-                      itemCount: snapshot.data.detallePedido.length,
+                      itemCount: snapshot.data.productos.length,
                       itemBuilder: (BuildContext context, int index) =>
                           ListTile(
                         title: Text(
-                            snapshot.data.detallePedido[index].descripcion),
+                            snapshot.data.productos[index].descripcion),
                         subtitle: Text('\$' +
-                            snapshot.data.detallePedido[index].precioDetalle
+                            snapshot.data.productos[index].precio
                                 .toString()),
                       ),
                     ),

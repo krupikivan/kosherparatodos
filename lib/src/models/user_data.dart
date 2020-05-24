@@ -10,4 +10,10 @@ class UserData {
     this.name,
   });
 
+  UserData.fromFirebase(Map<String, dynamic> data, uid) {
+    id = uid;
+    email = data['email'];
+    name = data['name'];
+  }
+
 }

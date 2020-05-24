@@ -17,15 +17,9 @@ abstract class Repository {
 
   StreamSubscription<QuerySnapshot> getPedido(String userUID);
       // _firestoreProvider.getPedido(userUID);
-
-  Future<QuerySnapshot> getDetallePedido(String userUID);
-      // _firestoreProvider.getDetallePedido(userUID);
   
   StreamSubscription<QuerySnapshot> getProductList();
       // _firestoreProvider.getProductList();
-
-  StreamSubscription<QuerySnapshot> getProductoConcreto(String productoID);
-      // _firestoreProvider.getProductoConcreto(productoID);
 
   Future<bool> getUserAdmin(String id);
 
@@ -41,8 +35,8 @@ abstract class Repository {
   // Future<QuerySnapshot> getPedidos();
 
   StreamSubscription<QuerySnapshot> getPedidos();
-  
-  StreamSubscription<QuerySnapshot> getDetallePedidoActual(String idPedido);
+
+  StreamSubscription<QuerySnapshot> getCategorias();
 
   StreamSubscription<DocumentSnapshot> getClientePedido(String idCliente);
 

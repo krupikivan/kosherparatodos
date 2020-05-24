@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:kosherparatodos/src/Widget/add_remove_button_widget.dart';
 import 'package:kosherparatodos/src/Widget/title_text.dart';
-import 'package:kosherparatodos/src/models/detalle_pedido.dart';
 import 'package:kosherparatodos/src/models/pedido.dart';
 import 'package:kosherparatodos/src/models/producto.dart';
 import 'package:kosherparatodos/style/theme.dart' as MyTheme;
-
 import 'bloc/bloc.dart';
 
 class ProductoItemDetalle extends StatelessWidget {
@@ -15,7 +13,6 @@ class ProductoItemDetalle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    blocProductosFirebase.getProductoConcretoFirebase(producto.idProducto);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: MyTheme.Colors.dark,
@@ -29,7 +26,7 @@ class ProductoItemDetalle extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.only(top: 20, left: 20),
               child: TitleText(
-                text: producto.nombre,
+                text: producto.descripcion,
                 fontSize: 20,
               ),
             ),
@@ -70,11 +67,11 @@ class ProductoItemDetalle extends StatelessWidget {
                       ),
                     )
                   : ListView.builder(
-                      itemCount: producto.concreto.length,
+                      itemCount: 2,
                       itemBuilder: (BuildContext context, int index) => Padding(
                         padding: const EdgeInsets.only(left: 15, right: 15),
                         child: ExpansionTile(
-                          title: Text(producto.concreto[index].descripcion),
+                          title: Text(producto.descripcion),
                           subtitle: _getCantidad(index),
                           trailing: _getButtons(index),
                         ),
@@ -92,10 +89,10 @@ class ProductoItemDetalle extends StatelessWidget {
                     stream: blocPedidoVigente.getPedido,
                     builder: (context, snapshot) {
                       double total = 0;
-                      if (snapshot.hasData && snapshot.data.detallePedido != null) {
-                        snapshot.data.detallePedido.forEach(
+                      if (snapshot.hasData && snapshot.data.productos != null) {
+                        snapshot.data.productos.forEach(
                             (element) {
-                              total += element.precioDetalle != null ? element.precioDetalle : 0;
+                              total += element.precio != null ? element.precio : 0;
                             }); 
                         }
                         return TitleText(
@@ -117,16 +114,16 @@ class ProductoItemDetalle extends StatelessWidget {
     return StreamBuilder<Pedido>(
         stream: blocPedidoVigente.getPedido,
         builder: (context, snapshot) {
-          if (!snapshot.hasData || snapshot.data.detallePedido ==  null)
+          if (!snapshot.hasData || snapshot.data.productos ==  null)
             return Text('');
-          else if (snapshot.data.detallePedido.any((value) =>
-              value.concreto.idConcreto == producto.concreto[index].idConcreto))
+          else if (snapshot.data.productos.any((value) =>
+              value.descripcion == producto.productoID))
             return Text('Cantidad: ' +
                 snapshot.data
-                .detallePedido
+                .productos
                     .firstWhere((value) =>
-                        value.concreto.idConcreto ==
-                        producto.concreto[index].idConcreto)
+                        value.descripcion ==
+                        producto.productoID)
                     .cantidad
                     .toString());
           else

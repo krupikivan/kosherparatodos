@@ -28,7 +28,7 @@ class HistorialListadoPedidoPage extends StatelessWidget {
                     elevation: 2,
                     child: ListTile(
                       leading: 
-                      snapshot.data[index].pagado == Pagado.PAGADO
+                      snapshot.data[index].pagado == true
                         ? FaIcon(FontAwesomeIcons.moneyBillAlt, size: 35, color: MyTheme.Colors.check,)
                         : FaIcon(FontAwesomeIcons.moneyBillAlt, size: 35, color: MyTheme.Colors.yellowWarning,),
                       
@@ -69,7 +69,6 @@ class HistorialListadoPedidoPage extends StatelessWidget {
 //   }
 
   _goToDetails(context, uid) {
-    blocUserData.getDetallePedido(uid);
     Navigator.push(
         context,
         MaterialPageRoute(

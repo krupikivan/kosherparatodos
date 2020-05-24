@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:kosherparatodos/src/models/detalle_pedido.dart';
 import 'package:kosherparatodos/src/models/pedido.dart';
 import 'package:kosherparatodos/src/models/user_data.dart';
 import 'package:kosherparatodos/src/pages/user_pages/pedido/bloc/bloc.dart';
@@ -34,11 +32,8 @@ class UserDataBloc {
   getUserDataFromFirebase(uid) {
     //Get from firebase
     _repository.getUserData(uid).listen((docUser) {
-      UserData userData = new UserData();
-      userData.email = docUser.data['email'];
-      userData.id = uid;
+      UserData userData = UserData.fromFirebase(docUser.data, docUser.documentID);
       _userId = uid;
-      userData.name = docUser.data['name'];
       addUserData(userData);
       _getPedidos(uid);
     });
@@ -48,32 +43,10 @@ class UserDataBloc {
     _repository.getPedido(uid).onData((value) {
       listPedido.clear();
       for (int i = 0; i < value.documents.length; i++) {
-        Pedido pedido = new Pedido();
-        pedido.idPedido = value.documents[i].documentID;
-        pedido.fecha = value.documents[i].data['fecha'];
-        pedido.total = value.documents[i].data['total'] == null ? 0 : value.documents[i].data['total'].toDouble();
-        pedido.pagado = value.documents[i].data['pagado'] == true
-            ? Pagado.PAGADO
-            : Pagado.NOPAGADO;
-        pedido.estado = Pedido().getEstado(value.documents[i].data['estado']);
+        Pedido pedido = Pedido.fromFirebase(value.documents[i].data, value.documents[i].documentID, uid);
         listPedido.add(pedido);
       }
       addToPedidosList(listPedido);
-    });
-  }
-
-  getDetallePedido(String uid) {
-    List<DetallePedido> listDetallePedido = List();
-    _repository.getDetallePedido(uid).then((queryDetalle) {
-      for (int i = 0; i < queryDetalle.documents.length; i++) {
-        DocumentSnapshot doc = queryDetalle.documents[i];
-        DetallePedido detalle = DetallePedido.fromFirebase(doc.data, doc.documentID);
-        listDetallePedido.add(detalle);
-      }
-      pedidoSelected = listPedido.firstWhere((element) => element.idPedido == uid);
-      pedidoSelected.detallePedido = listDetallePedido;
-      pedidoSelected.idPedido = uid;
-      addSelectPedido(pedidoSelected);
     });
   }
 

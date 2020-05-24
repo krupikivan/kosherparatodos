@@ -58,7 +58,7 @@ class ClienteNotifier with ChangeNotifier {
 
   getPedidosCliente(PedidoNotifier pedido) {
     pedido.pedidoList
-        .where((ped) => ped.cliente.idCliente == _clienteActual.idCliente)
+        .where((ped) => ped.cliente == _clienteActual.clienteID)
         .forEach((cli) {
       _pedidoList.add(cli);
     });

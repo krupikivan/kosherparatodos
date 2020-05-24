@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/cliente_page.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/navigation_bloc.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/pedidos_page.dart';
-import 'package:kosherparatodos/src/pages/admin_pages/productos.page.dart';
+import 'package:kosherparatodos/src/pages/admin_pages/productos_page.dart';
+import 'package:kosherparatodos/src/pages/admin_pages/provider/categoria_notifier.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/provider/cliente_notifier.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/provider/pedido_notifier.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/provider/producto_notifier.dart';
@@ -26,6 +27,7 @@ class AdminPage extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => ClienteNotifier.init()),
         ChangeNotifierProvider(create: (context) => PedidoNotifier.init()),
         ChangeNotifierProvider(create: (context) => ProductoNotifier.init()),
+        ChangeNotifierProvider(create: (context) => CategoriaNotifier.init()),
       ],
       child: MaterialApp(
         // initialRoute: '/',

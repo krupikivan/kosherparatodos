@@ -14,7 +14,7 @@ class TitleLabel extends StatelessWidget {
           text: TextSpan(
               text: 'Kosher Para Todos',
               style: GoogleFonts.portLligatSans(
-                textStyle: Theme.of(context).textTheme.display1,
+                textStyle: Theme.of(context).textTheme.headline4,
                 fontSize: 40,
                 fontWeight: FontWeight.w700,
                 color: MyTheme.Colors.secondaryColor,
@@ -25,7 +25,7 @@ class TitleLabel extends StatelessWidget {
           text: TextSpan(
               text: 'Carnes y lacteos kosher al costo',
               style: GoogleFonts.portLligatSans(
-                textStyle: Theme.of(context).textTheme.display1,
+                textStyle: Theme.of(context).textTheme.headline4,
                 fontSize: 15,
                 fontWeight: FontWeight.w700,
                 color: MyTheme.Colors.secondaryColor,

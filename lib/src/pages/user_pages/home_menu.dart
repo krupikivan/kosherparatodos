@@ -12,44 +12,20 @@ import 'package:kosherparatodos/src/Widget/drawer_icon_widget.dart';
 
 class UserPage extends StatelessWidget {
   final FirebaseUser user;
-
-
-  // @override
-  // _UserPageState createState() => _UserPageState();
-
-// class _UserPageState extends State<UserPage> {
-
-  // int _currentIndex = 0;
-  
-  // final List<Widget> _children = [
-  //   HistorialListadoPedidoPage(),
-  //   ProductoGridPage(),
-  // ];
-
   TextStyle style;
 
   UserPage({Key key, this.user}) : super(key: key);
-  // List<Item> choices;
-
-  // @override
-  // void initState(){
-  //   blocUserData.getUserDataFromFirebase(widget.user.uid);
-  //   style = TextStyle(color: MyTheme.Colors.light);
-  //   super.initState();
-  // }
 
   @override
   Widget build(BuildContext context) {
     blocUserData.getUserDataFromFirebase(user.uid);
     style = TextStyle(color: MyTheme.Colors.light);
-    // _fillPopupData();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: MyTheme.Colors.dark,
         title: Text("Kosher para todos", style: style,),
         actions: <Widget>[
           _iconCartPage(context),
-          // PopupMenu(choices: choices),
         ],
       ),
           drawer: Builder(
@@ -149,12 +125,12 @@ Widget _iconCartPage(context){
                                   child: StreamBuilder<Pedido>(
                                       stream: blocPedidoVigente.getPedido,
                                       builder: (context, snapshot) {
-                                        if (!snapshot.hasData || snapshot.data.detallePedido == null)
+                                        if (!snapshot.hasData || snapshot.data.productos == null)
                                           return Text('0');
                                         else
                                           return new Text(
                                             snapshot.data
-                                            .detallePedido
+                                            .productos
                                                 .length.toString(),
                                             style: new TextStyle(
                                                 color: Colors.white,

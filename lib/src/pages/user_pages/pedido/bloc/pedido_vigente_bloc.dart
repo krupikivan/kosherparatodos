@@ -1,7 +1,5 @@
-import 'package:kosherparatodos/src/models/detalle_pedido.dart';
 import 'package:kosherparatodos/src/models/pedido.dart';
 import 'package:kosherparatodos/src/models/producto.dart';
-import 'package:kosherparatodos/src/models/producto_concreto.dart';
 import 'package:kosherparatodos/src/pages/user_pages/historial_pedidos/bloc/bloc.dart';
 import 'package:kosherparatodos/src/repository/firestore_provider.dart';
 import 'package:kosherparatodos/src/repository/repo.dart';
@@ -19,23 +17,23 @@ class PedidoVigenteBloc {
 
 //Boton +
   addingCurrentDetalle(Producto producto, int index) {
-    ProductoConcreto pc = producto.concreto[index];
-      if(pedido.detallePedido == null){
-         pedido.detallePedido = [];
-      }
-    if (pedido.detallePedido.isEmpty ||
-        !pedido.detallePedido
-            .any((value) => value.concreto.idConcreto == pc.idConcreto)) {
-      DetallePedido nuevoDetalle = DetallePedido.fromAddingNew(pc);
-      pedido.detallePedido.add(nuevoDetalle);
-      getPedidoTotal();
-    } else {
-      var found = pedido.detallePedido
-          .firstWhere((value) => value.concreto.idConcreto == pc.idConcreto);
-      found.cantidad++;
-      found.precioDetalle = found.precioUnitario * found.cantidad;
-    }
-    getPedidoTotal();
+    // ItemPedido item = producto.opciones[index];
+    //   if(pedido.productos == null){
+    //      pedido.productos = [];
+    //   }
+    // if (pedido.productos.isEmpty ||
+    //     !pedido.productos
+    //         .any((value) => value.descripcion == item.productoID)) {
+    //   Detalle nuevoDetalle = Detalle.fromOpcionSeleccionada(producto, item);
+    //   pedido.productos.add(nuevoDetalle);
+    //   getPedidoTotal();
+    // } else {
+    //   var found = pedido.productos
+    //       .firstWhere((value) => value.descripcion == item.productoID);
+    //   found.cantidad++;
+    //   // pedido.total = found.precio * found.cantidad;
+    // }
+    // getPedidoTotal();
   }
 
   clearPedido(){
@@ -44,9 +42,9 @@ class PedidoVigenteBloc {
   }
 
 //Eliminar del detalle general
-  removeOnPedido(DetallePedido det) {
-    pedido.detallePedido.removeWhere(
-        (item) => item.concreto.idConcreto == det.concreto.idConcreto);
+  removeOnPedido(Detalle det) {
+    pedido.productos.removeWhere(
+        (item) => item.descripcion == det.descripcion);
         getPedidoTotal();
   }
 
@@ -62,23 +60,23 @@ class PedidoVigenteBloc {
 
 //Boton -
   removeDetalle(Producto producto, int index) {
-    ProductoConcreto pc = producto.concreto[index];
-    if (pedido.detallePedido
-        .any((value) => value.concreto.idConcreto == pc.idConcreto)) {
-      var found = pedido.detallePedido
-          .firstWhere((value) => value.concreto.idConcreto == pc.idConcreto);
-      found.cantidad--;
-      found.precioDetalle -= producto.concreto[index].precioTotal;
-      if (found.cantidad == 0)
-        pedido.detallePedido
-            .removeWhere((value) => value.concreto.idConcreto == pc.idConcreto);
-    }
-    getPedidoTotal();
+    // ItemPedido opc = producto.opciones[index];
+    // if (pedido.productos
+    //     .any((value) => value.descripcion == opc.productoID)) {
+    //   var found = pedido.productos
+    //       .firstWhere((value) => value.descripcion == opc.productoID);
+    //   found.cantidad--;
+    //   // found.precioDetalle -= producto.opciones[index].precioTotal;
+    //   if (found.cantidad == 0)
+    //     pedido.productos
+    //         .removeWhere((value) => value.descripcion == opc.productoID);
+    // }
+    // getPedidoTotal();
   }
 
   getPedidoTotal() {
     pedido.total = 0;
-    pedido.detallePedido.forEach((item) => pedido.total += item.precioDetalle);
+    pedido.productos.forEach((item) => pedido.total += item.precio * item.cantidad);
     addPedido(pedido);
   }
 

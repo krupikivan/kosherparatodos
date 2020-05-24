@@ -1,55 +1,95 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:kosherparatodos/src/models/producto_concreto.dart';
 
 class Producto{
   
-  String idProducto;
-  String nombre;
+  List<String> categorias;
+  String productoID;
+  String codigo;
   String descripcion;
-  Timestamp ultimaActualizacion;
-  List<ProductoConcreto> concreto;
-  String imagen;
   bool habilitado;
-  double precioUnitario;
+  String imagen;
+  double precio;
+  int stock;
+  String unidadMedida;
 
   Producto({
-    this.idProducto,
-    this.nombre,
-    this.ultimaActualizacion,
-    this.imagen,
+    this.categorias,
+    this.productoID,
+    this.codigo,
     this.descripcion,
-    this.precioUnitario,
-    this.concreto,
     this.habilitado,
+    this.imagen,
+    this.precio,
+    this.stock,
+    this.unidadMedida,
   });
 
-  Producto.fromMap(Map<String, dynamic> data, id){
-    idProducto = id;
-    nombre = data['nombre'];
-    habilitado = data['habilitado'];
+  Producto.fromGetProductos(Map<String, dynamic> data, producto){
+    categorias = categoriaListFill(data['categorias']);
+    productoID = producto;
+    codigo = data['codigo'];
     descripcion = data['descripcion'];
-    ultimaActualizacion = data['ultimaActualizacion'];
-    precioUnitario = data['precioUnitario'].toDouble();
+    habilitado = data['habilitado'];
+    imagen = data['imagen'];
+    precio = data['precio'].toDouble();
+    stock = data['stock'];
+    unidadMedida = data['unidadMedida'];
   }
 
-    Producto.fromNewProd(nom, des, pre, hab, List<ProductoConcreto> list){
-      nombre = nom;
-      descripcion = des;
-      precioUnitario = pre;
-      habilitado = hab;
-      concreto = getNewConcretoList(list, pre);
-  }
-
-    List<ProductoConcreto> getNewConcretoList(List<ProductoConcreto> list, pre){
-    List<ProductoConcreto> _list = List();
-    for(var concreto in list){
-      var precio = 0.0;
-      if(pre != 0.0){
-        precio = pre * concreto.cantidad;
-      }
-      _list.add(ProductoConcreto.fromNewConcreto(concreto, precio));
+  categoriaListFill(List list){
+    List<String> _list = List();
+    for(var item in list){
+      _list.add(item);
     }
     return _list;
   }
+
+  Producto.newProducto(cate, idProd, desc, hab, img, pre, stk, um){
+    categorias = cate;
+    productoID = idProd;
+    descripcion = desc;
+    habilitado = hab;
+    imagen = img;
+    precio = pre;
+    stock = stk;
+    unidadMedida = um;
+  }
+
+  // List<Opcion> getOpcionesList(List list){
+  //   List<Opcion> _list = List();
+  //   for(var opcion in list){
+  //     _list.add(Opcion.fromFirebase(opcion));
+  //   }
+  //   return _list;
+  // }
+
+}
+
+class ItemPedido{
+
+  int cantidad;
+  String descripcion;
+  double precio;
+  String productoID;
+
+  ItemPedido({
+    this.cantidad,
+    this.descripcion,
+    this.precio,
+    this.productoID,
+  });
+
+  ItemPedido.fromGetPedidos(Map<String, dynamic> data) {
+    cantidad = data['cantidad'];
+    descripcion = data['descripcion'];
+    precio = data['precio'];
+    productoID = data['productoID'];
+  }
+
+ Map<String, dynamic> toPedidoOnFirebase() => {
+    'cantidad': this.cantidad,
+    'descripcion': this.descripcion,
+    'precio': this.precio,
+    'productoID': this.productoID
+ };
 
 }

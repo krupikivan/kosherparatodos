@@ -12,11 +12,10 @@ class ProductoDetailPage extends StatelessWidget {
 // }
 
 // class _ProductoDetailPageState extends State<ProductoDetailPage> {
-  TextEditingController _nombreController;
   TextEditingController _descripcionController;
+  TextEditingController _stockController;
   TextEditingController _precioController;
-  TextEditingController _itemDescripcionController;
-  TextEditingController _itemCantPrecController;
+  TextEditingController _umController;
 
   @override
   Widget build(context) {
@@ -43,24 +42,34 @@ class ProductoDetailPage extends StatelessWidget {
             Expanded(
               flex: 1,
               child: ListTile(
-                title: Text(_nombreController.text),
-                subtitle: Text('Nombre'),
+                title: Text(_descripcionController.text),
+                subtitle: Text('Descripcion'),
                 leading: Icon(Icons.edit),
                 onTap: () => _editData(
-                    'Nombre', _nombreController, context, 'N'),
+                    'Descripcion', _descripcionController, context, 'D'),
               ),
             ),
             Expanded(
               flex: 1,
               child: ListTile(
-                title: Text(_descripcionController.text),
-                subtitle: Text('Descripcion'),
+                title: Text(_umController.text),
+                subtitle: Text('Unidad medida'),
                 leading: Icon(Icons.edit),
-                onTap: () => _editData('Descripcion', _descripcionController,
-                    context, 'D'),
+                onTap: () => _editData(
+                    'Unidad Medida', _umController, context, 'UM'),
               ),
             ),
-            producto.productoActual.precioUnitario == 0.0
+            Expanded(
+              flex: 1,
+              child: ListTile(
+                title: Text(_stockController.text),
+                subtitle: Text('Stock'),
+                leading: Icon(Icons.edit),
+                onTap: () => _editData('Stock', _stockController,
+                    context, 'S'),
+              ),
+            ),
+            producto.productoActual.precio == 0.0
                 ? Container()
                 : ListTile(
                     title: Text('\$' + _precioController.text.toString()),
@@ -72,39 +81,6 @@ class ProductoDetailPage extends StatelessWidget {
             Expanded(
               flex: 1,
               child: _getEstado(context),
-            ),
-            Expanded(
-              flex: 1,
-              child: Padding(
-                padding: EdgeInsets.all(10),
-                child: TitleText(
-                  text: 'Items',
-                  fontSize: 20,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-            ),
-            Expanded(
-              flex: 3,
-              child: ListView.builder(
-                shrinkWrap: true,
-                itemCount: producto.productoActual.concreto.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return ListTile(
-                    title: Text(
-                        producto.productoActual.concreto[index].descripcion),
-                    subtitle: Text('\$' +
-                        producto.productoActual.concreto[index].precioTotal
-                            .toString()),
-                    leading: Icon(Icons.edit),
-                    onTap: () {
-                      _itemDescripcionController.text = producto.productoActual.concreto[index].descripcion;
-                      _itemCantPrecController.text = producto.productoActual.precioUnitario == 0 ?  producto.productoActual.concreto[index].precioTotal.toString() : producto.productoActual.concreto[index].cantidad.toString();
-                      _editItems(context, index);
-                    }
-                  );
-                },
-              ),
             ),
           ],
       ),
@@ -173,10 +149,10 @@ class ProductoDetailPage extends StatelessWidget {
                   Expanded(
                     flex: 1,
                     child: TextField(
-                      keyboardType: controller == _precioController
+                      keyboardType: controller == _precioController || controller == _stockController
                           ? TextInputType.number
                           : TextInputType.text,
-                      inputFormatters: controller == _precioController
+                      inputFormatters: controller == _precioController || controller == _stockController
                           ? [WhitelistingTextInputFormatter.digitsOnly]
                           : null,
                       controller: controller,
@@ -200,99 +176,20 @@ class ProductoDetailPage extends StatelessWidget {
     );
   }
 
-  _editItems(context, index) {
-  ProductoNotifier prod = Provider.of<ProductoNotifier>(context, listen: false);
-    showDialog(
-      context: context,
-      builder: (contex) => AlertDialog(
-        content: Container(
-          padding: EdgeInsets.only(top: 10),
-          child: ListView(
-            shrinkWrap: true,
-            children: <Widget>[
-              TitleText(
-                text: 'Editando',
-                fontSize: 18,
-              ),
-              Row(
-                children: <Widget>[
-                  Expanded(
-                    flex: 1,
-                    child: TitleText(
-                      text: 'Descripcion',
-                      fontSize: 15,
-                    ),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: TextField(
-                      controller: _itemDescripcionController,
-                    ),
-                  ),
-                ],
-              ),
-              Row(
-                children: <Widget>[
-                  Expanded(
-                    flex: 1,
-                    child: TitleText(
-                      text: prod.productoActual.precioUnitario == 0
-                          ? 'Precio'
-                          : 'Cantidad',
-                      fontSize: 15,
-                    ),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: TextField(
-                      keyboardType: TextInputType.number,
-                      inputFormatters: [
-                        WhitelistingTextInputFormatter.digitsOnly
-                      ],
-                      controller: _itemCantPrecController,
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-        actions: <Widget>[
-          FlatButton(
-              child: Text("Guardar"),
-              onPressed: () => _saveItemData(context, contex, index)),
-          FlatButton(
-            child: Text("Volver"),
-            onPressed: () => Navigator.pop(contex),
-          ),
-        ],
-      ),
-    );
-  }
-
   _saveData(contex, context, tipo, controller) {
     Provider.of<ProductoNotifier>(context, listen: false).setData(tipo, controller.text);
     Navigator.pop(contex);
   }
 
-  _saveItemData(context, contex, index) {
-    ProductoNotifier prod = Provider.of<ProductoNotifier>(context, listen: false);
-    prod.setItemData(_itemDescripcionController.text,
-        double.parse(_itemCantPrecController.text.toString()), index);
-    _itemDescripcionController.clear();
-    _itemCantPrecController.clear();
-    Navigator.pop(contex);
-  }
-
   _fillControllerData(ProductoNotifier producto) {
-    _itemDescripcionController = TextEditingController();
-    _itemCantPrecController = TextEditingController();
-    _nombreController =
-        TextEditingController(text: producto.productoActual.nombre);
     _descripcionController =
         TextEditingController(text: producto.productoActual.descripcion);
+    _umController =
+        TextEditingController(text: producto.productoActual.unidadMedida);
+    _stockController =
+        TextEditingController(text: producto.productoActual.stock.toString());
     _precioController = TextEditingController(
-        text: producto.productoActual.precioUnitario.toString());
+        text: producto.productoActual.precio.toString());
   }
 
   _setHabilitado(ProductoNotifier producto) {

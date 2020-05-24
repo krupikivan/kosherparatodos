@@ -26,95 +26,54 @@ class FirestoreProvider implements Repository {
         .listen((event) {});
   }
 
-  Future<QuerySnapshot> getDetallePedido(String pedidoID) {
-    return _firestore
-        .collection('pedidos')
-        .document(pedidoID)
-        .collection('detalle')
-        .getDocuments();
-  }
-
   StreamSubscription<QuerySnapshot> getProductList() {
-    return _firestore.collection('producto').snapshots().listen((event) {});
-  }
-
-  StreamSubscription<QuerySnapshot> getProductoConcreto(String productoID) {
-    return _firestore
-        .collection('producto')
-        .document(productoID)
-        .collection('productoConcreto')
-        .snapshots()
-        .listen((event) {});
+    return _firestore.collection('productos').snapshots().listen((event) {});
   }
 
   Future<void> addNewPedido(Pedido pedido, String userId) async {
     if (pedido.idPedido != null) {
       _updatePedido(pedido, userId);
     } else {
-      DocumentReference docRef = await _firestore.collection('pedidos').add({
+      await _firestore.collection('pedidos').add({
         'cliente': userId,
-        'estado': Pedido().getEstadoString(Estado.ENPROCESO),
+        'estado': Pedido().getEstadoString(Estado.ENPREPARACION),
         'fecha': Timestamp.now(),
         'pagado': false,
         'total': pedido.total,
+        'productos': _addProductosToPedido(pedido.productos),
       });
-      for (int i = 0; i < pedido.detallePedido.length; i++) {
-        await _firestore
-            .collection('pedidos')
-            .document(docRef.documentID)
-            .collection('detalle')
-            .document()
-            .setData({
-          'cantidad': pedido.detallePedido[i].cantidad,
-          'descripcion': pedido.detallePedido[i].concreto.descripcion,
-          'idConcreto': pedido.detallePedido[i].concreto.idConcreto,
-          'idProducto': pedido.detallePedido[i].concreto.idProducto,
-          'precioDetalle': pedido.detallePedido[i].precioDetalle,
-          'precioUnitario': pedido.detallePedido[i].concreto.precioTotal,
-        });
-      }
     }
+  }
+
+  List<Map<String, dynamic>> _addProductosToPedido(List<Detalle> productos){
+    List<Map<String, dynamic>> _list = List();
+      for (int i = 0; i < productos.length; i++) {
+        Detalle det = productos[i];
+        _list.add(det.toFirebase());
+      }
+      return _list;
   }
 
   Future _updatePedido(
       Pedido pedido, String userId) async {
     await _firestore.collection('pedidos').document(pedido.idPedido).updateData({
       'total': pedido.total,
-    }).then((value) {
-      _removeIfWasDeleted(pedido).whenComplete(() {
-
-              pedido.detallePedido.forEach((detallePedido) async{ 
-         await _firestore
-            .collection('pedidos')
-            .document(pedido.idPedido)
-            .collection('detalle')
-            .document(detallePedido.idDetallePedido)
-            .setData({
-          'cantidad': detallePedido.cantidad,
-          'descripcion': detallePedido.descripcion,
-          'idConcreto': detallePedido.concreto.idConcreto,
-          'idProducto': detallePedido.concreto.idProducto,
-          'precioDetalle': detallePedido.precioDetalle,
-          'precioUnitario': detallePedido.precioUnitario,
-        });
-      });
-
-      });
+      'productos': _addProductosToPedido(pedido.productos),
     });
   }
 
-  Future<void> _removeIfWasDeleted(Pedido pedido) async{
-    await _firestore.collection('pedidos')
-    .document(pedido.idPedido)
-    .collection("detalle")
-    .getDocuments().then((doc) {
-      for (DocumentSnapshot dsnap in doc.documents){
-        if(pedido.detallePedido.every((element) => element.idDetallePedido != dsnap.documentID)){
-          dsnap.reference.delete();
-        }
-      }
-    });
-  }
+  // Future<void> _removeIfWasDeleted(Pedido pedido) async{
+  //   await _firestore.collection('pedidos')
+  //   .document(pedido.idPedido)
+  //   .collection("detalle")
+  //   .getDocuments().then((doc) {
+  //     for (DocumentSnapshot dsnap in doc.documents){
+  //       if(pedido.productos.every((element) => element.codigo != dsnap.documentID)){
+  //         dsnap.reference.delete();
+  //       }
+  //     }
+  //   });
+  // }
 
   Future<void> deletePedido(String idPedido) async{
       await _firestore.collection('pedidos')
@@ -141,24 +100,15 @@ class FirestoreProvider implements Repository {
     return _firestore.collection('users').getDocuments();
   }
 
-  // Future<QuerySnapshot> getPedidos() {
-  //   return _firestore.collection('pedidos').getDocuments();
-  // }
-
   StreamSubscription<QuerySnapshot> getPedidos() {
     return _firestore.collection('pedidos').snapshots().listen((doc) {
       doc.documents.forEach((pedido) {});
     });
   }
 
-  StreamSubscription<QuerySnapshot> getDetallePedidoActual(String idPedido) {
-    return _firestore
-        .collection('pedidos')
-        .document(idPedido)
-        .collection('detalle')
-        .snapshots()
-        .listen((doc) {
-      doc.documents.forEach((pedido) {});
+  StreamSubscription<QuerySnapshot> getCategorias() {
+    return _firestore.collection('categorias').snapshots().listen((doc) {
+      doc.documents.forEach((categoria) {});
     });
   }
 
@@ -174,10 +124,6 @@ class FirestoreProvider implements Repository {
     return _firestore.collection('root').document('rootUser').snapshots();
   }
 
-  // Future<DocumentSnapshot> getClienteSpecific(String id) {
-  //   return _firestore.collection('users').document(id).get();
-  // }
-
   Future<void> setPagado(String idPedido, bool pagado) async {
     await _firestore
         .collection('pedidos')
@@ -187,62 +133,48 @@ class FirestoreProvider implements Repository {
 
   Future<void> setHabilitado(String idProducto, bool habilitado) async {
     await _firestore
-        .collection('producto')
+        .collection('productos')
         .document(idProducto)
         .updateData({'habilitado': habilitado});
   }
 
   Future<void> updateAllData(Producto producto) async {
     await _firestore
-        .collection('producto')
-        .document(producto.idProducto)
+        .collection('productos')
+        .document(producto.productoID)
         .updateData({
+      'categorias': producto.categorias,
+      'codigo': producto.codigo,
       'descripcion': producto.descripcion,
       'habilitado': producto.habilitado,
-      'nombre': producto.nombre,
-      'precioUnitario': producto.precioUnitario,
-      'ultimaActualizacion': Timestamp.now(),
-    }).then((value) {
-      producto.concreto.forEach((element) async {
-        await _firestore
-            .collection('producto')
-            .document(producto.idProducto)
-            .collection('productoConcreto')
-            .document(element.idConcreto)
-            .updateData({
-          'cantidad': element.cantidad,
-          'descripcion': element.descripcion,
-          'precioTotal': element.precioTotal,
-          'productoId': producto.idProducto,
-        });
-      });
+      'imagen': producto.imagen,
+      'precio': producto.precio,
+      'stock': producto.stock,
+      'unidadMedida': producto.unidadMedida,
     });
-    // for (int i = 0; i < producto.concreto.length; i++) {
-
-    // }
   }
 
+  // List<Map<String, dynamic>> _addOpcionesToProducto(List<Opcion> opciones){
+  //   List<Map<String, dynamic>> _list = List();
+  //     for (int i = 0; i < opciones.length; i++) {
+  //       Opcion det = opciones[i];
+  //       _list.add(det.toFirebase());
+  //     }
+  //     return _list;
+  // }
+
+
   Future<void> addNewProducto(Producto newProducto) async {
-    DocumentReference docRef = await _firestore.collection('producto').add({
-      'nombre': newProducto.nombre,
+    await _firestore.collection('producto').add({
+      'categorias': newProducto.categorias,
+      'codigo': newProducto.codigo,
       'descripcion': newProducto.descripcion,
-      'precioUnitario': newProducto.precioUnitario,
       'habilitado': newProducto.habilitado,
-      'ultimaActualizacion': Timestamp.now(),
+      'imagen': newProducto.imagen,
+      'precio': newProducto.precio,
+      'stock': newProducto.stock,
+      'unidadMedida': newProducto.unidadMedida,
     });
-    for (int i = 0; i < newProducto.concreto.length; i++) {
-      await _firestore
-          .collection('producto')
-          .document(docRef.documentID)
-          .collection('productoConcreto')
-          .document()
-          .setData({
-        'cantidad': newProducto.concreto[i].cantidad,
-        'descripcion': newProducto.concreto[i].descripcion,
-        'precioTotal': newProducto.concreto[i].precioTotal,
-        'productoId': docRef.documentID,
-      });
-    }
   }
 
   Future<void> deleteProducto(String idProducto) async {

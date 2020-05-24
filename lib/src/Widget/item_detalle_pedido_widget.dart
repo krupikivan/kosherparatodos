@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:kosherparatodos/src/models/detalle_pedido.dart';
+import 'package:kosherparatodos/src/models/pedido.dart';
 import 'package:kosherparatodos/src/pages/user_pages/pedido/bloc/bloc.dart';
 
 class ItemDetallePedidoWidget extends StatelessWidget {
   const ItemDetallePedidoWidget({Key key, this.item}) : super(key: key);
-  final DetallePedido item;
+  final Detalle item;
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +18,7 @@ class ItemDetallePedidoWidget extends StatelessWidget {
             width: 70,
             height: 70,
             alignment: Alignment.center,
-            child: Text('\$${item.precioDetalle}'),
+            child: Text('\$${item.precio}'),
           )),
     );
   }

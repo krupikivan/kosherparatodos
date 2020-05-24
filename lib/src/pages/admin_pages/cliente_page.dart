@@ -12,7 +12,7 @@ class ClientePage extends StatelessWidget {
           child: ListView.separated(
             itemBuilder: (BuildContext context, int index) => ListTile(
               leading: Icon(Icons.account_circle),
-              title: Text(cliente.clienteList[index].name),
+              title: Text(cliente.clienteList[index].nombre),
               subtitle: Text(cliente.clienteList[index].email),
               onTap: () {
                 cliente.clienteActual = cliente.clienteList[index];

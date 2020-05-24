@@ -1,12 +1,17 @@
 class Cliente{
 
   String email;
-  String name;
-  String idCliente;
+  String nombre;
+  String clienteID;
 
   Cliente.fromMap(Map<String, dynamic> data, id){
     email = data['email'];
-    name = data['name'];
-    idCliente = id;
+    nombre = data['name'];
+    clienteID = id;
+  }
+
+  Cliente.fromPedidos(Map<String, dynamic> data){
+    clienteID = data['cliente']['clienteID'];
+    nombre = data['cliente']['nombre'];
   }
 }

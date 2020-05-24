@@ -26,15 +26,15 @@ class DetallePedidoListPage extends StatelessWidget {
     return StreamBuilder<Pedido>(
         stream: blocPedidoVigente.getPedido,
         builder: (context, snapshot) {
-          if (!snapshot.hasData || snapshot.data.detallePedido == null)
+          if (!snapshot.hasData || snapshot.data.productos == null)
             return Container();
           else
             return Expanded(
               child: ListView.builder(
-                itemCount: snapshot.data.detallePedido.length,
+                itemCount: snapshot.data.productos.length,
                 itemBuilder: (BuildContext context, int index) {
                   return ItemDetallePedidoWidget(
-                    item: snapshot.data.detallePedido[index],
+                    item: snapshot.data.productos[index],
                   );
                 },
               ),
@@ -47,10 +47,10 @@ class DetallePedidoListPage extends StatelessWidget {
         stream: blocPedidoVigente.getPedido,
         builder: (context, snapshot) {
           double total = 0;
-          if (snapshot.hasData && snapshot.data.detallePedido != null) {
-            snapshot.data.detallePedido.forEach((element) {
+          if (snapshot.hasData && snapshot.data.productos != null) {
+            snapshot.data.productos.forEach((element) {
               total +=
-                  element.precioDetalle != null ? element.precioDetalle : 0;
+                  element.precio != null ? element.precio : 0;
             });
           }
           return Row(
