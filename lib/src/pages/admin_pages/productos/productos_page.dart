@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:kosherparatodos/src/pages/admin_pages/new_producto_page.dart';
-import 'package:kosherparatodos/src/pages/admin_pages/producto_detail_page.dart';
+import 'package:kosherparatodos/src/pages/admin_pages/productos/new_producto_page.dart';
+import 'package:kosherparatodos/src/pages/admin_pages/productos/producto_detail_page.dart';
 import 'package:kosherparatodos/style/theme.dart' as MyTheme;
 import 'package:kosherparatodos/src/pages/admin_pages/provider/producto_notifier.dart';
 import 'package:provider/provider.dart';

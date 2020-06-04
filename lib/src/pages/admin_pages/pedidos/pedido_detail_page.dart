@@ -1,17 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:kosherparatodos/src/Widget/title_text.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/provider/pedido_notifier.dart';
+import 'package:kosherparatodos/src/utils/converter.dart';
 import 'package:provider/provider.dart';
 import 'package:kosherparatodos/style/theme.dart' as MyTheme;
 
 class PedidoDetailPage extends StatelessWidget {
+  
   @override
   Widget build(context) {
     PedidoNotifier pedido = Provider.of<PedidoNotifier>(context);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: MyTheme.Colors.dark,
-        title: Text('Cliente: ' + pedido.pedidoActual.cliente.nombre),
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text('Cliente: ' + pedido.pedidoActual.cliente.nombre.nombre + ' ' + pedido.pedidoActual.cliente.nombre.apellido),
+            Text('Fecha: ' + convert.getFechaFromTimestamp(pedido.pedidoActual.fecha), style: TextStyle(fontSize: 10),),
+          ],
+        ),
       ),
       body: Column(
         children: <Widget>[
@@ -25,8 +33,10 @@ class PedidoDetailPage extends StatelessWidget {
                     itemBuilder: (BuildContext context, int index) {
                       return ListTile(
                         title: Text(pedido
+                            .pedidoActual.productos[index].cantidad.toString() + " x "+
+                            pedido
                             .pedidoActual.productos[index].descripcion),
-                        subtitle: Text('\$' +
+                        subtitle: Text('Precio unitario: \$' +
                             pedido
                                 .pedidoActual.productos[index].precio
                                 .toString()),
@@ -38,10 +48,12 @@ class PedidoDetailPage extends StatelessWidget {
             flex: 1,
             child: Divider(height: 5, color: Colors.grey,),
           ),
-          Expanded(
-            flex: 2,
-            child: _getEstado(pedido),
-          ),
+              Row(
+                children: <Widget>[
+                  Expanded(flex: 1, child: _getEstadoPago(pedido)),
+                  Expanded(flex: 1, child: _getEstadoEntregado(pedido)),
+                ],
+              ),
           Expanded(
             flex: 2,
             child: _price(pedido),
@@ -73,15 +85,15 @@ class PedidoDetailPage extends StatelessWidget {
       ),
     );
   }
-  Widget _getEstado(PedidoNotifier pedido) {
+  Widget _getEstadoPago(PedidoNotifier pedido) {
     return Container(
       decoration: BoxDecoration(color: MyTheme.Colors.minLight),
-      padding: EdgeInsets.all(20),
+      padding: EdgeInsets.all(5),
       child: ListTile(
                  title: TitleText(
                text: pedido.pedidoActual.pagado == true
-                   ? 'El pedido se encuentra Pagado'
-                   : 'El pedido se encuentra No pagado',
+                   ? 'Pagado'
+                   : 'No Pagado',
                color: MyTheme.Colors.dark,
                fontSize: 14,
                fontWeight: FontWeight.w500,
@@ -91,7 +103,24 @@ class PedidoDetailPage extends StatelessWidget {
     );
   }
 
+    Widget _getEstadoEntregado(PedidoNotifier pedido) {
+    return Container(
+      decoration: BoxDecoration(color: MyTheme.Colors.minLight),
+      padding: EdgeInsets.all(5),
+      child: DropdownButton(
+        items: pedido.getEstadoEntrega.map((value) => DropdownMenuItem(child: Text(value), value: value)).toList(),
+        onChanged: (value) {
+          pedido.setEstadoEntrega(value);
+          },
+        isExpanded: false,
+        //Mostramos el valor del estado del pedido comparandolo con el vector cargado en firebase
+        value: pedido.getEstadoEntrega.firstWhere((element) => element == pedido.pedidoActual.estado),
+      ),
+    );
+  }
+
   _setPagado(PedidoNotifier pedido){
     pedido.setPagado();
   }
+
 }

@@ -1,14 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:kosherparatodos/src/models/producto.dart';
 
 import 'cliente.dart';
 
-enum Estado { CANCELADO, ENPREPARACION, ENTREGADO }
+// enum Estado { CANCELADO, ENPREPARACION, ENTREGADO }
 
 class Pedido {
   String idPedido;
   Cliente cliente;
-  Estado estado;
+  String estado;
   Timestamp fecha;
   bool pagado;
   List<Detalle> productos;
@@ -27,7 +26,7 @@ class Pedido {
   Pedido.fromFirebase(Map<String, dynamic> data, String pedido, String cli) {
     idPedido = pedido;
     cliente = Cliente.fromMap(data, cli);
-    estado = getEstado(data['estado']);
+    estado = data['estado'];
     fecha = data['fecha'];
     pagado = data['pagado'];
     productos = getProductosList(data['productos']);
@@ -36,7 +35,7 @@ class Pedido {
   Pedido.fromPedidos(Map<String, dynamic> data, String pedido) {
     idPedido = pedido;
     cliente = Cliente.fromPedidos(data);
-    estado = getEstado(data['estado']);
+    estado = data['estado'];
     fecha = data['fecha'];
     pagado = data['pagado'];
     productos = getProductosList(data['productos']);
@@ -52,35 +51,35 @@ class Pedido {
     return _list;
   }
 
-  String getEstadoString(Estado estado) {
-    switch (estado) {
-      case Estado.ENPREPARACION:
-        return "En preparacion";
-        break;
-      case Estado.CANCELADO:
-        return "Cancelado";
-        break;
-      case Estado.ENTREGADO:
-        return "Entregado";
-        break;
-    }
-    return "Cancelado";
-  }
+  // String getEstadoString(Estado estado) {
+  //   switch (estado) {
+  //     case Estado.ENPREPARACION:
+  //       return "En preparacion";
+  //       break;
+  //     case Estado.CANCELADO:
+  //       return "Cancelado";
+  //       break;
+  //     case Estado.ENTREGADO:
+  //       return "Entregado";
+  //       break;
+  //   }
+  //   return "Cancelado";
+  // }
 
-  Estado getEstado(var estado) {
-    switch (estado) {
-      case "En preparacion":
-        return Estado.ENPREPARACION;
-        break;
-      case "Cancelado":
-        return Estado.CANCELADO;
-        break;
-      case "Entregado":
-        return Estado.ENTREGADO;
-        break;
-    }
-    return Estado.CANCELADO;
-  }
+  // Estado getEstado(var estado) {
+  //   switch (estado) {
+  //     case "En preparacion":
+  //       return Estado.ENPREPARACION;
+  //       break;
+  //     case "Cancelado":
+  //       return Estado.CANCELADO;
+  //       break;
+  //     case "Entregado":
+  //       return Estado.ENTREGADO;
+  //       break;
+  //   }
+  //   return Estado.CANCELADO;
+  // }
 }
 
 class Detalle{
@@ -117,4 +116,22 @@ class Detalle{
     'idProducto': this.productoID,
     'precio': this.precio
  };
+}
+
+class EstadoEntrega{
+
+  List entrega;
+
+  EstadoEntrega.fromMap(List data){
+    entrega = _getEstados(data);
+  }
+
+  _getEstados(List data){
+    List _list = new List();
+    for(var ent in data){
+      _list.add(ent);
+    }
+    return _list;
+  }
+
 }

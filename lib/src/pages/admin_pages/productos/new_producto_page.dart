@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:kosherparatodos/src/Widget/title_text.dart';
 import 'package:kosherparatodos/src/models/categoria.dart';
-import 'package:kosherparatodos/src/pages/admin_pages/provider/producto_notifier.dart';
 import 'package:kosherparatodos/style/theme.dart' as MyTheme;
 import 'package:kosherparatodos/src/Widget/new_categoria_on_producto_checkbox.dart';
-import 'package:provider/provider.dart';
 class NewProducto extends StatefulWidget {
   @override
   _NewProductoState createState() => _NewProductoState();
@@ -144,13 +142,13 @@ class _NewProductoState extends State<NewProducto> {
   }
 
   _addProduct(context) {
-    Provider.of<ProductoNotifier>(context, listen: false).addNewProducto(
-      _nombreController.text,
-      _descripcionController.text,
-      _precioEnable ? double.parse(_precioController.text) : 0,
-      _habilitado,
-      _concretoList,
-    );
-    Navigator.pop(context);
+  //   Provider.of<ProductoNotifier>(context, listen: false).addNewProducto(
+  //     _nombreController.text,
+  //     _descripcionController.text,
+  //     _precioEnable ? double.parse(_precioController.text) : 0,
+  //     _habilitado,
+  //     _concretoList,
+  //   );
+  //   Navigator.pop(context);
   }
 }

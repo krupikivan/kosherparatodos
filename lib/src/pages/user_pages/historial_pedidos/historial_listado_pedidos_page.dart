@@ -42,7 +42,7 @@ class HistorialListadoPedidoPage extends StatelessWidget {
                       ),
                       subtitle: Text(
                         
-                       Pedido().getEstadoString(snapshot.data[index].estado)
+                       snapshot.data[index].estado
 
 
                         // style: TextStyle(

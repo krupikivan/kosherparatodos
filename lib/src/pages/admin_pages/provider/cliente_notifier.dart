@@ -33,6 +33,18 @@ class ClienteNotifier with ChangeNotifier {
     });
   }
 
+    setAutenticado({Cliente cliente}){
+    bool autenticado;
+    if(_clienteActual != null){
+    autenticado = _clienteActual.estaAutenticado == false ? true : false;
+    }
+    try{
+    _repository.setAutenticado(cliente == null ? _clienteActual.clienteID : cliente.clienteID, autenticado);
+    _clienteActual.estaAutenticado = autenticado;
+    getClientes();
+    }catch(e){}
+  }
+
   // getClienteHistorial() async {
   //   List<Cliente> _list = [];
   //   await _repository.getClientes().then((snapshot) async{

@@ -44,10 +44,10 @@ class HistorialDetallePedido extends StatelessWidget {
         });
   }
 
-  Widget _bntExpanded(context, Estado estado) {
+  Widget _bntExpanded(context, String estado) {
         return SpeedDial(
       marginRight: 10,
-      visible: estado != Estado.ENTREGADO ? true : false,
+      visible: estado != 'Entregado' ? true : false,
       overlayOpacity: 0.3,
       overlayColor: MyTheme.Colors.light,
       heroTag: 'bntExpand',

@@ -1,10 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:kosherparatodos/src/pages/admin_pages/cliente_page.dart';
+import 'package:kosherparatodos/src/pages/admin_pages/clientes/cliente_page.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/navigation_bloc.dart';
-import 'package:kosherparatodos/src/pages/admin_pages/pedidos_page.dart';
-import 'package:kosherparatodos/src/pages/admin_pages/productos_page.dart';
+import 'package:kosherparatodos/src/pages/admin_pages/pedidos/pedidos_page.dart';
+import 'package:kosherparatodos/src/pages/admin_pages/productos/categoria_page.dart';
+import 'package:kosherparatodos/src/pages/admin_pages/productos/productos_page.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/provider/categoria_notifier.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/provider/cliente_notifier.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/provider/pedido_notifier.dart';
@@ -121,7 +122,7 @@ class AdminPage extends StatelessWidget {
                 return PedidosPage();
               }
               if (bloc.navigationProvider.currentNavigation == "Productos") {
-                return ProductosPage();
+                return CategoriaPage();
               }
               return ClientePage();
             },

@@ -36,7 +36,7 @@ class FirestoreProvider implements Repository {
     } else {
       await _firestore.collection('pedidos').add({
         'cliente': userId,
-        'estado': Pedido().getEstadoString(Estado.ENPREPARACION),
+        'estado': pedido.estado,
         'fecha': Timestamp.now(),
         'pagado': false,
         'total': pedido.total,
@@ -105,6 +105,10 @@ class FirestoreProvider implements Repository {
       doc.documents.forEach((pedido) {});
     });
   }
+  StreamSubscription<DocumentSnapshot> getEstadoEntrega() {
+    return _firestore.collection('estado').document('entrega').snapshots().listen((doc) {
+    });
+  }
 
   StreamSubscription<QuerySnapshot> getCategorias() {
     return _firestore.collection('categorias').snapshots().listen((doc) {
@@ -129,6 +133,20 @@ class FirestoreProvider implements Repository {
         .collection('pedidos')
         .document(idPedido)
         .updateData({'pagado': pagado});
+  }
+
+  Future<void> setEstadoEntrega(String idPedido, String value) async {
+    await _firestore
+        .collection('pedidos')
+        .document(idPedido)
+        .updateData({'estado': value});
+  }
+
+    Future<void> setAutenticado(String idCliente, bool autenticado) async {
+    await _firestore
+        .collection('users')
+        .document(idCliente)
+        .updateData({'estaAutenticado': autenticado});
   }
 
   Future<void> setHabilitado(String idProducto, bool habilitado) async {

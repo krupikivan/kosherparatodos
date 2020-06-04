@@ -7,6 +7,8 @@ import 'package:kosherparatodos/src/repository/repo.dart';
 class PedidoNotifier with ChangeNotifier {
   final Repository _repository = FirestoreProvider();
 
+  List _estadoEntrega = [];
+
   List<Pedido> _pedidoList = [];
   Pedido _pedidoActual;
   UnmodifiableListView<Pedido> get pedidoList =>
@@ -17,6 +19,7 @@ class PedidoNotifier with ChangeNotifier {
   }
 
   getPedidos() {
+    _getEstadosEntrega();
     List<Pedido> _list = [];
     _repository.getPedidos().onData((listPed) {
       listPed.documents.forEach((pedido) {
@@ -32,6 +35,15 @@ class PedidoNotifier with ChangeNotifier {
       });
     });
   }
+
+  _getEstadosEntrega(){
+    _repository.getEstadoEntrega().onData((data) {
+      EstadoEntrega _ee = EstadoEntrega.fromMap(data['estado']);
+      _estadoEntrega = _ee.entrega;
+      notifyListeners();
+     });
+  }
+
   // getDetallePedido() {
   //   List<DetallePedido> _list = [];
   //   _repository.getDetallePedidoActual(_pedidoActual.idPedido).onData((detalleList) {
@@ -46,10 +58,18 @@ class PedidoNotifier with ChangeNotifier {
   // }
 
   setPagado(){
-    bool pagado = _pedidoActual.pagado;
+    bool pagado = _pedidoActual.pagado == false ? true : false;
     try{
     _repository.setPagado(_pedidoActual.idPedido, pagado);
     _pedidoActual.pagado = pagado;
+    getPedidos();
+    }catch(e){}
+  }
+
+  setEstadoEntrega(value){
+    try{
+    _repository.setEstadoEntrega(_pedidoActual.idPedido, value);
+    _pedidoActual.estado = value;
     getPedidos();
     }catch(e){}
   }
@@ -85,4 +105,8 @@ class PedidoNotifier with ChangeNotifier {
     _pedidoActual = pedidoActual;
     notifyListeners();
   }
+  
+    UnmodifiableListView get getEstadoEntrega =>
+      UnmodifiableListView(_estadoEntrega);
+
 }

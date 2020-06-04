@@ -36,6 +36,8 @@ abstract class Repository {
 
   StreamSubscription<QuerySnapshot> getPedidos();
 
+  StreamSubscription<DocumentSnapshot> getEstadoEntrega();
+
   StreamSubscription<QuerySnapshot> getCategorias();
 
   StreamSubscription<DocumentSnapshot> getClientePedido(String idCliente);
@@ -45,6 +47,10 @@ abstract class Repository {
   // Future<DocumentSnapshot> getClienteSpecific(String id);
 
   Future<void> setPagado(String idPedido, bool pagado);
+  
+  Future<void> setEstadoEntrega(String idPedido, String value);
+  
+  Future<void> setAutenticado(String idCliente, bool autenticado);
 
   Future<void> addNewProducto(Producto newProducto);
   
