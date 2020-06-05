@@ -1,18 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:kosherparatodos/src/Widget/title_text.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/provider/categoria_notifier.dart';
+import 'package:kosherparatodos/src/pages/admin_pages/provider/producto_notifier.dart';
 import 'package:kosherparatodos/style/theme.dart' as MyTheme;
 import 'package:provider/provider.dart';
 
 // ignore: must_be_immutable
 class CategoriaCheckboxWidget extends StatelessWidget {
+  final bool esProducto;
+
+  const CategoriaCheckboxWidget({Key key, this.esProducto}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    CategoriaNotifier categoria =
-        Provider.of<CategoriaNotifier>(context);
+    CategoriaNotifier categoria = Provider.of<CategoriaNotifier>(context);
+    ProductoNotifier producto = Provider.of<ProductoNotifier>(context);
     return OutlineButton(
       onPressed: () {
-        showDialog(context: context, builder: (BuildContext context) => CategoriaDialog(categoria: categoria,));
+        showDialog(
+            context: context,
+            builder: (BuildContext context) => CategoriaDialog(
+                  categoria: categoria,
+                  producto: producto,
+                  esProducto: esProducto,
+                ));
       },
       textColor: MyTheme.Colors.dark,
       child: Text('Categorias'),
@@ -21,16 +31,22 @@ class CategoriaCheckboxWidget extends StatelessWidget {
 }
 
 class CategoriaDialog extends StatefulWidget {
-  CategoriaDialog({Key key, this.categoria}) : super(key: key);
-final CategoriaNotifier categoria;
+  CategoriaDialog({Key key, this.categoria, this.producto, this.esProducto})
+      : super(key: key);
+  final CategoriaNotifier categoria;
+  final ProductoNotifier producto;
+  final bool esProducto;
   @override
-  _CategoriaDialogState createState() => _CategoriaDialogState(categoria);
+  _CategoriaDialogState createState() =>
+      _CategoriaDialogState(categoria, producto, esProducto);
 }
 
 class _CategoriaDialogState extends State<CategoriaDialog> {
   final CategoriaNotifier categoria;
+  final ProductoNotifier producto;
+  final bool esProducto;
 
-  _CategoriaDialogState(this.categoria);
+  _CategoriaDialogState(this.categoria, this.producto, this.esProducto);
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -55,11 +71,20 @@ class _CategoriaDialogState extends State<CategoriaDialog> {
                         CheckboxListTile(
                       value: categoria.categoriaList[index].selected,
                       onChanged: (bool val) {
+                        esProducto == true
+                            ? val == true
+                                ? producto.categoriaString.add(
+                                    categoria.categoriaList[index].categoriaID)
+                                : producto.categoriaString.remove(
+                                    categoria.categoriaList[index].categoriaID)
+                            : val == true
+                                ? categoria.categoriaString.add(
+                                    categoria.categoriaList[index].categoriaID)
+                                : categoria.categoriaString.remove(
+                                    categoria.categoriaList[index].categoriaID);
                         categoria.changeSelected(
-                            categoria.categoriaList[index].idCategoria, val);
-                            setState(() {
-                              
-                            });
+                            categoria.categoriaList[index].categoriaID, val);
+                        setState(() {});
                       },
                       title: Text(categoria.categoriaList[index].nombre),
                     ),

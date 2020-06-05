@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:kosherparatodos/src/models/categoria.dart';
 import 'package:kosherparatodos/src/models/pedido.dart';
 import 'package:kosherparatodos/src/models/producto.dart';
 // import 'package:kosherparatodos/src/repository/firestore_provider.dart';
@@ -54,9 +55,20 @@ abstract class Repository {
 
   Future<void> addNewProducto(Producto newProducto);
   
+  Future<void> addNewCategoria(Categoria newCategoria);
+  
   Future<void> deleteProducto(String idProducto);
 
   Future<void> setHabilitado(String idProducto, bool habilitado);
   
   Future<void> updateAllData(Producto producto);
+  
+  
+  Future getCategoriasPrincipal();
+  
+  Future getAllCategorias();
+  
+  Future getCategoriasHijos(String idPadre);
+  
+  Future getProductosFromHijoSelected(String idHijo);
 }

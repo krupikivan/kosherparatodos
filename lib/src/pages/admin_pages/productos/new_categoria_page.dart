@@ -2,37 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kosherparatodos/src/Widget/title_text.dart';
 import 'package:kosherparatodos/src/models/categoria.dart';
-import 'package:kosherparatodos/src/models/producto.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/provider/categoria_notifier.dart';
-import 'package:kosherparatodos/src/pages/admin_pages/provider/producto_notifier.dart';
 import 'package:kosherparatodos/style/theme.dart' as MyTheme;
 import 'package:kosherparatodos/src/Widget/new_categoria_on_producto_checkbox.dart';
 import 'package:provider/provider.dart';
 
-class NewProducto extends StatefulWidget {
+class NewCategoria extends StatefulWidget {
   @override
-  _NewProductoState createState() => _NewProductoState();
+  _NewCategoriaState createState() => _NewCategoriaState();
 }
 
-class _NewProductoState extends State<NewProducto> {
-  TextEditingController _codigoController;
-  TextEditingController _descripcionController;
-  TextEditingController _precioController;
-  TextEditingController _stockController;
-  TextEditingController _unidadMedidaController;
+class _NewCategoriaState extends State<NewCategoria> {
+  TextEditingController _nombreController;
 
 
-  bool _habilitado;
+  bool _esPadre;
 
 
   @override
   void initState() {
-    _codigoController = TextEditingController();
-    _descripcionController = TextEditingController();
-    _precioController = TextEditingController();
-    _stockController = TextEditingController();
-    _unidadMedidaController = TextEditingController();
-    _habilitado = false;
+    _nombreController = TextEditingController();
+    _esPadre = false;
     super.initState();
   }
 
@@ -42,7 +32,7 @@ class _NewProductoState extends State<NewProducto> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: MyTheme.Colors.dark,
-        title: Text('Nuevo producto'),
+        title: Text('Nueva Categoria'),
       ),
       body: Container(
         padding: EdgeInsets.all(20),
@@ -50,17 +40,13 @@ class _NewProductoState extends State<NewProducto> {
         child: ListView(
         shrinkWrap: true,
         children: <Widget>[
-          _getRow('Codigo:', _codigoController, false),
-          _getRow('Descripcion:', _descripcionController, false),
-          _getRow('Precio: \$', _precioController, true),
-          _getRow('Stock', _stockController, true),
-          _getRow('Unidad Mediad:', _unidadMedidaController, false),
+          _getRow('Nombre:', _nombreController, false),
           _getHabilitado(),
         ],
           ),
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => _addProduct(context),
+        onPressed: () => _addCategoria(context),
         label: Text('Agregar'),
         backgroundColor: MyTheme.Colors.dark,
       ),
@@ -83,8 +69,8 @@ class _NewProductoState extends State<NewProducto> {
           ),
           Expanded(
             flex: 2,
-            child: TextField(
-              onChanged: _setProductData(),
+            child: TextFormField(
+              onChanged: _setCategoriaData(),
               enabled: true,
               controller: controller,
               inputFormatters: isNum == true ? [WhitelistingTextInputFormatter.digitsOnly] : null,
@@ -118,16 +104,12 @@ class _NewProductoState extends State<NewProducto> {
   //   );
   // }
 
-  _setProductData(){
-    var producto = Provider.of<ProductoNotifier>(context, listen: false);
-    Producto nuevo = new Producto();
-    nuevo.codigo = _codigoController.text;
-    nuevo.descripcion = _descripcionController.text;
-    nuevo.precio = _precioController.text != "" ? double.parse(_precioController.text) : 0;
-    nuevo.stock = _stockController.text != "" ? int.parse(_stockController.text) : 0;
-    nuevo.unidadMedida = _unidadMedidaController.text;
-    nuevo.habilitado = _habilitado;
-    producto.creatingProducto(nuevo);
+  _setCategoriaData(){
+    var categoria = Provider.of<CategoriaNotifier>(context, listen: false);
+    Categoria nuevo = new Categoria();
+    nuevo.nombre = _nombreController.text;
+    nuevo.esPadre = _esPadre;
+    categoria.creatingCategoria(nuevo);
   }
 
   Widget _getHabilitado() {
@@ -136,34 +118,34 @@ class _NewProductoState extends State<NewProducto> {
       children: <Widget>[
         TitleText(
           text:
-              _habilitado == true ? 'Disponible' : 'No disponible',
+              _esPadre == true ? 'Es categoria padre' : 'No es categoria padre',
           fontSize: 15,
         ),
         IconButton(
           icon: Icon(
             Icons.check_circle,
-            color: _habilitado == true ? Colors.green : Colors.red,
+            color: _esPadre == true ? Colors.green : Colors.red,
           ),
           onPressed: () => _changeBool(),
         ),
-         CategoriaCheckboxWidget(esProducto: true,),
+         _esPadre == false ? CategoriaCheckboxWidget(esProducto: false) : SizedBox(height: 1,),
       ],
     );
   }
 
   _changeBool() {
-    if (_habilitado == true) {
-      _habilitado = false;
+    if (_esPadre == true) {
+      _esPadre = false;
       setState(() {});
     } else {
-      _habilitado = true;
+      _esPadre = true;
       setState(() {});
     }
   }
 
-  _addProduct(context) {
-    _setProductData();
-    Provider.of<ProductoNotifier>(context, listen: false).addNewProducto();
+  _addCategoria(context) {
+    _setCategoriaData();
+    Provider.of<CategoriaNotifier>(context, listen: false).addNewCategoria();
     Navigator.pop(context);
   }
 }

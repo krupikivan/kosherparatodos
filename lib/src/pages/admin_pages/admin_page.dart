@@ -5,7 +5,6 @@ import 'package:kosherparatodos/src/pages/admin_pages/clientes/cliente_page.dart
 import 'package:kosherparatodos/src/pages/admin_pages/navigation_bloc.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/pedidos/pedidos_page.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/productos/categoria_page.dart';
-import 'package:kosherparatodos/src/pages/admin_pages/productos/productos_page.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/provider/categoria_notifier.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/provider/cliente_notifier.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/provider/pedido_notifier.dart';
@@ -27,7 +26,7 @@ class AdminPage extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (context) => ClienteNotifier.init()),
         ChangeNotifierProvider(create: (context) => PedidoNotifier.init()),
-        ChangeNotifierProvider(create: (context) => ProductoNotifier.init()),
+        ChangeNotifierProvider(create: (context) => ProductoNotifier()),
         ChangeNotifierProvider(create: (context) => CategoriaNotifier.init()),
       ],
       child: MaterialApp(

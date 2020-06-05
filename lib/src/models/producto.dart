@@ -31,7 +31,7 @@ class Producto{
     habilitado = data['habilitado'];
     imagen = data['imagen'];
     precio = data['precio'].toDouble();
-    stock = data['stock'];
+    stock = data['stock'].toInt();
     unidadMedida = data['unidadMedida'];
   }
 

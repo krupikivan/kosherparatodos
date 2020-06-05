@@ -36,7 +36,7 @@ class ProductosPage extends StatelessWidget {
                     color: MyTheme.Colors.dark,
                   ),
                 ),
-                onRefresh: () => _refreshList(context),
+                onRefresh: () => /*_refreshList(context)*/null,
               ),
             ),
             Container(
@@ -73,7 +73,6 @@ Future<bool> _deleteProducto(String idPorducto, context1) async{
 }
 
   _goToDetails(context) {
-    // Provider.of<ProductoNotifier>(context, listen: false).getDetalleProducto();
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => ProductoDetailPage()));
   }
@@ -83,8 +82,7 @@ Future<bool> _deleteProducto(String idPorducto, context1) async{
         context, MaterialPageRoute(builder: (context) => NewProducto()));
   }
 
-  Future<void> _refreshList(context) async {
-    Provider.of<ProductoNotifier>(context, listen: false).getProductos();
-
-}
+//   Future<void> _refreshList(context) async {
+//     Provider.of<ProductoNotifier>(context, listen: false).getProductos();
+// }
 }

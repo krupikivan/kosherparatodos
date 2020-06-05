@@ -7,14 +7,11 @@ import 'package:kosherparatodos/src/repository/repo.dart';
 class ProductoNotifier with ChangeNotifier {
   final Repository _repository = FirestoreProvider();
 
-  List<Producto> _productoList = [];
-  Producto _productoActual;
-  UnmodifiableListView<Producto> get productoList =>
-      UnmodifiableListView(_productoList);
 
-  ProductoNotifier.init() {
-    getProductos();
-  }
+
+  // ProductoNotifier.init() {
+  //   getProductos();
+  // }
 
   updateAllData(){
     _repository.updateAllData(_productoActual);
@@ -28,17 +25,20 @@ class ProductoNotifier with ChangeNotifier {
     return cantidad * precio;
   }
 
-  // addNewProducto(String nombre, String descripcion, double precio,
-      // bool habilitado, List<Opcion> list) {
-    // Producto _newProd = Producto.newProducto(nombre, descripcion, precio, habilitado, list);
-    // _repository.addNewProducto(_newProd);
-  // }
+  addNewProducto() {
+    _repository.addNewProducto(_productoNuevo).whenComplete(() => _clearProductoNuevo());
+  }
+  _clearProductoNuevo(){
+    _categoriaString.clear();
+    _productoNuevo = null;
+  }
 
-  getProductos() {
+  //-------------Se ejecuta cuando selecciono una categoria hijo para traer los productos
+  getProductos(String categoriaHijoId) {
+    _productoList.clear();
     List<Producto> _list = [];
-    _repository.getProductList().onData((listProd) {
+    _repository.getProductosFromHijoSelected(categoriaHijoId).then((listProd) {
       _list.clear();
-
       listProd.documents.forEach((producto) {
         Producto _producto =
             Producto.fromGetProductos(producto.data, producto.documentID);
@@ -49,18 +49,36 @@ class ProductoNotifier with ChangeNotifier {
 
     });
   }
+  
+  // getProductosFromHijoSelected(String idHijo) {
+  //   List<Producto> _list = [];
+  //   _repository.getProductosFromHijoSelected(idHijo).then((listProd) {
+  //     _list.clear();
+  //     listProd.documents.forEach((producto) {
+  //       Producto _producto =
+  //           Producto.fromGetProductos(producto.data, producto.documentID);
+  //       _list.add(_producto);
+  //       _productoList = _list;
+  //       notifyListeners();
+  //     });
+
+  //   });
+  // }
 
   setHabilitado(){
     bool hab = _productoActual.habilitado == true ? false : true;
     try{
     _repository.setHabilitado(_productoActual.productoID, hab);
     _productoActual.habilitado = hab;
-    getProductos();
+    notifyListeners();
     }catch(e){}
   }
 
   setData(tipo, name){
     switch(tipo){
+      case 'C': _productoActual.codigo = name;
+                notifyListeners();
+        break;
       case 'D': _productoActual.descripcion = name;
                 notifyListeners();
         break;
@@ -106,23 +124,69 @@ class ProductoNotifier with ChangeNotifier {
   //   });
   // }
 
+  creatingProducto(Producto nuevo){
+    _productoNuevo = nuevo;
+    _productoNuevo.categorias = _categoriaString;
+    // notifyListeners();
+  }
+
   deleteProducto(String idProducto) {
     try {
       _repository.deleteProducto(idProducto);
       _productoList.retainWhere((element) => element.productoID == idProducto);
-      getProductos();
+      // getProductos();
     } catch (e) {}
   }
 
-  Producto get productoActual => _productoActual;
-
+//---------------------------Todos los productos
+  List<Producto> _productoList = [];
+  UnmodifiableListView<Producto> get productoList =>
+      UnmodifiableListView(_productoList);
   set productoList(List<Producto> productoList) {
     _productoList = productoList;
     notifyListeners();
   }
 
+//---------------------------Producto que estoy viendo
+  Producto _productoActual;
+  Producto get productoActual => _productoActual;
   set productoActual(Producto productoActual) {
     _productoActual = productoActual;
     notifyListeners();
   }
+
+//---------------------------Producto que estoy creando
+  Producto _productoNuevo;
+  Producto get productoNuevo => _productoNuevo;
+  set productoNuevo(Producto productoNuevo) {
+    _productoNuevo = productoNuevo;
+    notifyListeners();
+  }
+
+//---------------------------Categorias string para el producto nuevo
+  List<String> _categoriaString = [];
+  List<String> get categoriaString => _categoriaString;
+  set categoriaString(List<String> categoriaString) {
+    _categoriaString = categoriaString;
+    notifyListeners();
+  }
+
+// //---------------------------Los Productos de la categoria hijo seleccionada
+//   List<Producto> _productoCategoriaList = [];
+//   UnmodifiableListView<Producto> get productoCategoriaList =>
+//       UnmodifiableListView(_productoCategoriaList);
+//   set productoCategoriaList(List<Producto> prodList) {
+//     _productoCategoriaList = prodList;
+//     notifyListeners();
+//   }
+
+// //---------------------------Producto seleccionada luego de listar los productos de categoria hijo
+//   Producto _productoCategoriaActual;
+//   Producto get productoCategoriaActual => _productoCategoriaActual;
+//   set productoCategoriaActual(Producto productoActual) {
+//     _productoCategoriaActual = productoActual;
+//     notifyListeners();
+//   }
+
+
 }

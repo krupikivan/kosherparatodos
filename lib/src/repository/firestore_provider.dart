@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:kosherparatodos/src/models/categoria.dart';
 import 'package:kosherparatodos/src/models/pedido.dart';
 import 'package:kosherparatodos/src/models/producto.dart';
 import 'package:kosherparatodos/src/repository/repo.dart';
@@ -183,7 +184,7 @@ class FirestoreProvider implements Repository {
 
 
   Future<void> addNewProducto(Producto newProducto) async {
-    await _firestore.collection('producto').add({
+    await _firestore.collection('productos').add({
       'categorias': newProducto.categorias,
       'codigo': newProducto.codigo,
       'descripcion': newProducto.descripcion,
@@ -194,8 +195,33 @@ class FirestoreProvider implements Repository {
       'unidadMedida': newProducto.unidadMedida,
     });
   }
+  
+  Future<void> addNewCategoria(Categoria newCategoria) async {
+    await _firestore.collection('categorias').add({
+      'ancestro': newCategoria.ancestro,
+      'nombre': newCategoria.nombre,
+      'esPadre': newCategoria.esPadre,
+    });
+  }
 
   Future<void> deleteProducto(String idProducto) async {
     await _firestore.collection('producto').document(idProducto).delete();
   }
+
+  Future getCategoriasPrincipal() async{
+    return await _firestore.collection('categoriasMostradas').document('Zx7PmrGsLt4dGfUumgE0').get();
+  }
+
+  Future getAllCategorias() async{
+    return await _firestore.collection('categorias').where('esPadre', isEqualTo: false).getDocuments();
+  }
+
+  Future getCategoriasHijos(String idPadre) async{
+    return await _firestore.collection('categorias').where('ancestro', arrayContains: idPadre).getDocuments();
+  }
+
+  Future getProductosFromHijoSelected(String idHijo) async{
+    return await _firestore.collection('productos').where('categorias', arrayContains: idHijo).getDocuments();
+  }
+
 }

@@ -7,11 +7,8 @@ import 'package:provider/provider.dart';
 import 'package:kosherparatodos/style/theme.dart' as MyTheme;
 
 class ProductoDetailPage extends StatelessWidget {
-//   @override
-//   _ProductoDetailPageState createState() => _ProductoDetailPageState();
-// }
 
-// class _ProductoDetailPageState extends State<ProductoDetailPage> {
+  TextEditingController _codigoController;
   TextEditingController _descripcionController;
   TextEditingController _stockController;
   TextEditingController _precioController;
@@ -25,65 +22,65 @@ class ProductoDetailPage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: MyTheme.Colors.dark,
       ),
-      body: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Expanded(
-              flex: 1,
-              child: Padding(
-                padding: EdgeInsets.all(10),
-                child: TitleText(
+      body: ListView(
+      scrollDirection: Axis.vertical,
+      shrinkWrap: true,
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.only(top: 10, left: 10, right: 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                TitleText(
                   text: 'Datos del producto',
                   fontSize: 20,
                   fontWeight: FontWeight.w700,
                 ),
-              ),
+                CircleAvatar(
+                  backgroundImage: NetworkImage(producto.productoActual.imagen),
+                  radius: 40,
+                ),
+              ],
             ),
-            Expanded(
-              flex: 1,
-              child: ListTile(
-                title: Text(_descripcionController.text),
-                subtitle: Text('Descripcion'),
-                leading: Icon(Icons.edit),
-                onTap: () => _editData(
-                    'Descripcion', _descripcionController, context, 'D'),
-              ),
-            ),
-            Expanded(
-              flex: 1,
-              child: ListTile(
-                title: Text(_umController.text),
-                subtitle: Text('Unidad medida'),
-                leading: Icon(Icons.edit),
-                onTap: () => _editData(
-                    'Unidad Medida', _umController, context, 'UM'),
-              ),
-            ),
-            Expanded(
-              flex: 1,
-              child: ListTile(
-                title: Text(_stockController.text),
-                subtitle: Text('Stock'),
-                leading: Icon(Icons.edit),
-                onTap: () => _editData('Stock', _stockController,
-                    context, 'S'),
-              ),
-            ),
-            producto.productoActual.precio == 0.0
-                ? Container()
-                : ListTile(
-                    title: Text('\$' + _precioController.text.toString()),
-                    subtitle: Text('Precio unitario'),
-                    leading: Icon(Icons.edit),
-                    onTap: () => _editData('Precio unitario', _precioController,
-                        context, 'P'),
-                  ),
-            Expanded(
-              flex: 1,
-              child: _getEstado(context),
-            ),
-          ],
-      ),
+          ),
+          ListTile(
+            title: Text(_codigoController.text),
+            subtitle: Text('Codigo'),
+            leading: Icon(Icons.edit),
+            onTap: () => _editData(
+                'Codigo', _codigoController, context, 'C'),
+          ),
+          ListTile(
+            title: Text(_descripcionController.text),
+            subtitle: Text('Descripcion'),
+            leading: Icon(Icons.edit),
+            onTap: () => _editData(
+                'Descripcion', _descripcionController, context, 'D'),
+          ),
+          ListTile(
+            title: Text(_umController.text),
+            subtitle: Text('Unidad medida'),
+            leading: Icon(Icons.edit),
+            onTap: () => _editData(
+                'Unidad Medida', _umController, context, 'UM'),
+          ),
+          ListTile(
+            title: Text(_stockController.text),
+            subtitle: Text('Stock'),
+            leading: Icon(Icons.edit),
+            onTap: () => _editData('Stock', _stockController,
+                context, 'S'),
+          ),
+          ListTile(
+                  title: Text('\$' + _precioController.text.toString()),
+                  subtitle: Text('Precio unitario'),
+                  leading: Icon(Icons.edit),
+                  onTap: () => _editData('Precio unitario', _precioController,
+                      context, 'P'),
+                ),
+          _getEstado(context),
+        ],
+        ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => _updateAllData(context),
         label: Text('Guardar'),
@@ -182,6 +179,8 @@ class ProductoDetailPage extends StatelessWidget {
   }
 
   _fillControllerData(ProductoNotifier producto) {
+    _codigoController =
+        TextEditingController(text: producto.productoActual.codigo);
     _descripcionController =
         TextEditingController(text: producto.productoActual.descripcion);
     _umController =
