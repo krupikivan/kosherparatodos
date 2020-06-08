@@ -71,7 +71,9 @@ class ProductoNotifier with ChangeNotifier {
       _repository.setHabilitado(_productoActual.productoID, habilitado: hab);
       _productoActual.habilitado = hab;
       notifyListeners();
-    } catch (e) {}
+    } catch (e) {
+      print(e);
+    }
   }
 
   void setData(String tipo, String name) {
@@ -111,7 +113,9 @@ class ProductoNotifier with ChangeNotifier {
       _repository.deleteProducto(idProducto);
       _productoList.retainWhere((element) => element.productoID == idProducto);
       // getProductos();
-    } catch (e) {}
+    } catch (e) {
+      print(e);
+    }
   }
 
 //---------------------------Todos los productos

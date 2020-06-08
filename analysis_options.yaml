@@ -4,19 +4,18 @@ linter:
   rules:
     - parameter_assignments
     - unnecessary_overrides
-    - always_declare_return_types
+    # - always_declare_return_types
     - avoid_function_literals_in_foreach_calls
     # prefer_const_constructors: false
-    # - argument_type_not_assignable
 
 analyzer:
   errors:
     missing_required_param: info
     parameter_assignments: warning
     unnecessary_overrides: warning
-    always_declare_return_types: warning
-    argument_type_not_assignable: warning
-    map_value_type_not_assignable: warning
+    always_declare_return_types: false
+    argument_type_not_assignable: false
+    map_value_type_not_assignable: false
     prefer_const_constructors: false
     unnecessary_new: false
     avoid_print: false

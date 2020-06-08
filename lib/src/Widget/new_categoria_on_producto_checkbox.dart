@@ -37,16 +37,15 @@ class CategoriaDialog extends StatefulWidget {
   final ProductoNotifier producto;
   final bool esProducto;
   @override
-  _CategoriaDialogState createState() =>
-      _CategoriaDialogState(categoria, producto, esProducto);
+  _CategoriaDialogState createState() => _CategoriaDialogState();
 }
 
 class _CategoriaDialogState extends State<CategoriaDialog> {
-  final CategoriaNotifier categoria;
-  final ProductoNotifier producto;
-  final bool esProducto;
+  // final CategoriaNotifier categoria;
+  // final ProductoNotifier producto;
+  // final bool esProducto;
 
-  _CategoriaDialogState(this.categoria, this.producto, this.esProducto);
+  // _CategoriaDialogState(this.categoria, this.producto, {this.esProducto});
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -58,7 +57,6 @@ class _CategoriaDialogState extends State<CategoriaDialog> {
           children: <Widget>[
             TitleText(
               text: 'Agregar categoria',
-              fontSize: 18,
             ),
             Row(
               children: <Widget>[
@@ -66,27 +64,30 @@ class _CategoriaDialogState extends State<CategoriaDialog> {
                   flex: 4,
                   child: ListView.builder(
                     shrinkWrap: true,
-                    itemCount: categoria.categoriaList.length,
+                    itemCount: widget.categoria.categoriaList.length,
                     itemBuilder: (BuildContext context, int index) =>
                         CheckboxListTile(
-                      value: categoria.categoriaList[index].selected,
+                      value: widget.categoria.categoriaList[index].selected,
                       onChanged: (bool val) {
-                        esProducto == true
+                        widget.esProducto == true
                             ? val == true
-                                ? producto.categoriaString.add(
-                                    categoria.categoriaList[index].categoriaID)
-                                : producto.categoriaString.remove(
-                                    categoria.categoriaList[index].categoriaID)
+                                ? widget.producto.categoriaString.add(widget
+                                    .categoria.categoriaList[index].categoriaID)
+                                : widget.producto.categoriaString.remove(widget
+                                    .categoria.categoriaList[index].categoriaID)
                             : val == true
-                                ? categoria.categoriaString.add(
-                                    categoria.categoriaList[index].categoriaID)
-                                : categoria.categoriaString.remove(
-                                    categoria.categoriaList[index].categoriaID);
-                        categoria.changeSelected(
-                            categoria.categoriaList[index].categoriaID, val);
+                                ? widget.categoria.categoriaString.add(widget
+                                    .categoria.categoriaList[index].categoriaID)
+                                : widget.categoria.categoriaString.remove(widget
+                                    .categoria
+                                    .categoriaList[index]
+                                    .categoriaID);
+                        widget.categoria.changeSelected(
+                            widget.categoria.categoriaList[index].categoriaID,
+                            val);
                         setState(() {});
                       },
-                      title: Text(categoria.categoriaList[index].nombre),
+                      title: Text(widget.categoria.categoriaList[index].nombre),
                     ),
                   ),
                 ),

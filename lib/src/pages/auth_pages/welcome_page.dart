@@ -57,13 +57,11 @@ class _WelcomePageState extends State<WelcomePage> {
           padding: EdgeInsets.symmetric(horizontal: 20),
           height: MediaQuery.of(context).size.height,
           decoration: new BoxDecoration(
-            gradient: new LinearGradient(
-                colors: [MyTheme.Colors.accent, MyTheme.Colors.primary],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                stops: [0.15, 1.0],
-                tileMode: TileMode.clamp),
-          ),
+              gradient: new LinearGradient(
+                  colors: [MyTheme.Colors.accent, MyTheme.Colors.primary],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  stops: const [0.15, 1.0])),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceAround,

@@ -118,7 +118,9 @@ class _ProductoItemWidgetState extends State<ProductoItemWidget> {
                           fillColor: Colors.white,
                           elevation: 0,
                           onPressed: () => blocPedidoVigente.updateCarrito(
-                              widget.producto, _cantidad),
+                              widget.producto,
+                              _cantidad,
+                              widget.producto.stock),
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.center,

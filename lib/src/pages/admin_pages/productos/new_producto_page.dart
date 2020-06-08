@@ -35,7 +35,9 @@ class _NewProductoState extends State<NewProducto> {
 
   @override
   Widget build(BuildContext context) {
-    Provider.of<CategoriaNotifier>(context, listen: false).getAllCategorias;
+    final CategoriaNotifier cateNot =
+        Provider.of<CategoriaNotifier>(context, listen: false);
+    cateNot.getAllCategorias();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: MyTheme.Colors.accent,

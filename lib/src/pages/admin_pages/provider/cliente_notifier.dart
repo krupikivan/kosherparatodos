@@ -46,7 +46,9 @@ class ClienteNotifier with ChangeNotifier {
           autenticado: autenticado);
       _clienteActual.estaAutenticado = autenticado;
       getClientes();
-    } catch (e) {}
+    } catch (e) {
+      print(e);
+    }
   }
 
   List<Pedido> _pedidoList = [];

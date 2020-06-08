@@ -15,8 +15,9 @@ class PedidoVigenteBloc {
   Function(Pedido) get addPedido => _pedidoVigente.sink.add;
 
 //  Actualizando el carrito de compra
-  void updateCarrito(Producto producto, int cantidad) {
-    final Detalle detalle = Detalle.fromUpdateCarrito(producto, cantidad);
+  void updateCarrito(Producto producto, int cantidad, int stockActual) {
+    final Detalle detalle =
+        Detalle.fromUpdateCarrito(producto, cantidad, stockActual);
     //    if (pedido.productos == null) {
     //   pedido.productos = [];
     // }
@@ -27,7 +28,7 @@ class PedidoVigenteBloc {
       pedido.productos.add(detalle);
       getPedidoTotal();
     } else {
-      Detalle found = pedido.productos
+      final found = pedido.productos
           .firstWhere((value) => value.productoID == detalle.productoID);
       found.cantidad = cantidad;
     }
@@ -35,7 +36,7 @@ class PedidoVigenteBloc {
   }
 
 //  Seteamos el pedido vigente a un pedido vacio
-  void clearPedido() {
+  clearPedido() {
     pedido = Pedido();
     addPedido(pedido);
   }
@@ -66,12 +67,16 @@ class PedidoVigenteBloc {
   }
 
 //  Realiza el pedido y lo guarda en Firebase
-  void realizarPedido() {
-    try {
-      _repo
-          .addNewPedido(pedido, blocUserData.getClienteLogeado())
-          .whenComplete(() => clearPedido());
-    } catch (e) {}
+  Future realizarPedido() async {
+    await _repo.addNewPedido(pedido, blocUserData.getClienteLogeado()).then(
+        (value) => true,
+        onError: (onError) => _handlingError('No hay stock -Pedido Vigente-'));
+    // .catchError(() => _handlingError('Error on Catch error'))
+    // .whenComplete(() => clearPedido());
+  }
+
+  _handlingError(String msg) {
+    throw Exception(msg);
   }
 
   void dispose() async {

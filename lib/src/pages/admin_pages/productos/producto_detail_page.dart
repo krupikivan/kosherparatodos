@@ -94,7 +94,6 @@ class ProductoDetailPage extends StatelessWidget {
         text: producto.productoActual.habilitado == true
             ? 'Habilitado para el cliente'
             : 'Deshabilitado para el cliente',
-        color: MyTheme.Colors.accent,
         fontSize: 14,
         fontWeight: FontWeight.w500,
       ),

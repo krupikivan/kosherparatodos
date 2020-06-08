@@ -15,7 +15,7 @@ class Categoria {
 
   Categoria.fromFirebase(Map<String, dynamic> data, this.categoriaID) {
     nombre = data['nombre'] as String;
-    ancestro = getAncestrosList(data['ancestro'] as List);
+    ancestro = getAncestrosList(data['ancestro'] as List<String>);
     selected = false;
     esPadre = data['esPadre'] as bool;
   }

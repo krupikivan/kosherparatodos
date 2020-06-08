@@ -16,7 +16,7 @@ class ProductosBloc {
   List<ItemPedido> listOpciones = [];
 
 //  Trae los productos habilitados para el cliente
-  getProductosHabilitados() {
+  void getProductosHabilitados() {
     list.clear();
     _repository.getProductosHabilitados().then((doc) {
       for (int i = 0; i < doc.documents.length; i++) {

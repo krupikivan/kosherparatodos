@@ -8,7 +8,7 @@ class Pedido {
   String estado;
   Timestamp fecha;
   bool pagado;
-  List<Detalle> productos;
+  List productos;
   double total;
 
   Pedido({
@@ -34,13 +34,13 @@ class Pedido {
     estado = data['estado'] as String;
     fecha = data['fecha'] as Timestamp;
     pagado = data['pagado'] as bool;
-    productos = getProductosList(data['productos'] as List<Detalle>);
+    productos = getProductosList(data['productos']);
     total = data['total'].toDouble() as double;
   }
 
-  List<Detalle> getProductosList(List<Map<String, dynamic>> list) {
-    final List<Detalle> _list = [];
-    for (Map detalle in list) {
+  List getProductosList(List list) {
+    final List _list = [];
+    for (var detalle in list) {
       _list.add(Detalle.fromGetPedidos(detalle));
     }
     return _list;
@@ -52,12 +52,14 @@ class Detalle {
   String descripcion;
   String productoID;
   double precio;
+  int stockActual;
 
   Detalle({
     this.cantidad,
     this.descripcion,
     this.productoID,
     this.precio,
+    this.stockActual,
   });
 
   Detalle.fromGetPedidos(Map<String, dynamic> data) {
@@ -67,7 +69,8 @@ class Detalle {
     precio = data['precio'].toDouble() as double;
   }
 
-  Detalle.fromUpdateCarrito(Producto producto, this.cantidad) {
+  Detalle.fromUpdateCarrito(
+      Producto producto, this.cantidad, this.stockActual) {
     descripcion = producto.descripcion;
     precio = producto.precio;
     productoID = producto.productoID;

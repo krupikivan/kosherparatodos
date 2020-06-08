@@ -29,7 +29,8 @@ class _SignUpPageState extends State<SignUpPage> {
     _password = TextEditingController(text: "");
   }
 
-  Widget _entryField(String title, controller, {bool isPassword = false}) {
+  Widget _entryField(String title, TextEditingController controller,
+      {bool isPassword = false}) {
     return TextFormField(
         obscureText: isPassword,
         controller: controller,

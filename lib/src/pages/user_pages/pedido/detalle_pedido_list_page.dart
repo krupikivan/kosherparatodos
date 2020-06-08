@@ -50,13 +50,11 @@ class DetallePedidoListPage extends StatelessWidget {
   }
 
   Widget _noHayPedidos() {
-    return Container(
-      child: const Center(
-          child: Text(
-        'No tiene pedidos',
-        style: TextStyle(fontSize: 20),
-      )),
-    );
+    return const Center(
+        child: Text(
+      'No tiene pedidos',
+      style: TextStyle(fontSize: 20),
+    ));
   }
 
   Widget _getTotal() {
@@ -97,10 +95,19 @@ class DetallePedidoListPage extends StatelessWidget {
                       FlatButton(
                           onPressed: () {
                             if (snapshot.data.total != 0.0) {
-                              blocPedidoVigente.realizarPedido();
-                              ShowToast().show('Exito!', 5);
+                              blocPedidoVigente
+                                  .realizarPedido()
+                                  .then(
+                                    (value) => _showLoading(),
+                                    /*onError: (onError) => _showStockOut()*/
+                                  )
+                                  .catchError((onError) => _showStockOut())
+                                  .whenComplete(() {
+                                blocPedidoVigente.clearPedido();
+                                _showSuccess();
+                              });
                             } else {
-                              ShowToast().show('El pedido esta vacio', 5);
+                              _showPedidoVacio();
                             }
                           },
                           shape: RoundedRectangleBorder(
@@ -133,6 +140,22 @@ class DetallePedidoListPage extends StatelessWidget {
                   );
           }
         });
+  }
+
+  _showSuccess() {
+    ShowToast().show('Exitoso!', 5);
+  }
+
+  _showLoading() {
+    ShowToast().show('Realizando pedido', 5);
+  }
+
+  _showStockOut() {
+    ShowToast().show('No hay stock disponible', 5);
+  }
+
+  _showPedidoVacio() {
+    ShowToast().show('El pedido esta vacio', 5);
   }
 
   @override

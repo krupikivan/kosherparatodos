@@ -7,15 +7,16 @@ import 'package:kosherparatodos/style/theme.dart' as MyTheme;
 
 class PedidoDetailPage extends StatelessWidget {
   @override
-  Widget build(context) {
-    PedidoNotifier pedido = Provider.of<PedidoNotifier>(context);
+  Widget build(BuildContext context) {
+    final PedidoNotifier pedido = Provider.of<PedidoNotifier>(context);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: MyTheme.Colors.accent,
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text('Cliente: ${pedido.pedidoActual.cliente.nombre.nombre} ${pedido.pedidoActual.cliente.nombre.apellido}'),
+            Text(
+                'Cliente: ${pedido.pedidoActual.cliente.nombre.nombre} ${pedido.pedidoActual.cliente.nombre.apellido}'),
             Text(
               'Fecha: ${convert.getFechaFromTimestamp(pedido.pedidoActual.fecha)}',
               style: TextStyle(fontSize: 10),
@@ -34,14 +35,15 @@ class PedidoDetailPage extends StatelessWidget {
                     itemCount: pedido.pedidoActual.productos.length,
                     itemBuilder: (BuildContext context, int index) {
                       return ListTile(
-                        title: Text('${pedido.pedidoActual.productos[index].cantidad} x ${pedido.pedidoActual.productos[index].descripcion}'),
-                        subtitle: Text('Precio unitario: \$${pedido.pedidoActual.productos[index].precio}'),
+                        title: Text(
+                            '${pedido.pedidoActual.productos[index].cantidad} x ${pedido.pedidoActual.productos[index].descripcion}'),
+                        subtitle: Text(
+                            'Precio unitario: \$${pedido.pedidoActual.productos[index].precio}'),
                       );
                     },
                   ),
           ),
           Expanded(
-            flex: 1,
             child: Divider(
               height: 5,
               color: Colors.grey,
@@ -78,7 +80,6 @@ class PedidoDetailPage extends StatelessWidget {
           TitleText(
             color: MyTheme.Colors.white,
             text: 'Total:  \$${pedido.pedidoActual.total}',
-            fontSize: 18,
           ),
         ],
       ),
@@ -92,7 +93,6 @@ class PedidoDetailPage extends StatelessWidget {
       child: ListTile(
         title: TitleText(
           text: pedido.pedidoActual.pagado == true ? 'Pagado' : 'No Pagado',
-          color: MyTheme.Colors.accent,
           fontSize: 14,
           fontWeight: FontWeight.w500,
         ),

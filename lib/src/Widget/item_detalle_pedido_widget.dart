@@ -16,7 +16,7 @@ class ItemDetallePedidoWidget extends StatelessWidget {
             onPressed: () => blocPedidoVigente.removeOnPedido(item),
           ),
           title: Text(item.descripcion),
-          subtitle: Text(item.cantidad.toString() + ' unid.'),
+          subtitle: Text('${item.cantidad} unid.'),
           trailing: Container(
             width: 70,
             height: 70,

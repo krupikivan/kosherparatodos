@@ -30,11 +30,11 @@ class _LoginPageState extends State<LoginPage> {
     _password = TextEditingController(text: "");
   }
 
-  Widget _submitButton(user) {
+  Widget _submitButton(UserRepository user) {
     return MaterialButton(
       onPressed: () async {
         if (_formKey.currentState.validate()) {
-          await _signIn(user);
+          _signIn(user);
         }
       },
       color: MyTheme.Colors.secondary,
@@ -48,10 +48,10 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  _signIn(UserRepository user) async {
+  void _signIn(UserRepository user) async {
     try {
       await repo.isAuthenticated(_email.text).then((data) async {
-        if (data.documents.length == 0 ||
+        if (data.documents.isEmpty ||
             data.documents[0].data['estaAutenticado'] == true) {
           if (!await user.signIn(_email.text, _password.text)) {
             throw 'Ingreso incorrecto.';

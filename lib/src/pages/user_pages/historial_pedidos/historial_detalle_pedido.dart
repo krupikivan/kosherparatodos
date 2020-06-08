@@ -7,7 +7,8 @@ import 'package:kosherparatodos/style/theme.dart' as MyTheme;
 import 'bloc/bloc.dart';
 
 class HistorialDetallePedido extends StatelessWidget {
-  HistorialDetallePedido({Key key, this.pedidoID}) : super(key: key);
+  HistorialDetallePedido({Key key, this.pedidoID, this.pedidoSelected})
+      : super(key: key);
   final String pedidoID;
   Pedido pedidoSelected;
 
@@ -39,7 +40,8 @@ class HistorialDetallePedido extends StatelessWidget {
                           ListTile(
                         title:
                             Text(pedidoSelected.productos[index].descripcion),
-                        subtitle: Text('\$${pedidoSelected.productos[index].precio}'),
+                        subtitle:
+                            Text('\$${pedidoSelected.productos[index].precio}'),
                       ),
                     ),
             ),
@@ -50,7 +52,7 @@ class HistorialDetallePedido extends StatelessWidget {
         });
   }
 
-  Widget _bntExpanded(context, String estado) {
+  Widget _bntExpanded(BuildContext context, String estado) {
     return SpeedDial(
       marginRight: 10,
       visible: estado != 'Entregado' ? true : false,
@@ -83,7 +85,7 @@ class HistorialDetallePedido extends StatelessWidget {
         builder: (BuildContext context) => new DetallePedidoListPage()));
   }
 
-  _eliminarPedido(context) {
+  void _eliminarPedido(BuildContext context) {
     blocUserData.eliminarPedido(pedidoSelected);
     Navigator.pop(context);
     ShowToast().show('Pedido eliminado', 5);

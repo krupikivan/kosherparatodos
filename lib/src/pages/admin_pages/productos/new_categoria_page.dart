@@ -26,7 +26,9 @@ class _NewCategoriaState extends State<NewCategoria> {
 
   @override
   Widget build(BuildContext context) {
-    Provider.of<CategoriaNotifier>(context, listen: false).getAllCategorias;
+    final CategoriaNotifier cateNot =
+        Provider.of<CategoriaNotifier>(context, listen: false);
+    cateNot.getAllCategorias();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: MyTheme.Colors.accent,
@@ -59,7 +61,6 @@ class _NewCategoriaState extends State<NewCategoria> {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
           Expanded(
-            flex: 1,
             child: TitleText(
               text: name,
               fontSize: 15,

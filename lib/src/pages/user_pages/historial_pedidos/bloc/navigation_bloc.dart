@@ -1,7 +1,7 @@
 import 'dart:async';
 
 class NavigationDrawerBloc {
-  final navigationController = StreamController.broadcast();
+  final StreamController navigationController = StreamController.broadcast();
   NavigationProvider navigationProvider = new NavigationProvider();
 
   Stream get getNavigation => navigationController.stream;
@@ -16,13 +16,10 @@ class NavigationDrawerBloc {
   }
 }
 
-final blocNav = NavigationDrawerBloc();
-
+final NavigationDrawerBloc blocNav = NavigationDrawerBloc();
 
 class NavigationProvider {
   String currentNavigation = "Historial";
 
-  void updateNavigation(String navigation) {
-    currentNavigation = navigation;
-  }
+  void updateNavigation(String navigation) => currentNavigation = navigation;
 }

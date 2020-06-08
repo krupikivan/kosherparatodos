@@ -8,7 +8,7 @@ import 'package:rxdart/rxdart.dart';
 class ClienteDataBloc {
   final Repository _repository = FirestoreProvider();
   Cliente _clienteInfo;
-  List<Pedido> listPedido = List();
+  List<Pedido> listPedido = [];
   // Pedido pedidoSelected = Pedido();
 
 //---------------------------------Maneja los datos del cliente

@@ -26,7 +26,6 @@ class _CategoriaPageState extends State<CategoriaPage> {*/
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Expanded(
-                    flex: 1,
                     // child: RefreshIndicator(
                     child: GridView.builder(
                       shrinkWrap: true,

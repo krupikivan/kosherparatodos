@@ -46,7 +46,9 @@ class PedidoNotifier with ChangeNotifier {
       _repository.setPagado(_pedidoActual.pedidoID, pagado: pagado);
       _pedidoActual.pagado = pagado;
       getPedidos();
-    } catch (e) {}
+    } catch (e) {
+      print(e);
+    }
   }
 
   void setEstadoEntrega(String value) {
@@ -54,7 +56,9 @@ class PedidoNotifier with ChangeNotifier {
       _repository.setEstadoEntrega(_pedidoActual.pedidoID, value);
       _pedidoActual.estado = value;
       getPedidos();
-    } catch (e) {}
+    } catch (e) {
+      print(e);
+    }
   }
 
   Pedido get pedidoActual => _pedidoActual;

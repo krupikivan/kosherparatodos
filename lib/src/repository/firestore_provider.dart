@@ -17,7 +17,8 @@ class FirestoreProvider implements Repository {
         .document('rootUser')
         .get()
         .then((DocumentSnapshot value) {
-      for (int i = 0; i < value.data['userID'].length; i++) {
+      final int length = value.data['userID'].length as int;
+      for (int i = 0; i < length; i++) {
         if (value.data['userID'][i] == id) {
           return true;
         }
@@ -72,17 +73,33 @@ class FirestoreProvider implements Repository {
         'nombre': cliente.nombre.nombre,
         'apellido': cliente.nombre.apellido
       };
-      final Map<String, String> clienteMap = {
+      final Map<String, dynamic> clienteMap = {
         'clienteID': cliente.clienteID,
         'nombre': nombreMap,
       };
-      await _firestore.collection('pedidos').add({
-        'cliente': clienteMap,
-        'fecha': Timestamp.now(),
-        'pagado': false,
-        'estado': 'En Preparacion',
-        'total': pedido.total,
-        'productos': _addProductosToPedido(pedido.productos),
+      await _firestore.runTransaction((t) async {
+        for (var i = 0; i < pedido.productos.length; i++) {
+          final int cant = pedido.productos[i].cantidad as int;
+          final int stk = pedido.productos[i].stockActual as int;
+          if (cant > stk) {
+            throw Exception('No hay stock disponible');
+          }
+          await _firestore
+              .collection('productos')
+              .document(pedido.productos[i].productoID)
+              .updateData({
+            'stock':
+                pedido.productos[i].stockActual - pedido.productos[i].cantidad
+          });
+        }
+        await _firestore.collection('pedidos').add({
+          'cliente': clienteMap,
+          'fecha': Timestamp.now(),
+          'pagado': false,
+          'estado': 'En Preparacion',
+          'total': pedido.total,
+          'productos': _addProductosToPedido(pedido.productos),
+        });
       });
     }
   }
@@ -99,10 +116,10 @@ class FirestoreProvider implements Repository {
     });
   }
 
-  List<Map<String, dynamic>> _addProductosToPedido(List<Detalle> productos) {
+  List<Map<String, dynamic>> _addProductosToPedido(List productos) {
     final List<Map<String, dynamic>> _list = [];
     for (int i = 0; i < productos.length; i++) {
-      final Detalle det = productos[i];
+      var det = productos[i];
       _list.add(det.toFirebase());
     }
     return _list;

@@ -62,7 +62,7 @@ class UserRepository with ChangeNotifier {
   Future<void> signup(String name, String email, String password) async {
     _status = Status.Registering;
     notifyListeners();
-    return await _auth
+    return _auth
         .createUserWithEmailAndPassword(
       email: email,
       password: password,
