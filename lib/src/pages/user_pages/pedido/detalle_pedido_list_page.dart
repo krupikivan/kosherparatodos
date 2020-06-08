@@ -98,13 +98,14 @@ class DetallePedidoListPage extends StatelessWidget {
                               blocPedidoVigente
                                   .realizarPedido()
                                   .then(
-                                    (value) => _showLoading(),
-                                    /*onError: (onError) => _showStockOut()*/
+                                    (value){ _showLoading();
+                                     _showSuccess();
+                                    },
+                                    onError: (onError) => _showStockOut()
                                   )
-                                  .catchError((onError) => _showStockOut())
+                                  // .catchError((onError) => _showStockOut())
                                   .whenComplete(() {
                                 blocPedidoVigente.clearPedido();
-                                _showSuccess();
                               });
                             } else {
                               _showPedidoVacio();
