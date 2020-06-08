@@ -1,7 +1,5 @@
-
-class Producto{
-  
-  List<String> categorias;
+class Producto {
+  List categorias;
   String productoID;
   String codigo;
   String descripcion;
@@ -23,36 +21,49 @@ class Producto{
     this.unidadMedida,
   });
 
-  Producto.fromGetProductos(Map<String, dynamic> data, producto){
-    categorias = categoriaListFill(data['categorias']);
-    productoID = producto;
-    codigo = data['codigo'];
-    descripcion = data['descripcion'];
-    habilitado = data['habilitado'];
-    imagen = data['imagen'];
-    precio = data['precio'].toDouble();
-    stock = data['stock'].toInt();
-    unidadMedida = data['unidadMedida'];
+  Producto.fromTextEditingController({
+    this.productoID,
+    this.codigo,
+    this.descripcion,
+    this.habilitado,
+    this.imagen,
+    this.precio,
+    this.stock,
+    this.unidadMedida,
+  });
+
+  Producto.fromProductosCollection(Map<String, dynamic> data, this.productoID) {
+    categorias = categoriaListFill(data['categorias'] as List).cast<String>();
+    // productoID = producto;
+    codigo = data['codigo'] as String;
+    descripcion = data['descripcion'] as String;
+    habilitado = data['habilitado'] as bool;
+    imagen = data['imagen'] as String;
+    precio = data['precio'].toDouble() as double;
+    stock = data['stock'].toInt() as int;
+    unidadMedida = data['unidadMedida'] as String;
   }
 
-  categoriaListFill(List list){
-    List<String> _list = List();
-    for(var item in list){
+  List categoriaListFill(List list) {
+    final List<String> _list = [];
+    for (var item in list) {
       _list.add(item);
     }
     return _list;
   }
 
-  Producto.newProducto(cate, idProd, desc, hab, img, pre, stk, um){
-    categorias = cate;
-    productoID = idProd;
-    descripcion = desc;
-    habilitado = hab;
-    imagen = img;
-    precio = pre;
-    stock = stk;
-    unidadMedida = um;
-  }
+  Producto.newProducto(this.categorias, this.productoID, this.descripcion,
+      this.habilitado, this.imagen, this.precio, this.stock, this.unidadMedida);
+  // Producto.newProducto(List cate, String idProd, String desc, bool hab, String img, double pre, int stk, String um) {
+  //   categorias = cate;
+  //   productoID = idProd;
+  //   descripcion = desc;
+  //   habilitado = hab;
+  //   imagen = img;
+  //   precio = pre;
+  //   stock = stk;
+  //   unidadMedida = um;
+  // }
 
   // List<Opcion> getOpcionesList(List list){
   //   List<Opcion> _list = List();
@@ -64,8 +75,7 @@ class Producto{
 
 }
 
-class ItemPedido{
-
+class ItemPedido {
   int cantidad;
   String descripcion;
   double precio;
@@ -79,17 +89,23 @@ class ItemPedido{
   });
 
   ItemPedido.fromGetPedidos(Map<String, dynamic> data) {
-    cantidad = data['cantidad'];
-    descripcion = data['descripcion'];
-    precio = data['precio'];
-    productoID = data['productoID'];
+    cantidad = data['cantidad'] as int;
+    descripcion = data['descripcion'] as String;
+    precio = data['precio'] as double;
+    productoID = data['productoID'] as String;
   }
 
- Map<String, dynamic> toPedidoOnFirebase() => {
-    'cantidad': this.cantidad,
-    'descripcion': this.descripcion,
-    'precio': this.precio,
-    'productoID': this.productoID
- };
+  ItemPedido.fromUpdateCarrito(Producto producto, int cantidad) {
+    cantidad = cantidad;
+    descripcion = producto.descripcion;
+    precio = producto.precio;
+    productoID = producto.productoID;
+  }
 
+  Map<String, dynamic> toPedidoOnFirebase() => {
+        'cantidad': cantidad,
+        'descripcion': descripcion,
+        'precio': precio,
+        'productoID': productoID
+      };
 }

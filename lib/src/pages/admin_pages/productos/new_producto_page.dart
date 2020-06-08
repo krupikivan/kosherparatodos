@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kosherparatodos/src/Widget/title_text.dart';
-import 'package:kosherparatodos/src/models/categoria.dart';
 import 'package:kosherparatodos/src/models/producto.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/provider/categoria_notifier.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/provider/producto_notifier.dart';
@@ -21,9 +20,7 @@ class _NewProductoState extends State<NewProducto> {
   TextEditingController _stockController;
   TextEditingController _unidadMedidaController;
 
-
   bool _habilitado;
-
 
   @override
   void initState() {
@@ -38,38 +35,38 @@ class _NewProductoState extends State<NewProducto> {
 
   @override
   Widget build(BuildContext context) {
-    Provider.of<CategoriaNotifier>(context, listen: false).getAllCategorias();
+    Provider.of<CategoriaNotifier>(context, listen: false).getAllCategorias;
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: MyTheme.Colors.dark,
-        title: Text('Nuevo producto'),
+        backgroundColor: MyTheme.Colors.accent,
+        title: const Text('Nuevo producto'),
       ),
       body: Container(
-        padding: EdgeInsets.all(20),
-        margin: EdgeInsets.only(bottom: 20),
+        padding: const EdgeInsets.all(20),
+        margin: const EdgeInsets.only(bottom: 20),
         child: ListView(
-        shrinkWrap: true,
-        children: <Widget>[
-          _getRow('Codigo:', _codigoController, false),
-          _getRow('Descripcion:', _descripcionController, false),
-          _getRow('Precio: \$', _precioController, true),
-          _getRow('Stock', _stockController, true),
-          _getRow('Unidad Mediad:', _unidadMedidaController, false),
-          _getHabilitado(),
-        ],
-          ),
+          shrinkWrap: true,
+          children: <Widget>[
+            _getRow('Codigo:', _codigoController, false),
+            _getRow('Descripcion:', _descripcionController, false),
+            _getRow('Precio: \$', _precioController, true),
+            _getRow('Stock', _stockController, true),
+            _getRow('Unidad Mediad:', _unidadMedidaController, false),
+            _getHabilitado(),
+          ],
+        ),
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => _addProduct(context),
-        label: Text('Agregar'),
-        backgroundColor: MyTheme.Colors.dark,
+        label: const Text('Agregar'),
+        backgroundColor: MyTheme.Colors.accent,
       ),
     );
   }
 
   Widget _getRow(name, controller, isNum) {
     return Padding(
-      padding: EdgeInsets.only(bottom: 20),
+      padding: const EdgeInsets.only(bottom: 20),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -77,7 +74,7 @@ class _NewProductoState extends State<NewProducto> {
           Expanded(
             flex: 1,
             child: TitleText(
-              text: name,
+              text: name as String,
               fontSize: 15,
             ),
           ),
@@ -86,8 +83,10 @@ class _NewProductoState extends State<NewProducto> {
             child: TextField(
               onChanged: _setProductData(),
               enabled: true,
-              controller: controller,
-              inputFormatters: isNum == true ? [WhitelistingTextInputFormatter.digitsOnly] : null,
+              controller: controller as TextEditingController,
+              inputFormatters: isNum == true
+                  ? [WhitelistingTextInputFormatter.digitsOnly]
+                  : null,
               keyboardType: isNum == true ? TextInputType.number : null,
             ),
           ),
@@ -118,15 +117,19 @@ class _NewProductoState extends State<NewProducto> {
   //   );
   // }
 
-  _setProductData(){
-    var producto = Provider.of<ProductoNotifier>(context, listen: false);
-    Producto nuevo = new Producto();
-    nuevo.codigo = _codigoController.text;
-    nuevo.descripcion = _descripcionController.text;
-    nuevo.precio = _precioController.text != "" ? double.parse(_precioController.text) : 0;
-    nuevo.stock = _stockController.text != "" ? int.parse(_stockController.text) : 0;
-    nuevo.unidadMedida = _unidadMedidaController.text;
-    nuevo.habilitado = _habilitado;
+  _setProductData() {
+    final ProductoNotifier producto =
+        Provider.of<ProductoNotifier>(context, listen: false);
+    final Producto nuevo = Producto.fromTextEditingController(
+      codigo: _codigoController.text,
+      descripcion: _descripcionController.text,
+      precio: _precioController.text != ""
+          ? double.parse(_precioController.text)
+          : 0,
+      stock: _stockController.text != "" ? int.parse(_stockController.text) : 0,
+      unidadMedida: _unidadMedidaController.text,
+      habilitado: _habilitado,
+    );
     producto.creatingProducto(nuevo);
   }
 
@@ -135,8 +138,7 @@ class _NewProductoState extends State<NewProducto> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         TitleText(
-          text:
-              _habilitado == true ? 'Disponible' : 'No disponible',
+          text: _habilitado == true ? 'Disponible' : 'No disponible',
           fontSize: 15,
         ),
         IconButton(
@@ -146,12 +148,14 @@ class _NewProductoState extends State<NewProducto> {
           ),
           onPressed: () => _changeBool(),
         ),
-         CategoriaCheckboxWidget(esProducto: true,),
+        const CategoriaCheckboxWidget(
+          esProducto: true,
+        ),
       ],
     );
   }
 
-  _changeBool() {
+  void _changeBool() {
     if (_habilitado == true) {
       _habilitado = false;
       setState(() {});
@@ -161,7 +165,7 @@ class _NewProductoState extends State<NewProducto> {
     }
   }
 
-  _addProduct(context) {
+  void _addProduct(BuildContext context) {
     _setProductData();
     Provider.of<ProductoNotifier>(context, listen: false).addNewProducto();
     Navigator.pop(context);

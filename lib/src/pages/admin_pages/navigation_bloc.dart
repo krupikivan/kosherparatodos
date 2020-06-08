@@ -16,8 +16,7 @@ class NavigationDrawerBloc {
   }
 }
 
-final bloc = NavigationDrawerBloc();
-
+final NavigationDrawerBloc bloc = NavigationDrawerBloc();
 
 class NavigationProvider {
   String currentNavigation = "Clientes";

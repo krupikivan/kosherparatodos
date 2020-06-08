@@ -1,71 +1,72 @@
+import 'package:kosherparatodos/src/models/cliente.dart';
 import 'package:kosherparatodos/src/models/pedido.dart';
-import 'package:kosherparatodos/src/models/user_data.dart';
 import 'package:kosherparatodos/src/pages/user_pages/pedido/bloc/bloc.dart';
 import 'package:kosherparatodos/src/repository/firestore_provider.dart';
 import 'package:kosherparatodos/src/repository/repo.dart';
 import 'package:rxdart/rxdart.dart';
 
-class UserDataBloc {
-
+class ClienteDataBloc {
   final Repository _repository = FirestoreProvider();
-  String _userId;
+  Cliente _clienteInfo;
   List<Pedido> listPedido = List();
-  Pedido pedidoSelected = Pedido();
+  // Pedido pedidoSelected = Pedido();
 
+//---------------------------------Maneja los datos del cliente
+  final _clienteData = BehaviorSubject<Cliente>();
+  Observable<Cliente> get getCliente => _clienteData.stream;
+  Function(Cliente) get setCliente => _clienteData.sink.add;
 
-  final _docUserData = BehaviorSubject<UserData>();
-  Observable<UserData> get getUserData => _docUserData.stream;
-  Function(UserData) get addUserData => _docUserData.sink.add;
-
+//---------------------------------Maneja los pedidos del cliente
   final _pedidosList = BehaviorSubject<List<Pedido>>();
   Observable<List<Pedido>> get getListPedidos => _pedidosList.stream;
   Function(List<Pedido>) get addToPedidosList => _pedidosList.sink.add;
 
-  final _pedidoSelected = BehaviorSubject<Pedido>();
-  Observable<Pedido> get getPedidoSelected => _pedidoSelected.stream;
-  Function(Pedido) get addSelectPedido => _pedidoSelected.sink.add;
-
-  getUserId(){
-    return _userId;
+//  Retorna los datos del cliente logueado
+  Cliente getClienteLogeado() {
+    return _clienteInfo;
   }
 
-  getUserDataFromFirebase(uid) {
-    //Get from firebase
+//  Trae los datos del cliente logueado desde Firebase
+  void getUserDataFromFirebase(String uid) {
     _repository.getUserData(uid).listen((docUser) {
-      UserData userData = UserData.fromFirebase(docUser.data, docUser.documentID);
-      _userId = uid;
-      addUserData(userData);
-      _getPedidos(uid);
+      final Cliente cliente = Cliente.fromMap(docUser.data, docUser.documentID);
+      _clienteInfo = cliente;
+      setCliente(cliente);
+      getPedidos(uid);
     });
   }
 
-  _getPedidos(String uid) {
-    _repository.getPedido(uid).onData((value) {
+//  Trae los pedidos del cliente logueado con su detalle
+  void getPedidos(String uid) {
+    _repository.getPedidosCliente(uid).then((value) {
       listPedido.clear();
       for (int i = 0; i < value.documents.length; i++) {
-        Pedido pedido = Pedido.fromFirebase(value.documents[i].data, value.documents[i].documentID, uid);
+        final Pedido pedido = Pedido.fromFirebase(
+            value.documents[i].data, value.documents[i].documentID);
         listPedido.add(pedido);
       }
       addToPedidosList(listPedido);
     });
   }
 
-  addPedidoForEdit(){
-    blocPedidoVigente.addingPedidoForEdit(pedidoSelected);
+//  Se comunica con el bloc del pedido vigente y se carga en el carrito
+  void editarPedido(Pedido pedidoSelected) {
+    blocPedidoVigente.agregarPedidoParaEditar(pedidoSelected);
   }
 
-  deletePedido(){
-      _repository.deletePedido(pedidoSelected.idPedido);
+// Eliminamos el pedido desde el detalle del historial
+  void eliminarPedido(Pedido pedidoSelected) {
+    _repository
+        .eliminarPedido(pedidoSelected.pedidoID)
+        .then((value) => getPedidos(_clienteInfo.clienteID));
   }
 
   void dispose() async {
-    await _docUserData.drain();
-    _docUserData.close();
+    await _clienteData.drain();
+    _clienteData.close();
     await _pedidosList.drain();
     _pedidosList.close();
-      await _pedidoSelected.drain();
-    _pedidoSelected.close();
   }
 }
 
-final blocUserData = UserDataBloc();
+final ClienteDataBloc blocUserData = ClienteDataBloc();

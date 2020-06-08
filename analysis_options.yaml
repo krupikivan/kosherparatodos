@@ -1,0 +1,32 @@
+include: package:lint/analysis_options.yaml
+
+linter:
+  rules:
+    - parameter_assignments
+    - unnecessary_overrides
+    - always_declare_return_types
+    - avoid_function_literals_in_foreach_calls
+    # prefer_const_constructors: false
+    # - argument_type_not_assignable
+
+analyzer:
+  errors:
+    missing_required_param: info
+    parameter_assignments: warning
+    unnecessary_overrides: warning
+    always_declare_return_types: warning
+    argument_type_not_assignable: warning
+    map_value_type_not_assignable: warning
+    prefer_const_constructors: false
+    unnecessary_new: false
+    avoid_print: false
+    avoid_function_literals_in_foreach_calls: false
+    prefer_if_elements_to_conditional_expressions: false
+    curly_braces_in_flow_control_structures: false
+    sort_child_properties_last: false
+    directives_ordering: false
+    constant_identifier_names: false
+    prefer_const_constructors_in_immutables: false
+    library_prefixes: false
+    prefer_final_in_for_each: false
+    avoid_void_async: false

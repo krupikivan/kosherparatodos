@@ -1,4 +1,5 @@
 import 'dart:collection';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:kosherparatodos/src/models/categoria.dart';
 import 'package:kosherparatodos/src/repository/firestore_provider.dart';
@@ -8,15 +9,15 @@ class CategoriaNotifier with ChangeNotifier {
   final Repository _repository = FirestoreProvider();
 
   CategoriaNotifier.init() {
-    getCategorias();
+    getCategoriasPrincipales();
   }
 
-  getCategorias(){
-    List<Categoria> _list = [];
-    _repository.getCategoriasPrincipal().then((value) {
-      List _listPrincipal = value.data['categorias'];
+  void getCategoriasPrincipales() {
+    final List<Categoria> _list = [];
+    _repository.getCategoriasPrincipal().then((DocumentSnapshot value) {
+      final List _listPrincipal = value.data['categorias'] as List;
       _listPrincipal.forEach((element) {
-        Categoria _categoria = Categoria.fromPrincipal(element);
+        final Categoria _categoria = Categoria.fromPrincipal(element);
         _list.add(_categoria);
       });
       _categoriaPadreList = _list;
@@ -24,12 +25,12 @@ class CategoriaNotifier with ChangeNotifier {
     });
   }
 
-  getAllCategorias(){
-    List<Categoria> _list = [];
+  void getAllCategorias() {
+    final List<Categoria> _list = [];
     _repository.getAllCategorias().then((value) {
-      List _listAllCategorias = value.documents;
+      final List _listAllCategorias = value.documents;
       _listAllCategorias.forEach((element) {
-        Categoria _categoria = Categoria.fromShowOnNewProduct(element);
+        final Categoria _categoria = Categoria.fromShowOnNewProduct(element);
         _list.add(_categoria);
       });
       _categoriaList = _list;
@@ -37,13 +38,15 @@ class CategoriaNotifier with ChangeNotifier {
     });
   }
 
-    getCategoriasHijos(){
-      _categoriaHijoSelected = null;
-    List<Categoria> _list = [];
-    _repository.getCategoriasHijos(_categoriaPadreSelected.categoriaID).then((value) {
-      List _listHijos = value.documents;
+  void getCategoriasHijos() {
+    _categoriaHijoSelected = null;
+    final List<Categoria> _list = [];
+    _repository
+        .getCategoriasHijos(_categoriaPadreSelected.categoriaID)
+        .then((value) {
+      final List _listHijos = value.documents;
       _listHijos.forEach((element) {
-        Categoria _categoria = Categoria.fromHijo(element);
+        final Categoria _categoria = Categoria.fromHijo(element);
         _list.add(_categoria);
       });
       _categoriaHijoList = _list;
@@ -64,23 +67,27 @@ class CategoriaNotifier with ChangeNotifier {
   //   });
   // }
 
-    creatingCategoria(Categoria nuevo){
+  void creatingCategoria(Categoria nuevo) {
     _categoriaNueva = nuevo;
     _categoriaNueva.ancestro = nuevo.esPadre == false ? _categoriaString : [];
     // notifyListeners();
   }
 
-  addNewCategoria() {
-    _repository.addNewCategoria(_categoriaNueva).whenComplete(() => _clearCategoriaNueva());
+  void addNewCategoria() {
+    _repository.addNewCategoria(_categoriaNueva).whenComplete(() {
+      getCategoriasPrincipales();
+      _clearCategoriaNueva();
+    });
   }
 
-  _clearCategoriaNueva(){
+  void _clearCategoriaNueva() {
     _categoriaString.clear();
     _categoriaNueva = null;
   }
 
-  changeSelected(id, val){
-    Categoria cat = _categoriaList.firstWhere((element) => element.categoriaID == id);
+  void changeSelected(String id, bool val) {
+    final Categoria cat =
+        _categoriaList.firstWhere((element) => element.categoriaID == id);
     cat.selected = val;
     notifyListeners();
   }
@@ -101,7 +108,8 @@ class CategoriaNotifier with ChangeNotifier {
     _categoriaPadreSelected = categoriaPS;
     notifyListeners();
   }
-  setPadreSelected(Categoria cate){
+
+  void setPadreSelected(Categoria cate) {
     _categoriaPadreSelected = cate;
     getCategoriasHijos();
   }
@@ -147,5 +155,4 @@ class CategoriaNotifier with ChangeNotifier {
     _categoriaString = categoriaString;
     notifyListeners();
   }
-
 }

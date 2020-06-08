@@ -11,14 +11,17 @@ class ItemDetallePedidoWidget extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(10),
       child: ListTile(
-          leading: IconButton(icon: Icon(Icons.remove), onPressed: ()=> blocPedidoVigente.removeOnPedido(item),),
+          leading: IconButton(
+            icon: Icon(Icons.remove),
+            onPressed: () => blocPedidoVigente.removeOnPedido(item),
+          ),
           title: Text(item.descripcion),
           subtitle: Text(item.cantidad.toString() + ' unid.'),
           trailing: Container(
             width: 70,
             height: 70,
             alignment: Alignment.center,
-            child: Text('\$${item.precio}'),
+            child: Text('\$${item.precio.truncate()}'),
           )),
     );
   }

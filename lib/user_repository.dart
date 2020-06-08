@@ -16,14 +16,13 @@ enum Status {
 }
 
 class UserRepository with ChangeNotifier {
-  FirebaseAuth _auth;
+  final FirebaseAuth _auth;
   FirebaseUser _user;
   Status _status = Status.Uninitialized;
 
   List _adminList = [];
 
-  UnmodifiableListView get adminList =>
-      UnmodifiableListView(_adminList);
+  UnmodifiableListView get adminList => UnmodifiableListView(_adminList);
 
   final Repository _repository = FirestoreProvider();
 
@@ -32,9 +31,9 @@ class UserRepository with ChangeNotifier {
     notifyListeners();
   }
 
-  getAdminList() async {
+  void getAdminList() async {
     await _repository.getUsersAdmin().forEach((documents) {
-      _adminList = documents.data['userID'];
+      _adminList = documents.data['userID'] as List;
     });
   }
 
@@ -119,11 +118,10 @@ class UserRepository with ChangeNotifier {
       if (_status == Status.Registering || _status == Status.Register) {
         _status = Status.Register;
       } else {
-          _user = firebaseUser;
-          _status = Status.Authenticated;
-        }
+        _user = firebaseUser;
+        _status = Status.Authenticated;
       }
-      notifyListeners();
     }
+    notifyListeners();
   }
-
+}

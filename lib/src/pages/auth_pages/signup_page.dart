@@ -16,10 +16,7 @@ class SignUpPage extends StatefulWidget {
 class _SignUpPageState extends State<SignUpPage> {
   final _formKey = GlobalKey<FormState>();
   final _key = GlobalKey<ScaffoldState>();
-  TextStyle style = TextStyle(
-      color: MyTheme.Colors.secondaryColor,
-      fontFamily: MyTheme.Fonts.primaryFont,
-      fontSize: 20.0);
+  TextStyle style = TextStyle(color: MyTheme.Colors.secondary, fontSize: 20.0);
   TextEditingController _name;
   TextEditingController _email;
   TextEditingController _password;
@@ -38,23 +35,23 @@ class _SignUpPageState extends State<SignUpPage> {
         controller: controller,
         validator: (value) => (value.isEmpty) ? "Ingrese $title" : null,
         style: style,
-        cursorColor: MyTheme.Colors.secondaryColor,
+        cursorColor: MyTheme.Colors.secondary,
         decoration: InputDecoration(
           labelText: title,
-          labelStyle: TextStyle(color: MyTheme.Colors.secondaryColor),
-          errorStyle: TextStyle(color: MyTheme.Colors.secondaryColor),
+          labelStyle: TextStyle(color: MyTheme.Colors.secondary),
+          errorStyle: TextStyle(color: MyTheme.Colors.secondary),
           focusedErrorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(15),
-              borderSide: BorderSide(color: MyTheme.Colors.secondaryColor)),
+              borderSide: BorderSide(color: MyTheme.Colors.secondary)),
           enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(15),
-              borderSide: BorderSide(color: MyTheme.Colors.secondaryColor)),
+              borderSide: BorderSide(color: MyTheme.Colors.secondary)),
           errorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(15),
               borderSide: BorderSide(color: MyTheme.Colors.yellowWarning)),
           focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(15),
-              borderSide: BorderSide(color: MyTheme.Colors.secondaryColor)),
+              borderSide: BorderSide(color: MyTheme.Colors.secondary)),
         ));
   }
 
@@ -64,7 +61,7 @@ class _SignUpPageState extends State<SignUpPage> {
         "REGISTRARSE",
         style: TextStyle(fontSize: 20),
       ),
-      color: MyTheme.Colors.secondaryColor,
+      color: MyTheme.Colors.secondary,
       onPressed: () async {
         if (_formKey.currentState.validate()) {
           await user
@@ -99,7 +96,7 @@ class _SignUpPageState extends State<SignUpPage> {
           Text(
             'Ya tienes una cuenta?',
             style: TextStyle(
-                color: MyTheme.Colors.secondaryColor,
+                color: MyTheme.Colors.secondary,
                 fontSize: 13,
                 fontWeight: FontWeight.w600),
           ),
@@ -128,7 +125,10 @@ class _SignUpPageState extends State<SignUpPage> {
       key: _formKey,
       child: Column(
         children: <Widget>[
-          _entryField("Nombre", _name, ),
+          _entryField(
+            "Nombre",
+            _name,
+          ),
           SizedBox(
             height: 20,
           ),
@@ -153,10 +153,10 @@ class _SignUpPageState extends State<SignUpPage> {
           height: MediaQuery.of(context).size.height,
           decoration: new BoxDecoration(
             gradient: new LinearGradient(
-                colors: [MyTheme.Colors.dark, MyTheme.Colors.primary],
+                colors: [MyTheme.Colors.accent, MyTheme.Colors.primary],
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
-                stops: [0.30, 1.0],
+                stops: const [0.30, 1.0],
                 tileMode: TileMode.clamp),
           ),
         ),
@@ -180,7 +180,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   ? Center(
                       child: CircularProgressIndicator(
                         valueColor: new AlwaysStoppedAnimation<Color>(
-                            MyTheme.Colors.secondaryColor),
+                            MyTheme.Colors.secondary),
                       ),
                     )
                   : Form(

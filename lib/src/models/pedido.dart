@@ -1,11 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-
+import 'package:kosherparatodos/src/models/producto.dart';
 import 'cliente.dart';
 
-// enum Estado { CANCELADO, ENPREPARACION, ENTREGADO }
-
 class Pedido {
-  String idPedido;
+  String pedidoID;
   Cliente cliente;
   String estado;
   Timestamp fecha;
@@ -14,7 +12,7 @@ class Pedido {
   double total;
 
   Pedido({
-    this.idPedido,
+    this.pedidoID,
     this.cliente,
     this.estado,
     this.fecha,
@@ -23,67 +21,33 @@ class Pedido {
     this.productos,
   });
 
-  Pedido.fromFirebase(Map<String, dynamic> data, String pedido, String cli) {
-    idPedido = pedido;
-    cliente = Cliente.fromMap(data, cli);
-    estado = data['estado'];
-    fecha = data['fecha'];
-    pagado = data['pagado'];
-    productos = getProductosList(data['productos']);
-    total = data['total'].toDouble();
-  }
-  Pedido.fromPedidos(Map<String, dynamic> data, String pedido) {
-    idPedido = pedido;
+  Pedido.fromFirebase(Map<String, dynamic> data, this.pedidoID) {
     cliente = Cliente.fromPedidos(data);
-    estado = data['estado'];
-    fecha = data['fecha'];
-    pagado = data['pagado'];
-    productos = getProductosList(data['productos']);
-    total = data['total'].toDouble();
+    estado = data['estado'] as String;
+    fecha = data['fecha'] as Timestamp;
+    pagado = data['pagado'] as bool;
+    productos = getProductosList(data['productos'] as List);
+    total = data['total'].toDouble() as double;
+  }
+  Pedido.fromPedidos(Map<String, dynamic> data, this.pedidoID) {
+    cliente = Cliente.fromPedidos(data);
+    estado = data['estado'] as String;
+    fecha = data['fecha'] as Timestamp;
+    pagado = data['pagado'] as bool;
+    productos = getProductosList(data['productos'] as List<Detalle>);
+    total = data['total'].toDouble() as double;
   }
 
-
-  List<Detalle> getProductosList(List list){
-    List<Detalle> _list = List();
-    for(var producto in list){
-      _list.add(Detalle.fromGetPedidos(producto));
+  List<Detalle> getProductosList(List<Map<String, dynamic>> list) {
+    final List<Detalle> _list = [];
+    for (Map detalle in list) {
+      _list.add(Detalle.fromGetPedidos(detalle));
     }
     return _list;
   }
-
-  // String getEstadoString(Estado estado) {
-  //   switch (estado) {
-  //     case Estado.ENPREPARACION:
-  //       return "En preparacion";
-  //       break;
-  //     case Estado.CANCELADO:
-  //       return "Cancelado";
-  //       break;
-  //     case Estado.ENTREGADO:
-  //       return "Entregado";
-  //       break;
-  //   }
-  //   return "Cancelado";
-  // }
-
-  // Estado getEstado(var estado) {
-  //   switch (estado) {
-  //     case "En preparacion":
-  //       return Estado.ENPREPARACION;
-  //       break;
-  //     case "Cancelado":
-  //       return Estado.CANCELADO;
-  //       break;
-  //     case "Entregado":
-  //       return Estado.ENTREGADO;
-  //       break;
-  //   }
-  //   return Estado.CANCELADO;
-  // }
 }
 
-class Detalle{
-
+class Detalle {
   int cantidad;
   String descripcion;
   String productoID;
@@ -97,41 +61,38 @@ class Detalle{
   });
 
   Detalle.fromGetPedidos(Map<String, dynamic> data) {
-    cantidad = data['cantidad'];
-    descripcion = data['descripcion'];
-    productoID = data['productoID'];
-    precio = data['precio'].toDouble();
+    cantidad = data['cantidad'] as int;
+    descripcion = data['descripcion'] as String;
+    productoID = data['productoID'] as String;
+    precio = data['precio'].toDouble() as double;
   }
 
-  // Detalle.fromOpcionSeleccionada(Producto prod) {
-  //   cantidad = prod.cantidad;
-  //   descripcion = prod.codigo;
-  //   productoID = prod.productoID;
-  //   precio = prod.precio;
-  // }
+  Detalle.fromUpdateCarrito(Producto producto, this.cantidad) {
+    descripcion = producto.descripcion;
+    precio = producto.precio;
+    productoID = producto.productoID;
+  }
 
- Map<String, dynamic> toFirebase() => {
-    'cantidad': this.cantidad,
-    'codigo': this.descripcion,
-    'idProducto': this.productoID,
-    'precio': this.precio
- };
+  Map<String, dynamic> toFirebase() => {
+        'cantidad': cantidad,
+        'descripcion': descripcion,
+        'productoID': productoID,
+        'precio': precio
+      };
 }
 
-class EstadoEntrega{
-
+class EstadoEntrega {
   List entrega;
 
-  EstadoEntrega.fromMap(List data){
+  EstadoEntrega.fromMap(List data) {
     entrega = _getEstados(data);
   }
 
-  _getEstados(List data){
-    List _list = new List();
-    for(var ent in data){
+  List _getEstados(List data) {
+    final List _list = [];
+    for (var ent in data) {
       _list.add(ent);
     }
     return _list;
   }
-
 }

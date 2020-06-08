@@ -6,7 +6,6 @@ import 'package:kosherparatodos/src/repository/repo.dart';
 import 'package:rxdart/rxdart.dart';
 
 class PedidoVigenteBloc {
-  // List<DetallePedido> _detalleList = []; //La lista de todos los detalles
   final Repository _repo = FirestoreProvider();
   Pedido pedido = Pedido();
 
@@ -15,75 +14,63 @@ class PedidoVigenteBloc {
   Observable<Pedido> get getPedido => _pedidoVigente.stream;
   Function(Pedido) get addPedido => _pedidoVigente.sink.add;
 
-//Boton +
-  addingCurrentDetalle(Producto producto, int index) {
-    // ItemPedido item = producto.opciones[index];
-    //   if(pedido.productos == null){
-    //      pedido.productos = [];
-    //   }
-    // if (pedido.productos.isEmpty ||
-    //     !pedido.productos
-    //         .any((value) => value.descripcion == item.productoID)) {
-    //   Detalle nuevoDetalle = Detalle.fromOpcionSeleccionada(producto, item);
-    //   pedido.productos.add(nuevoDetalle);
-    //   getPedidoTotal();
-    // } else {
-    //   var found = pedido.productos
-    //       .firstWhere((value) => value.descripcion == item.productoID);
-    //   found.cantidad++;
-    //   // pedido.total = found.precio * found.cantidad;
+//  Actualizando el carrito de compra
+  void updateCarrito(Producto producto, int cantidad) {
+    final Detalle detalle = Detalle.fromUpdateCarrito(producto, cantidad);
+    //    if (pedido.productos == null) {
+    //   pedido.productos = [];
     // }
-    // getPedidoTotal();
+    pedido.productos ??= [];
+    if (pedido.productos.isEmpty ||
+        !pedido.productos
+            .any((value) => value.productoID == detalle.productoID)) {
+      pedido.productos.add(detalle);
+      getPedidoTotal();
+    } else {
+      Detalle found = pedido.productos
+          .firstWhere((value) => value.productoID == detalle.productoID);
+      found.cantidad = cantidad;
+    }
+    getPedidoTotal();
   }
 
-  clearPedido(){
-    pedido = new Pedido();
+//  Seteamos el pedido vigente a un pedido vacio
+  void clearPedido() {
+    pedido = Pedido();
     addPedido(pedido);
   }
 
-//Eliminar del detalle general
-  removeOnPedido(Detalle det) {
-    pedido.productos.removeWhere(
-        (item) => item.descripcion == det.descripcion);
-        getPedidoTotal();
+//  Eliminar del detalle general
+  void removeOnPedido(Detalle det) {
+    pedido.productos.removeWhere((item) => item.productoID == det.productoID);
+    getPedidoTotal();
   }
 
-  // _addDetalleToPedido(List<DetallePedido> list){
-  //   pedido.detallePedido = list;
-  //   addDetalle(pedido);
-  // }
-
-    addingPedidoForEdit(pedidoEdit){
+//  Cuando editamos pedido lo cargamos en el carrito
+  void agregarPedidoParaEditar(Pedido pedidoEdit) {
     pedido = pedidoEdit;
     addPedido(pedido);
   }
 
-//Boton -
-  removeDetalle(Producto producto, int index) {
-    // ItemPedido opc = producto.opciones[index];
-    // if (pedido.productos
-    //     .any((value) => value.descripcion == opc.productoID)) {
-    //   var found = pedido.productos
-    //       .firstWhere((value) => value.descripcion == opc.productoID);
-    //   found.cantidad--;
-    //   // found.precioDetalle -= producto.opciones[index].precioTotal;
-    //   if (found.cantidad == 0)
-    //     pedido.productos
-    //         .removeWhere((value) => value.descripcion == opc.productoID);
-    // }
-    // getPedidoTotal();
-  }
-
-  getPedidoTotal() {
+//  Actualiza el total del pedido vigente
+  void getPedidoTotal() {
     pedido.total = 0;
-    pedido.productos.forEach((item) => pedido.total += item.precio * item.cantidad);
-    addPedido(pedido);
+    pedido.productos
+        .forEach((item) => pedido.total += item.precio * item.cantidad);
+    if (pedido.total == 0) {
+      final Pedido ped = Pedido();
+      addPedido(ped);
+    } else {
+      addPedido(pedido);
+    }
   }
 
-  savePedido() {
+//  Realiza el pedido y lo guarda en Firebase
+  void realizarPedido() {
     try {
-      _repo.addNewPedido(pedido, blocUserData.getUserId())
-      .whenComplete(() => clearPedido());
+      _repo
+          .addNewPedido(pedido, blocUserData.getClienteLogeado())
+          .whenComplete(() => clearPedido());
     } catch (e) {}
   }
 
@@ -93,4 +80,4 @@ class PedidoVigenteBloc {
   }
 }
 
-final blocPedidoVigente = PedidoVigenteBloc();
+final PedidoVigenteBloc blocPedidoVigente = PedidoVigenteBloc();

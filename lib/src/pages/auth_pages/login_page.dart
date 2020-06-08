@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:kosherparatodos/style/theme.dart' as MyTheme;
 
 class LoginPage extends StatefulWidget {
-  LoginPage({Key key, this.title}) : super(key: key);
+  const LoginPage({Key key, this.title}) : super(key: key);
 
   final String title;
 
@@ -21,10 +21,7 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController _password;
   final _formKey = GlobalKey<FormState>();
   final _key = GlobalKey<ScaffoldState>();
-  TextStyle style = TextStyle(
-      color: MyTheme.Colors.secondaryColor,
-      fontFamily: MyTheme.Fonts.primaryFont,
-      fontSize: 20.0);
+  TextStyle style = TextStyle(color: MyTheme.Colors.secondary, fontSize: 20.0);
 
   @override
   void initState() {
@@ -40,7 +37,7 @@ class _LoginPageState extends State<LoginPage> {
           await _signIn(user);
         }
       },
-      color: MyTheme.Colors.secondaryColor,
+      color: MyTheme.Colors.secondary,
       child: Text(
         'INGRESAR',
         style: TextStyle(fontSize: 20),
@@ -55,7 +52,7 @@ class _LoginPageState extends State<LoginPage> {
     try {
       await repo.isAuthenticated(_email.text).then((data) async {
         if (data.documents.length == 0 ||
-            data.documents[0].data['isAuthenticated'] == true) {
+            data.documents[0].data['estaAutenticado'] == true) {
           if (!await user.signIn(_email.text, _password.text)) {
             throw 'Ingreso incorrecto.';
           }
@@ -72,7 +69,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget _createAccountLabel() {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 5),
+      margin: const EdgeInsets.symmetric(vertical: 5),
       alignment: Alignment.bottomCenter,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -80,11 +77,11 @@ class _LoginPageState extends State<LoginPage> {
           Text(
             'Todavía no tenes una cuenta?',
             style: TextStyle(
-                color: MyTheme.Colors.secondaryColor,
+                color: MyTheme.Colors.secondary,
                 fontSize: 13,
                 fontWeight: FontWeight.w600),
           ),
-          SizedBox(
+          const SizedBox(
             width: 5,
           ),
           InkWell(
@@ -110,27 +107,27 @@ class _LoginPageState extends State<LoginPage> {
       controller: _password,
       validator: (value) => (value.isEmpty) ? "Ingresa una contraseña" : null,
       style: style,
-      cursorColor: MyTheme.Colors.secondaryColor,
+      cursorColor: MyTheme.Colors.secondary,
       decoration: InputDecoration(
           prefixIcon: Icon(
             Icons.lock,
-            color: MyTheme.Colors.secondaryColor,
+            color: MyTheme.Colors.secondary,
           ),
           labelText: "Contraseña",
-          labelStyle: TextStyle(color: MyTheme.Colors.secondaryColor),
-          errorStyle: TextStyle(color: MyTheme.Colors.secondaryColor),
+          labelStyle: TextStyle(color: MyTheme.Colors.secondary),
+          errorStyle: TextStyle(color: MyTheme.Colors.secondary),
           errorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(15),
-              borderSide: BorderSide(color: MyTheme.Colors.secondaryColor)),
+              borderSide: BorderSide(color: MyTheme.Colors.secondary)),
           focusedErrorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(15),
-              borderSide: BorderSide(color: MyTheme.Colors.secondaryColor)),
+              borderSide: BorderSide(color: MyTheme.Colors.secondary)),
           focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(15),
-              borderSide: BorderSide(color: MyTheme.Colors.secondaryColor)),
+              borderSide: BorderSide(color: MyTheme.Colors.secondary)),
           enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(15),
-              borderSide: BorderSide(color: MyTheme.Colors.secondaryColor))),
+              borderSide: BorderSide(color: MyTheme.Colors.secondary))),
     );
   }
 
@@ -139,28 +136,28 @@ class _LoginPageState extends State<LoginPage> {
       controller: _email,
       validator: (value) => (value.isEmpty) ? "Ingresa un email" : null,
       style: style,
-      cursorColor: MyTheme.Colors.secondaryColor,
+      cursorColor: MyTheme.Colors.secondary,
       decoration: InputDecoration(
           prefixIcon: Icon(
             Icons.email,
-            color: MyTheme.Colors.secondaryColor,
+            color: MyTheme.Colors.secondary,
           ),
           labelText: "Email",
-          errorStyle: TextStyle(color: MyTheme.Colors.secondaryColor),
+          errorStyle: TextStyle(color: MyTheme.Colors.secondary),
           focusedErrorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(15),
-              borderSide: BorderSide(color: MyTheme.Colors.secondaryColor)),
+              borderSide: BorderSide(color: MyTheme.Colors.secondary)),
           errorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(15),
-              borderSide: BorderSide(color: MyTheme.Colors.secondaryColor)),
+              borderSide: BorderSide(color: MyTheme.Colors.secondary)),
           focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(15),
-              borderSide: BorderSide(color: MyTheme.Colors.secondaryColor)),
-          labelStyle: TextStyle(color: MyTheme.Colors.secondaryColor),
+              borderSide: BorderSide(color: MyTheme.Colors.secondary)),
+          labelStyle: TextStyle(color: MyTheme.Colors.secondary),
           enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(15),
-              borderSide: new BorderSide(
-                color: MyTheme.Colors.secondaryColor,
+              borderSide: BorderSide(
+                color: MyTheme.Colors.secondary,
               ))),
     );
   }
@@ -171,14 +168,14 @@ class _LoginPageState extends State<LoginPage> {
     return Stack(
       children: <Widget>[
         Container(
-          padding: EdgeInsets.symmetric(horizontal: 20),
+          padding: const EdgeInsets.symmetric(horizontal: 20),
           height: MediaQuery.of(context).size.height,
-          decoration: new BoxDecoration(
-            gradient: new LinearGradient(
-                colors: [MyTheme.Colors.dark, MyTheme.Colors.primary],
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+                colors: [MyTheme.Colors.accent, MyTheme.Colors.primary],
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
-                stops: [0.30, 1.0],
+                stops: const [0.30, 1.0],
                 tileMode: TileMode.clamp),
           ),
         ),
@@ -187,7 +184,7 @@ class _LoginPageState extends State<LoginPage> {
           appBar: AppBar(
             backgroundColor: Colors.transparent,
             elevation: 0,
-            title: Text('Inicio de sesion'),
+            title: const Text('Inicio de sesion'),
             leading: BackButton(
               onPressed: () {
                 Provider.of<UserRepository>(context, listen: false).goWelcome();
@@ -195,62 +192,75 @@ class _LoginPageState extends State<LoginPage> {
             ),
           ),
           body: SingleChildScrollView(
-            physics: NeverScrollableScrollPhysics(),
-            child:
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 20),
-                height: MediaQuery.of(context).size.height,
-                child: user.status == Status.Authenticating
-                    ? Center(
-                        child: CircularProgressIndicator(
-                        valueColor: new AlwaysStoppedAnimation<Color>(
-                            MyTheme.Colors.secondaryColor),
-                      ))
-                    : 
-                    Form(
-                        key: _formKey,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            SizedBox(
-                              height: 20,
-                            ),
-                            Column(
-                              children: <Widget>[
-                                Row(
-                                  children: <Widget>[
-                                    IconButton(color: Colors.white, icon: Icon(Icons.account_circle), onPressed: () => setState(() {_email.text = 'admin@admin.com'; _password.text = 'admin123';}),),
-                                    IconButton(color: Colors.white, icon: Icon(Icons.account_circle), onPressed: () => setState(() {_email.text = 'ivan@ivan.com'; _password.text = 'ivan123';}),),
-                                  ],
-                                ),
-                                _emailWidget(),
-                                SizedBox(
-                                  height: 20,
-                                ),
-                                _passwordWidget(),
-                                SizedBox(
-                                  height: 40,
-                                ),
-                                _submitButton(user),
-                                Container(
-                                  padding: EdgeInsets.symmetric(vertical: 5),
-                                  alignment: Alignment.centerRight,
-                                  child: Text('Has olvidado la contraseña?',
-                                      style: TextStyle(
-                                          color: MyTheme.Colors.secondaryColor,
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w500)),
-                                ),
-                              ],
-                            ),
-                            _createAccountLabel(),
-                            SizedBox(
-                              height: 1,
-                            )
-                          ],
-                        ),
+            physics: const NeverScrollableScrollPhysics(),
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              height: MediaQuery.of(context).size.height,
+              child: user.status == Status.Authenticating
+                  ? Center(
+                      child: CircularProgressIndicator(
+                      valueColor: new AlwaysStoppedAnimation<Color>(
+                          MyTheme.Colors.secondary),
+                    ))
+                  : Form(
+                      key: _formKey,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          Column(
+                            children: <Widget>[
+                              Row(
+                                children: <Widget>[
+                                  IconButton(
+                                    color: Colors.white,
+                                    icon: Icon(Icons.account_circle),
+                                    onPressed: () => setState(() {
+                                      _email.text = 'admin@admin.com';
+                                      _password.text = 'admin123';
+                                    }),
+                                  ),
+                                  IconButton(
+                                    color: Colors.white,
+                                    icon: Icon(Icons.account_circle),
+                                    onPressed: () => setState(() {
+                                      _email.text = 'ivan@ivan.com';
+                                      _password.text = 'ivan123';
+                                    }),
+                                  ),
+                                ],
+                              ),
+                              _emailWidget(),
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              _passwordWidget(),
+                              const SizedBox(
+                                height: 40,
+                              ),
+                              _submitButton(user),
+                              Container(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 5),
+                                alignment: Alignment.centerRight,
+                                child: Text('Has olvidado la contraseña?',
+                                    style: TextStyle(
+                                        color: MyTheme.Colors.secondary,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w500)),
+                              ),
+                            ],
+                          ),
+                          _createAccountLabel(),
+                          const SizedBox(
+                            height: 1,
+                          )
+                        ],
                       ),
-              ),
+                    ),
+            ),
           ),
         ),
       ],

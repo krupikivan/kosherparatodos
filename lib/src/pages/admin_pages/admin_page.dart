@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/clientes/cliente_page.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/navigation_bloc.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/pedidos/pedidos_page.dart';
@@ -20,8 +21,10 @@ class AdminPage extends StatelessWidget {
   final GlobalKey<NavigatorState> navigatorKey =
       GlobalKey(debugLabel: "Admin Main");
 
+  final TextStyle style = TextStyle(color: MyTheme.Colors.black);
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => ClienteNotifier.init()),
@@ -30,24 +33,20 @@ class AdminPage extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => CategoriaNotifier.init()),
       ],
       child: MaterialApp(
-        // initialRoute: '/',
-        // routes: {
-        //   '/clientes': (BuildContext context) => ClientePage(),
-        // },
-        // onGenerateRoute: RouteGenerator.generateRoute,
-        // key: navigatorKey,
         debugShowCheckedModeBanner: false,
+        theme: ThemeData(textTheme: GoogleFonts.openSansTextTheme(textTheme)),
         home: Scaffold(
-          // key: _skey,
           appBar: AppBar(
-            backgroundColor: MyTheme.Colors.dark,
+            iconTheme: IconThemeData(color: MyTheme.Colors.black),
+            elevation: 0,
+            backgroundColor: MyTheme.Colors.white,
             title: StreamBuilder(
                 stream: bloc.getNavigation,
                 initialData: bloc.navigationProvider.currentNavigation,
                 builder: (context, snapshot) {
                   return Text(
                     _getTitle(bloc.navigationProvider.currentNavigation),
-                    style: TextStyle(color: MyTheme.Colors.light),
+                    style: MyTheme.Colors.headerStyle,
                   );
                 }),
           ),
@@ -58,7 +57,7 @@ class AdminPage extends StatelessWidget {
                   currentAccountPicture: Icon(
                     Icons.account_circle,
                     size: 50,
-                    color: MyTheme.Colors.light,
+                    color: MyTheme.Colors.white,
                   ),
                   accountName: Text(
                     'Administrador',
@@ -68,10 +67,10 @@ class AdminPage extends StatelessWidget {
                     user.email,
                     style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600),
                   ),
-                  decoration: new BoxDecoration(
-                      image: new DecorationImage(
+                  decoration: BoxDecoration(
+                      image: DecorationImage(
                           fit: BoxFit.fill,
-                          image: new AssetImage('assets/back-drawer.jpg'))),
+                          image: AssetImage('assets/back-drawer.jpg'))),
                 ),
                 // _createHeader(),
                 DrawerIconWidget(
@@ -132,17 +131,14 @@ class AdminPage extends StatelessWidget {
   }
 }
 
-_getTitle(title) {
+String _getTitle(title) {
   if (bloc.navigationProvider.currentNavigation == "Clientes") {
     return 'Clientes';
-  }
-  else if (bloc.navigationProvider.currentNavigation == "Pedidos") {
+  } else if (bloc.navigationProvider.currentNavigation == "Pedidos") {
     return 'Pedidos';
-  }
-  else if (bloc.navigationProvider.currentNavigation == "Productos") {
+  } else if (bloc.navigationProvider.currentNavigation == "Productos") {
     return 'Productos';
-  }
-  else{
+  } else {
     return 'Kosher Para Todos';
   }
 }

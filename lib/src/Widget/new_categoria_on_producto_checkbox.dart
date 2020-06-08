@@ -12,8 +12,8 @@ class CategoriaCheckboxWidget extends StatelessWidget {
   const CategoriaCheckboxWidget({Key key, this.esProducto}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    CategoriaNotifier categoria = Provider.of<CategoriaNotifier>(context);
-    ProductoNotifier producto = Provider.of<ProductoNotifier>(context);
+    final CategoriaNotifier categoria = Provider.of<CategoriaNotifier>(context);
+    final ProductoNotifier producto = Provider.of<ProductoNotifier>(context);
     return OutlineButton(
       onPressed: () {
         showDialog(
@@ -24,7 +24,7 @@ class CategoriaCheckboxWidget extends StatelessWidget {
                   esProducto: esProducto,
                 ));
       },
-      textColor: MyTheme.Colors.dark,
+      textColor: MyTheme.Colors.accent,
       child: Text('Categorias'),
     );
   }

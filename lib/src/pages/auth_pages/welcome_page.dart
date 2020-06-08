@@ -19,7 +19,7 @@ class _WelcomePageState extends State<WelcomePage> {
       onPressed: () {
         Provider.of<UserRepository>(context, listen: false).goLogin();
       },
-      color: MyTheme.Colors.secondaryColor,
+      color: MyTheme.Colors.secondary,
       child: Text(
         'INGRESAR',
         style: TextStyle(fontSize: 20),
@@ -35,18 +35,17 @@ class _WelcomePageState extends State<WelcomePage> {
       onPressed: () {
         Provider.of<UserRepository>(context, listen: false).goSignup();
       },
-      color: MyTheme.Colors.dark,
+      color: MyTheme.Colors.accent,
       child: Text(
         'REGISTRARSE',
         style: TextStyle(fontSize: 20),
       ),
       minWidth: MediaQuery.of(context).size.width,
       height: 60,
-      textColor: MyTheme.Colors.secondaryColor,
-      
+      textColor: MyTheme.Colors.secondary,
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15),
-          side: BorderSide(width: 2, color: MyTheme.Colors.secondaryColor)),
+          side: BorderSide(width: 2, color: MyTheme.Colors.secondary)),
     );
   }
 
@@ -59,7 +58,7 @@ class _WelcomePageState extends State<WelcomePage> {
           height: MediaQuery.of(context).size.height,
           decoration: new BoxDecoration(
             gradient: new LinearGradient(
-                colors: [MyTheme.Colors.dark, MyTheme.Colors.primary],
+                colors: [MyTheme.Colors.accent, MyTheme.Colors.primary],
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 stops: [0.15, 1.0],

@@ -4,20 +4,26 @@ import 'package:kosherparatodos/src/Widget/show_toast.dart';
 import 'package:kosherparatodos/src/models/pedido.dart';
 import 'package:kosherparatodos/src/pages/user_pages/pedido/pedido.dart';
 import 'package:kosherparatodos/style/theme.dart' as MyTheme;
-
 import 'bloc/bloc.dart';
 
 class HistorialDetallePedido extends StatelessWidget {
-  const HistorialDetallePedido({Key key, this.uid}) : super(key: key);
-  final String uid;
+  HistorialDetallePedido({Key key, this.pedidoID}) : super(key: key);
+  final String pedidoID;
+  Pedido pedidoSelected;
+
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<Pedido>(
-        stream: blocUserData.getPedidoSelected,
+    return StreamBuilder<List<Pedido>>(
+        stream: blocUserData.getListPedidos,
         builder: (context, snapshot) {
+          if (!snapshot.hasData)
+            return CircularProgressIndicator();
+          else
+            pedidoSelected = snapshot.data
+                .firstWhere((element) => element.pedidoID == pedidoID);
           return Scaffold(
             appBar: AppBar(
-              backgroundColor: MyTheme.Colors.dark,
+              backgroundColor: MyTheme.Colors.accent,
               title: Text("Detalle de pedido"),
             ),
             body: Container(
@@ -25,60 +31,60 @@ class HistorialDetallePedido extends StatelessWidget {
                   ? Center(
                       child: CircularProgressIndicator(
                       valueColor: new AlwaysStoppedAnimation<Color>(
-                          MyTheme.Colors.dark),
+                          MyTheme.Colors.accent),
                     ))
                   : ListView.builder(
-                      itemCount: snapshot.data.productos.length,
+                      itemCount: pedidoSelected.productos.length,
                       itemBuilder: (BuildContext context, int index) =>
                           ListTile(
-                        title: Text(
-                            snapshot.data.productos[index].descripcion),
-                        subtitle: Text('\$' +
-                            snapshot.data.productos[index].precio
-                                .toString()),
+                        title:
+                            Text(pedidoSelected.productos[index].descripcion),
+                        subtitle: Text('\$${pedidoSelected.productos[index].precio}'),
                       ),
                     ),
             ),
-            floatingActionButton: !snapshot.hasData ? Container() : _bntExpanded(context, snapshot.data.estado),
+            floatingActionButton: !snapshot.hasData
+                ? Container()
+                : _bntExpanded(context, pedidoSelected.estado),
           );
         });
   }
 
   Widget _bntExpanded(context, String estado) {
-        return SpeedDial(
+    return SpeedDial(
       marginRight: 10,
       visible: estado != 'Entregado' ? true : false,
       overlayOpacity: 0.3,
-      overlayColor: MyTheme.Colors.light,
+      overlayColor: MyTheme.Colors.white,
       heroTag: 'bntExpand',
-      backgroundColor: MyTheme.Colors.dark,
-      child: Icon(Icons.add, color: MyTheme.Colors.light),
+      backgroundColor: MyTheme.Colors.accent,
       children: [
         SpeedDialChild(
-          child: Icon(Icons.edit, size: 36.0, color: MyTheme.Colors.light),
-          backgroundColor: MyTheme.Colors.dark,
+          child: Icon(Icons.edit, size: 36.0, color: MyTheme.Colors.white),
+          backgroundColor: MyTheme.Colors.accent,
           label: "Editar",
-          onTap: () => _addToPedido(context),
+          onTap: () => _editarPedido(context),
         ),
         SpeedDialChild(
-          child: Icon(Icons.clear, size: 36.0, color: MyTheme.Colors.light),
-          backgroundColor: MyTheme.Colors.dark,
+          child: Icon(Icons.clear, size: 36.0, color: MyTheme.Colors.white),
+          backgroundColor: MyTheme.Colors.accent,
           label: "Eliminar",
-          onTap: () => _deletePedido(context),
+          onTap: () => _eliminarPedido(context),
         )
       ],
+      child: Icon(Icons.add, color: MyTheme.Colors.white),
     );
   }
 
-  _addToPedido(context) {
-    blocUserData.addPedidoForEdit();
+  void _editarPedido(BuildContext context) {
+    blocUserData.editarPedido(pedidoSelected);
     Navigator.pop(context);
     Navigator.of(context).push(new MaterialPageRoute(
         builder: (BuildContext context) => new DetallePedidoListPage()));
   }
 
-  _deletePedido(context) {
-    blocUserData.deletePedido();
+  _eliminarPedido(context) {
+    blocUserData.eliminarPedido(pedidoSelected);
     Navigator.pop(context);
     ShowToast().show('Pedido eliminado', 5);
   }

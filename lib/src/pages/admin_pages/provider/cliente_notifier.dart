@@ -20,11 +20,13 @@ class ClienteNotifier with ChangeNotifier {
     getClientes();
   }
 
-  getClientes() async {
-    List<Cliente> _list = [];
+//  Trae todos los clientes
+  void getClientes() async {
+    final List<Cliente> _list = [];
     await _repository.getClientes().then((snapshot) async {
       snapshot.documents.forEach((documents) {
-        Cliente cliente = Cliente.fromMap(documents.data, documents.documentID);
+        final Cliente cliente =
+            Cliente.fromMap(documents.data, documents.documentID);
         _list.add(cliente);
       });
     }).whenComplete(() {
@@ -33,30 +35,19 @@ class ClienteNotifier with ChangeNotifier {
     });
   }
 
-    setAutenticado({Cliente cliente}){
+  void setAutenticado({Cliente cliente}) {
     bool autenticado;
-    if(_clienteActual != null){
-    autenticado = _clienteActual.estaAutenticado == false ? true : false;
+    if (_clienteActual != null) {
+      autenticado = _clienteActual.estaAutenticado == false ? true : false;
     }
-    try{
-    _repository.setAutenticado(cliente == null ? _clienteActual.clienteID : cliente.clienteID, autenticado);
-    _clienteActual.estaAutenticado = autenticado;
-    getClientes();
-    }catch(e){}
+    try {
+      _repository.setAutenticado(
+          cliente == null ? _clienteActual.clienteID : cliente.clienteID,
+          autenticado: autenticado);
+      _clienteActual.estaAutenticado = autenticado;
+      getClientes();
+    } catch (e) {}
   }
-
-  // getClienteHistorial() async {
-  //   List<Cliente> _list = [];
-  //   await _repository.getClientes().then((snapshot) async{
-  //     snapshot.documents.forEach((documents) {
-  //       Cliente cliente = Cliente.fromMap(documents.data);
-  //       _list.add(cliente);
-  //     });
-  //   }).whenComplete(() {
-  //    _clienteList = _list;
-  //    notifyListeners();
-  //   });
-  // }
 
   List<Pedido> _pedidoList = [];
 
@@ -68,15 +59,15 @@ class ClienteNotifier with ChangeNotifier {
     notifyListeners();
   }
 
-  getPedidosCliente(PedidoNotifier pedido) {
+  void getPedidosCliente(PedidoNotifier pedido) {
     pedido.pedidoList
-        .where((ped) => ped.cliente == _clienteActual.clienteID)
+        .where((ped) => ped.cliente.clienteID == _clienteActual.clienteID)
         .forEach((cli) {
       _pedidoList.add(cli);
     });
   }
 
-  pedidoListClear() {
+  void pedidoListClear() {
     _pedidoList.clear();
     notifyListeners();
   }

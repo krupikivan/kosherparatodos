@@ -14,13 +14,23 @@ class ProductosPage extends StatelessWidget {
           children: <Widget>[
             Expanded(
               flex: 4,
-                child: RefreshIndicator(
+              child: RefreshIndicator(
+                onRefresh: () => /*_refreshList(context)*/ null,
                 child: ListView.separated(
                   itemBuilder: (BuildContext context, int index) => Dismissible(
-                    background: Container(color: Colors.red,alignment: AlignmentDirectional.centerStart, padding: EdgeInsets.symmetric(horizontal: 20), child: Icon(Icons.delete, color: Colors.white,),),
+                    background: Container(
+                      color: Colors.red,
+                      alignment: AlignmentDirectional.centerStart,
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: Icon(
+                        Icons.delete,
+                        color: Colors.white,
+                      ),
+                    ),
                     key: Key(producto.productoList[index].productoID),
-                    confirmDismiss: (direction) => _deleteProducto(producto.productoList[index].productoID, context),
-                                      child: ListTile(
+                    confirmDismiss: (direction) => _deleteProducto(
+                        producto.productoList[index].productoID, context),
+                    child: ListTile(
                       leading: Icon(Icons.list),
                       // title: Text(DateFormat("HH:mm - dd/MM/yyyy").format(pedido.pedidoList[index].fecha.toDate())),
                       title: Text(producto.productoList[index].descripcion),
@@ -32,52 +42,56 @@ class ProductosPage extends StatelessWidget {
                     ),
                   ),
                   itemCount: producto.productoList.length,
-                  separatorBuilder: (BuildContext context, int index) => Divider(
-                    color: MyTheme.Colors.dark,
+                  separatorBuilder: (BuildContext context, int index) =>
+                      const Divider(
+                    color: MyTheme.Colors.accent,
                   ),
                 ),
-                onRefresh: () => /*_refreshList(context)*/null,
               ),
             ),
             Container(
-              margin: EdgeInsets.all(10),
-              child: FloatingActionButton.extended(onPressed:()=> _addProducto(context), label: Text('Agregar producto'), backgroundColor: MyTheme.Colors.dark,))
+                margin: const EdgeInsets.all(10),
+                child: FloatingActionButton.extended(
+                  onPressed: () => _addProducto(context),
+                  label: const Text('Agregar producto'),
+                  backgroundColor: MyTheme.Colors.accent,
+                ))
           ],
         ),
       ),
     );
   }
 
-Future<bool> _deleteProducto(String idPorducto, context1) async{
-  return await showDialog(
+  Future<bool> _deleteProducto(String idPorducto, BuildContext context1) async {
+    return showDialog(
       context: context1,
       builder: (context) => AlertDialog(
         content: Text("¿Esta seguro que desea cancelar el turno?"),
         actions: <Widget>[
           FlatButton(
-            child: Text("Si"),
-            onPressed: () {
-              Provider.of<ProductoNotifier>(context1, listen: false).deleteProducto(idPorducto);
-              Navigator.of(context).pop(true);
-            } 
-          ),
+              child: Text("Si"),
+              onPressed: () {
+                Provider.of<ProductoNotifier>(context1, listen: false)
+                    .deleteProducto(idPorducto);
+                Navigator.of(context).pop(true);
+              }),
           FlatButton(
-            child: Text("No"),
             onPressed: () {
               Navigator.of(context).pop(false);
-            } 
+            },
+            child: Text("No"),
           ),
         ],
       ),
     );
-}
+  }
 
   _goToDetails(context) {
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => ProductoDetailPage()));
   }
 
-  _addProducto(context){
+  _addProducto(context) {
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => NewProducto()));
   }

@@ -8,13 +8,12 @@ import 'package:provider/provider.dart';
 import 'src/pages/auth_pages/export.dart';
 
 class App extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => UserRepository.instance()),
-      ],  
+      ],
       child: Consumer(
         builder: (context, UserRepository user, _) {
           // user.getAdminList();
@@ -32,9 +31,9 @@ class App extends StatelessWidget {
             case Status.Register:
               return SignUpPage();
             case Status.Authenticated:
-              if(user.adminList.contains(user.user.uid)){
+              if (user.adminList.contains(user.user.uid)) {
                 return AdminPage(user: user.user);
-              } else{
+              } else {
                 return UserPage(user: user.user);
               }
           }

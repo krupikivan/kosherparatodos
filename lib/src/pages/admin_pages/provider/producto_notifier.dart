@@ -7,49 +7,49 @@ import 'package:kosherparatodos/src/repository/repo.dart';
 class ProductoNotifier with ChangeNotifier {
   final Repository _repository = FirestoreProvider();
 
-
-
   // ProductoNotifier.init() {
   //   getProductos();
   // }
 
-  updateAllData(){
+  void updateAllData() {
     _repository.updateAllData(_productoActual);
   }
-  
-  getProductosLength(){
+
+  int getProductosLength() {
     return _productoList.length;
   }
 
-  getTotal(cantidad, precio){
+  double getTotal(int cantidad, double precio) {
     return cantidad * precio;
   }
 
-  addNewProducto() {
-    _repository.addNewProducto(_productoNuevo).whenComplete(() => _clearProductoNuevo());
+  void addNewProducto() {
+    _repository
+        .addNewProducto(_productoNuevo)
+        .whenComplete(() => _clearProductoNuevo());
   }
-  _clearProductoNuevo(){
+
+  void _clearProductoNuevo() {
     _categoriaString.clear();
     _productoNuevo = null;
   }
 
   //-------------Se ejecuta cuando selecciono una categoria hijo para traer los productos
-  getProductos(String categoriaHijoId) {
+  void getProductos(String categoriaHijoId) {
     _productoList.clear();
-    List<Producto> _list = [];
+    final List<Producto> _list = [];
     _repository.getProductosFromHijoSelected(categoriaHijoId).then((listProd) {
       _list.clear();
       listProd.documents.forEach((producto) {
-        Producto _producto =
-            Producto.fromGetProductos(producto.data, producto.documentID);
+        final Producto _producto = Producto.fromProductosCollection(
+            producto.data, producto.documentID);
         _list.add(_producto);
         _productoList = _list;
         notifyListeners();
       });
-
     });
   }
-  
+
   // getProductosFromHijoSelected(String idHijo) {
   //   List<Producto> _list = [];
   //   _repository.getProductosFromHijoSelected(idHijo).then((listProd) {
@@ -65,72 +65,48 @@ class ProductoNotifier with ChangeNotifier {
   //   });
   // }
 
-  setHabilitado(){
-    bool hab = _productoActual.habilitado == true ? false : true;
-    try{
-    _repository.setHabilitado(_productoActual.productoID, hab);
-    _productoActual.habilitado = hab;
-    notifyListeners();
-    }catch(e){}
+  void setHabilitado() {
+    final bool hab = _productoActual.habilitado == true ? false : true;
+    try {
+      _repository.setHabilitado(_productoActual.productoID, habilitado: hab);
+      _productoActual.habilitado = hab;
+      notifyListeners();
+    } catch (e) {}
   }
 
-  setData(tipo, name){
-    switch(tipo){
-      case 'C': _productoActual.codigo = name;
-                notifyListeners();
+  void setData(String tipo, String name) {
+    switch (tipo) {
+      case 'C':
+        _productoActual.codigo = name;
+        notifyListeners();
         break;
-      case 'D': _productoActual.descripcion = name;
-                notifyListeners();
+      case 'D':
+        _productoActual.descripcion = name;
+        notifyListeners();
         break;
-      case 'UM': _productoActual.unidadMedida = name;
-                notifyListeners();
+      case 'UM':
+        _productoActual.unidadMedida = name;
+        notifyListeners();
         break;
-      case 'S': _productoActual.stock = int.parse(name.toString());
-                notifyListeners();
+      case 'S':
+        _productoActual.stock = int.parse(name.toString());
+        notifyListeners();
         break;
-      case 'P': _productoActual.precio = double.parse(name.toString());
-                // _productoActual.opciones.forEach((element) {
-                //   element.precioTotal = element.cantidad * _productoActual.precio;
-                // });
-                notifyListeners();
+      case 'P':
+        _productoActual.precio = double.parse(name.toString());
+
+        notifyListeners();
         break;
     }
   }
 
-  // setItemData(String descripcion, var cantPrec, int index){
-  //  for(var i=0;i<_productoActual.opciones.length; i++){
-  //    if(_productoActual.opciones[i] == _productoActual.opciones[index]){
-  //      _productoActual.opciones[i].descripcion = descripcion;
-  //      _productoActual.precio == 0 ? _productoActual.opciones[i].precioTotal = cantPrec.toDouble() : _productoActual.opciones[i].cantidad = cantPrec.toInt();
-  //      _productoActual.precio == 0 ? _productoActual.opciones[i].precioTotal = cantPrec.toDouble() : _productoActual.opciones[i].precioTotal = cantPrec * _productoActual.precio;
-  //    }
-  //  }
-  //  notifyListeners();
-  // }
-
-  // getDetalleProducto() {
-  //   List<Opcion> _list = [];
-  //   _repository
-  //       .getProductoConcreto(_productoActual.idProducto)
-  //       .onData((concretoList) {
-  //         _list.clear();
-  //     concretoList.documents.forEach((concreto) {
-  //       ProductoConcreto productoConcreto =
-  //           ProductoConcreto.fromMap(concreto.data, concreto.documentID);
-  //       _list.add(productoConcreto);
-  //       _productoActual.concreto = _list;
-  //       notifyListeners();
-  //     });
-  //   });
-  // }
-
-  creatingProducto(Producto nuevo){
+  void creatingProducto(Producto nuevo) {
     _productoNuevo = nuevo;
     _productoNuevo.categorias = _categoriaString;
     // notifyListeners();
   }
 
-  deleteProducto(String idProducto) {
+  void deleteProducto(String idProducto) {
     try {
       _repository.deleteProducto(idProducto);
       _productoList.retainWhere((element) => element.productoID == idProducto);
@@ -187,6 +163,5 @@ class ProductoNotifier with ChangeNotifier {
 //     _productoCategoriaActual = productoActual;
 //     notifyListeners();
 //   }
-
 
 }

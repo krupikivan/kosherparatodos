@@ -15,9 +15,7 @@ class NewCategoria extends StatefulWidget {
 class _NewCategoriaState extends State<NewCategoria> {
   TextEditingController _nombreController;
 
-
   bool _esPadre;
-
 
   @override
   void initState() {
@@ -28,34 +26,34 @@ class _NewCategoriaState extends State<NewCategoria> {
 
   @override
   Widget build(BuildContext context) {
-    Provider.of<CategoriaNotifier>(context, listen: false).getAllCategorias();
+    Provider.of<CategoriaNotifier>(context, listen: false).getAllCategorias;
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: MyTheme.Colors.dark,
-        title: Text('Nueva Categoria'),
+        backgroundColor: MyTheme.Colors.accent,
+        title: const Text('Nueva Categoria'),
       ),
       body: Container(
-        padding: EdgeInsets.all(20),
-        margin: EdgeInsets.only(bottom: 20),
+        padding: const EdgeInsets.all(20),
+        margin: const EdgeInsets.only(bottom: 20),
         child: ListView(
-        shrinkWrap: true,
-        children: <Widget>[
-          _getRow('Nombre:', _nombreController, false),
-          _getHabilitado(),
-        ],
-          ),
+          shrinkWrap: true,
+          children: <Widget>[
+            _getRow('Nombre:', _nombreController, false),
+            _getHabilitado(),
+          ],
+        ),
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => _addCategoria(context),
-        label: Text('Agregar'),
-        backgroundColor: MyTheme.Colors.dark,
+        label: const Text('Agregar'),
+        backgroundColor: MyTheme.Colors.accent,
       ),
     );
   }
 
-  Widget _getRow(name, controller, isNum) {
+  Widget _getRow(String name, TextEditingController controller, bool isNum) {
     return Padding(
-      padding: EdgeInsets.only(bottom: 20),
+      padding: const EdgeInsets.only(bottom: 20),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -73,7 +71,9 @@ class _NewCategoriaState extends State<NewCategoria> {
               onChanged: _setCategoriaData(),
               enabled: true,
               controller: controller,
-              inputFormatters: isNum == true ? [WhitelistingTextInputFormatter.digitsOnly] : null,
+              inputFormatters: isNum == true
+                  ? [WhitelistingTextInputFormatter.digitsOnly]
+                  : null,
               keyboardType: isNum == true ? TextInputType.number : null,
             ),
           ),
@@ -104,9 +104,9 @@ class _NewCategoriaState extends State<NewCategoria> {
   //   );
   // }
 
-  _setCategoriaData(){
-    var categoria = Provider.of<CategoriaNotifier>(context, listen: false);
-    Categoria nuevo = new Categoria();
+  _setCategoriaData() {
+    final categoria = Provider.of<CategoriaNotifier>(context, listen: false);
+    final Categoria nuevo = Categoria();
     nuevo.nombre = _nombreController.text;
     nuevo.esPadre = _esPadre;
     categoria.creatingCategoria(nuevo);
@@ -128,12 +128,16 @@ class _NewCategoriaState extends State<NewCategoria> {
           ),
           onPressed: () => _changeBool(),
         ),
-         _esPadre == false ? CategoriaCheckboxWidget(esProducto: false) : SizedBox(height: 1,),
+        _esPadre == false
+            ? const CategoriaCheckboxWidget(esProducto: false)
+            : const SizedBox(
+                height: 1,
+              ),
       ],
     );
   }
 
-  _changeBool() {
+  void _changeBool() {
     if (_esPadre == true) {
       _esPadre = false;
       setState(() {});
@@ -143,7 +147,7 @@ class _NewCategoriaState extends State<NewCategoria> {
     }
   }
 
-  _addCategoria(context) {
+  void _addCategoria(BuildContext context) {
     _setCategoriaData();
     Provider.of<CategoriaNotifier>(context, listen: false).addNewCategoria();
     Navigator.pop(context);

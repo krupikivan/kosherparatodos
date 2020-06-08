@@ -9,7 +9,10 @@ class ItemCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       elevation: 5.0,
-      child: Image.network(item.imagen, fit: BoxFit.cover,),
+      child: Image.network(
+        item.imagen,
+        fit: BoxFit.cover,
+      ),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       margin: EdgeInsets.all(10),
     );
