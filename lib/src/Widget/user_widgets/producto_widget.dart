@@ -3,6 +3,8 @@ import 'package:kosherparatodos/src/models/producto.dart';
 import 'package:kosherparatodos/src/pages/user_pages/pedido/bloc/bloc.dart';
 import 'package:kosherparatodos/style/theme.dart' as MyTheme;
 
+import '../show_toast.dart';
+
 class ProductoItemWidget extends StatefulWidget {
   final Producto producto;
 
@@ -117,10 +119,13 @@ class _ProductoItemWidgetState extends State<ProductoItemWidget> {
                               borderRadius: BorderRadius.circular(15)),
                           fillColor: Colors.white,
                           elevation: 0,
-                          onPressed: () => blocPedidoVigente.updateCarrito(
-                              widget.producto,
-                              _cantidad,
-                              widget.producto.stock),
+                          onPressed: () {
+                            blocPedidoVigente.updateCarrito(widget.producto,
+                                _cantidad, widget.producto.stock);
+                            _showMessage('Agregado al carrito');
+                            _isPressed = false;
+                            setState(() {});
+                          },
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -186,6 +191,10 @@ class _ProductoItemWidgetState extends State<ProductoItemWidget> {
         ],
       ),
     );
+  }
+
+  _showMessage(String msg) {
+    ShowToast().show(msg, 5);
   }
 
   void toggleProductAdder() {

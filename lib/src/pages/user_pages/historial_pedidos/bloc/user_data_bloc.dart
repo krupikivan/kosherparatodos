@@ -37,8 +37,8 @@ class ClienteDataBloc {
   }
 
 //  Trae los pedidos del cliente logueado con su detalle
-  void getPedidos(String uid) {
-    _repository.getPedidosCliente(uid).then((value) {
+  Future getPedidos(String uid) {
+    return _repository.getPedidosCliente(uid).then((value) {
       listPedido.clear();
       for (int i = 0; i < value.documents.length; i++) {
         final Pedido pedido = Pedido.fromFirebase(
@@ -49,16 +49,27 @@ class ClienteDataBloc {
     });
   }
 
+  void updatePedidoFromBloc(String pedId) async {
+    List<Pedido> _listPe = [];
+    _listPe = await getListPedidos.firstWhere((event) => true);
+    _listPe.removeWhere((element) => element.pedidoID == pedId);
+    addToPedidosList(_listPe);
+  }
+
 //  Se comunica con el bloc del pedido vigente y se carga en el carrito
   void editarPedido(Pedido pedidoSelected) {
     blocPedidoVigente.agregarPedidoParaEditar(pedidoSelected);
   }
 
 // Eliminamos el pedido desde el detalle del historial
-  void eliminarPedido(Pedido pedidoSelected) {
-    _repository
+  Future eliminarPedido(Pedido pedidoSelected) async {
+    await _repository
         .eliminarPedido(pedidoSelected)
-        .then((value) => getPedidos(_clienteInfo.clienteID));
+        .then((value) => true, onError: (onError) => _handlingError('Error'));
+  }
+
+  _handlingError(String msg) {
+    throw Exception(msg);
   }
 
   void dispose() async {

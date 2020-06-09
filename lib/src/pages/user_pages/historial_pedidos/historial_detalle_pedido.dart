@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
-import 'package:kosherparatodos/src/Widget/show_toast.dart';
 import 'package:kosherparatodos/src/models/pedido.dart';
 import 'package:kosherparatodos/src/pages/user_pages/pedido/pedido.dart';
+import 'package:kosherparatodos/src/utils/show_messages.dart';
 import 'package:kosherparatodos/style/theme.dart' as MyTheme;
 import 'bloc/bloc.dart';
 
@@ -17,38 +17,42 @@ class HistorialDetallePedido extends StatelessWidget {
     return StreamBuilder<List<Pedido>>(
         stream: blocUserData.getListPedidos,
         builder: (context, snapshot) {
-          if (!snapshot.hasData)
-            return CircularProgressIndicator();
-          else
+          // Si el pedido fue eliminado preguntamos al listado si lo tiene o no
+          if (!snapshot.hasData ||
+              !snapshot.data.any((element) => element.pedidoID == pedidoID)) {
+            return Center(child: CircularProgressIndicator());
+          } else {
+            // Si el elemento no esta en la lista volvemos porque se elimino el pedido
             pedidoSelected = snapshot.data
                 .firstWhere((element) => element.pedidoID == pedidoID);
-          return Scaffold(
-            appBar: AppBar(
-              backgroundColor: MyTheme.Colors.accent,
-              title: Text("Detalle de pedido"),
-            ),
-            body: Container(
-              child: !snapshot.hasData
-                  ? Center(
-                      child: CircularProgressIndicator(
-                      valueColor: new AlwaysStoppedAnimation<Color>(
-                          MyTheme.Colors.accent),
-                    ))
-                  : ListView.builder(
-                      itemCount: pedidoSelected.productos.length,
-                      itemBuilder: (BuildContext context, int index) =>
-                          ListTile(
-                        title:
-                            Text(pedidoSelected.productos[index].descripcion),
-                        subtitle:
-                            Text('\$${pedidoSelected.productos[index].precio}'),
+            return Scaffold(
+              appBar: AppBar(
+                backgroundColor: MyTheme.Colors.accent,
+                title: Text("Detalle de pedido"),
+              ),
+              body: Container(
+                child: !snapshot.hasData
+                    ? Center(
+                        child: CircularProgressIndicator(
+                        valueColor: new AlwaysStoppedAnimation<Color>(
+                            MyTheme.Colors.accent),
+                      ))
+                    : ListView.builder(
+                        itemCount: pedidoSelected.productos.length,
+                        itemBuilder: (BuildContext context, int index) =>
+                            ListTile(
+                          title:
+                              Text(pedidoSelected.productos[index].descripcion),
+                          subtitle: Text(
+                              '\$${pedidoSelected.productos[index].precio}'),
+                        ),
                       ),
-                    ),
-            ),
-            floatingActionButton: !snapshot.hasData
-                ? Container()
-                : _bntExpanded(context, pedidoSelected.estado),
-          );
+              ),
+              floatingActionButton: !snapshot.hasData
+                  ? Container()
+                  : _bntExpanded(context, pedidoSelected.estado),
+            );
+          }
         });
   }
 
@@ -86,8 +90,12 @@ class HistorialDetallePedido extends StatelessWidget {
   }
 
   void _eliminarPedido(BuildContext context) {
-    blocUserData.eliminarPedido(pedidoSelected);
-    Navigator.pop(context);
-    ShowToast().show('Pedido eliminado', 5);
+    blocUserData.eliminarPedido(pedidoSelected).then((value) {
+      Show('Eliminando pedido...');
+      Show('Pedido eliminado.');
+      Navigator.of(context).pop();
+      blocUserData.updatePedidoFromBloc(pedidoSelected.pedidoID);
+    }, onError: (onError) => Show('No se pudo eliminar.'));
+    // .whenComplete(() {});
   }
 }

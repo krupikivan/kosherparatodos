@@ -4,6 +4,7 @@ import 'package:kosherparatodos/src/Widget/show_toast.dart';
 import 'package:kosherparatodos/src/Widget/title_text.dart';
 import 'package:kosherparatodos/src/models/pedido.dart';
 import 'package:kosherparatodos/src/pages/user_pages/pedido/bloc/bloc.dart';
+import 'package:kosherparatodos/src/utils/show_messages.dart';
 import 'package:kosherparatodos/style/theme.dart' as MyTheme;
 
 class DetallePedidoListPage extends StatelessWidget {
@@ -96,15 +97,16 @@ class DetallePedidoListPage extends StatelessWidget {
                           onPressed: () {
                             if (snapshot.data.total != 0.0) {
                               blocPedidoVigente.realizarPedido().then((value) {
-                                _showMessageRealizandoPedido();
-                                _showMessageSuccess();
+                                Show('Realizando pedido');
+                                Show('Pedido realizado!');
                               },
-                                  onError: (onError) =>
-                                      _showMessageStockOut()).whenComplete(() {
+                                  onError: (onError) => Show(
+                                      'No hay stock disponible')).whenComplete(
+                                  () {
                                 blocPedidoVigente.clearPedido();
                               });
                             } else {
-                              _showMessagePedidoVacio();
+                              Show('El pedido esta vacio');
                             }
                           },
                           shape: RoundedRectangleBorder(
@@ -137,22 +139,6 @@ class DetallePedidoListPage extends StatelessWidget {
                   );
           }
         });
-  }
-
-  _showMessageSuccess() {
-    ShowToast().show('Pedido realizado!', 5);
-  }
-
-  _showMessageRealizandoPedido() {
-    ShowToast().show('Realizando pedido', 5);
-  }
-
-  _showMessageStockOut() {
-    ShowToast().show('No hay stock disponible', 5);
-  }
-
-  _showMessagePedidoVacio() {
-    ShowToast().show('El pedido esta vacio', 5);
   }
 
   @override

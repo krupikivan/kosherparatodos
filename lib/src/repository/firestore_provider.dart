@@ -129,19 +129,27 @@ class FirestoreProvider implements Repository {
   @override
   Future<void> eliminarPedido(Pedido pedidoSelected) async {
     _firestore.runTransaction((t) async {
-      final int length = pedidoSelected.productos.length;
-
-      // pedidoSelected.productos.forEach((Detalle element) {
-      //TODO: La idea aca es de volver a poner el stock en los productos.
+      // pedidoSelected.productos.forEach((Detalle element) async {
+      //   final DocumentSnapshot doc = await _firestore
+      //       .collection('productos')
+      //       .document(element.productoID)
+      //       .get();
+      //   await _firestore
+      //       .collection('productos')
+      //       .document(element.productoID)
+      //       .updateData({'stock': doc.data['stock'] - element.cantidad});
       // });
 
-      for (var i = 0; i < length; i++) {
+      for (var i = 0; i < pedidoSelected.productos.length; i++) {
+        final DocumentSnapshot doc = await _firestore
+            .collection('productos')
+            .document(pedidoSelected.productos[i].productoID)
+            .get();
         await _firestore
             .collection('productos')
             .document(pedidoSelected.productos[i].productoID)
             .updateData({
-          'stock': pedidoSelected.productos[i].stockActual -
-              pedidoSelected.productos[i].cantidad
+          'stock': doc.data['stock'] + pedidoSelected.productos[i].cantidad
         });
       }
       await _firestore
