@@ -95,20 +95,16 @@ class DetallePedidoListPage extends StatelessWidget {
                       FlatButton(
                           onPressed: () {
                             if (snapshot.data.total != 0.0) {
-                              blocPedidoVigente
-                                  .realizarPedido()
-                                  .then(
-                                    (value){ _showLoading();
-                                     _showSuccess();
-                                    },
-                                    onError: (onError) => _showStockOut()
-                                  )
-                                  // .catchError((onError) => _showStockOut())
-                                  .whenComplete(() {
+                              blocPedidoVigente.realizarPedido().then((value) {
+                                _showMessageRealizandoPedido();
+                                _showMessageSuccess();
+                              },
+                                  onError: (onError) =>
+                                      _showMessageStockOut()).whenComplete(() {
                                 blocPedidoVigente.clearPedido();
                               });
                             } else {
-                              _showPedidoVacio();
+                              _showMessagePedidoVacio();
                             }
                           },
                           shape: RoundedRectangleBorder(
@@ -143,19 +139,19 @@ class DetallePedidoListPage extends StatelessWidget {
         });
   }
 
-  _showSuccess() {
-    ShowToast().show('Exitoso!', 5);
+  _showMessageSuccess() {
+    ShowToast().show('Pedido realizado!', 5);
   }
 
-  _showLoading() {
+  _showMessageRealizandoPedido() {
     ShowToast().show('Realizando pedido', 5);
   }
 
-  _showStockOut() {
+  _showMessageStockOut() {
     ShowToast().show('No hay stock disponible', 5);
   }
 
-  _showPedidoVacio() {
+  _showMessagePedidoVacio() {
     ShowToast().show('El pedido esta vacio', 5);
   }
 

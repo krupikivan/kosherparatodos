@@ -70,9 +70,7 @@ class PedidoVigenteBloc {
   Future realizarPedido() async {
     await _repo.addNewPedido(pedido, blocUserData.getClienteLogeado()).then(
         (value) => true,
-        onError: (onError) => _handlingError('No hay stock -Pedido Vigente-'));
-    // .catchError(() => _handlingError('Error on Catch error'))
-    // .whenComplete(() => clearPedido());
+        onError: (onError) => _handlingError('No hay stock disponible'));
   }
 
   _handlingError(String msg) {

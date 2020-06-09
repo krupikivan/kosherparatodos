@@ -22,7 +22,7 @@ abstract class Repository {
 
   Future<bool> getUserAdmin(String id);
 
-  Future<void> eliminarPedido(String idPedido);
+  Future<void> eliminarPedido(Pedido pedidoSelected);
 
 //----------------------------------------------------------
 //------------------------ADMIN------------------------------

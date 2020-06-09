@@ -127,8 +127,28 @@ class FirestoreProvider implements Repository {
 
 //----------------------------------------------------ELIMINAR PEDIDO DEL CLIENTE LOGUEADO
   @override
-  Future<void> eliminarPedido(String idPedido) async {
-    await _firestore.collection('pedidos').document(idPedido).delete();
+  Future<void> eliminarPedido(Pedido pedidoSelected) async {
+    _firestore.runTransaction((t) async {
+      final int length = pedidoSelected.productos.length;
+
+      // pedidoSelected.productos.forEach((Detalle element) {
+      //TODO: La idea aca es de volver a poner el stock en los productos.
+      // });
+
+      for (var i = 0; i < length; i++) {
+        await _firestore
+            .collection('productos')
+            .document(pedidoSelected.productos[i].productoID)
+            .updateData({
+          'stock': pedidoSelected.productos[i].stockActual -
+              pedidoSelected.productos[i].cantidad
+        });
+      }
+      await _firestore
+          .collection('pedidos')
+          .document(pedidoSelected.pedidoID)
+          .delete();
+    });
   }
 
   ///-----------------------------------------------------------

@@ -57,7 +57,7 @@ class ClienteDataBloc {
 // Eliminamos el pedido desde el detalle del historial
   void eliminarPedido(Pedido pedidoSelected) {
     _repository
-        .eliminarPedido(pedidoSelected.pedidoID)
+        .eliminarPedido(pedidoSelected)
         .then((value) => getPedidos(_clienteInfo.clienteID));
   }
 
