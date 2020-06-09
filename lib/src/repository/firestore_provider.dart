@@ -178,12 +178,8 @@ class FirestoreProvider implements Repository {
   }
 
   @override
-  StreamSubscription<DocumentSnapshot> getEstadoEntrega() {
-    return _firestore
-        .collection('estado')
-        .document('entrega')
-        .snapshots()
-        .listen((doc) {});
+  Future<DocumentSnapshot> getEstadoEntrega() {
+    return _firestore.collection('estado').document('entrega').get();
   }
 
   @override

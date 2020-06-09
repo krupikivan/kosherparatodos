@@ -11,7 +11,11 @@ class PedidoDetailPage extends StatelessWidget {
     final PedidoNotifier pedido = Provider.of<PedidoNotifier>(context);
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: MyTheme.Colors.accent,
+        brightness: Brightness.light,
+        elevation: 0,
+        backgroundColor: MyTheme.Colors.white,
+        actionsIconTheme: IconThemeData(color: MyTheme.Colors.black),
+        iconTheme:IconThemeData(color: MyTheme.Colors.black),
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[

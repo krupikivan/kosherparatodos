@@ -32,7 +32,7 @@ abstract class Repository {
 
   StreamSubscription<QuerySnapshot> getAllPedidos();
 
-  StreamSubscription<DocumentSnapshot> getEstadoEntrega();
+  Future<DocumentSnapshot> getEstadoEntrega();
 
   StreamSubscription<QuerySnapshot> getCategorias();
 

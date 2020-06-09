@@ -16,24 +16,26 @@ class PedidoNotifier with ChangeNotifier {
 
   PedidoNotifier.init() {
     getPedidos();
+    _getEstadosEntrega(); 
   }
 
+
   void getPedidos() {
-    _getEstadosEntrega();
     final List<Pedido> _list = [];
     _repository.getAllPedidos().onData((listPed) {
+      _pedidoList.clear();
       listPed.documents.forEach((pedido) {
         final Pedido _pedido =
             Pedido.fromPedidos(pedido.data, pedido.documentID);
-        _list.add(_pedido);
+        _list.add(_pedido);;
+      });
         _pedidoList = _list;
         notifyListeners();
-      });
     });
   }
 
-  void _getEstadosEntrega() {
-    _repository.getEstadoEntrega().onData((data) {
+  void _getEstadosEntrega() async {
+   await _repository.getEstadoEntrega().then((data) {
       final EstadoEntrega _ee = EstadoEntrega.fromMap(data['estado'] as List);
       _estadoEntrega = _ee.entrega;
       notifyListeners();

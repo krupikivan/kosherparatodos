@@ -10,22 +10,19 @@ class PedidosPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<PedidoNotifier>(
-      builder: (context, pedido, _) => RefreshIndicator(
-        child: ListView.builder(
-          itemBuilder: (BuildContext context, int index) => PedidoCardWidget(
-            estado: pedido.pedidoList[index].estado,
-            action: () {
-              pedido.pedidoActual = pedido.pedidoList[index];
-              _goToDetails(context);
-            },
-            pagado: pedido.pedidoList[index].pagado,
-            title:
-                '${pedido.pedidoList[index].cliente.nombre.nombre} ${pedido.pedidoList[index].cliente.nombre.apellido}',
-            subtitle: 'Total: \$${pedido.pedidoList[index].total.truncate()}',
-          ),
-          itemCount: pedido.pedidoList.length,
+      builder: (context, pedido, _) => ListView.builder(
+        itemBuilder: (BuildContext context, int index) => PedidoCardWidget(
+          estado: pedido.pedidoList[index].estado,
+          action: () {
+            pedido.pedidoActual = pedido.pedidoList[index];
+            _goToDetails(context);
+          },
+          pagado: pedido.pedidoList[index].pagado,
+          title:
+              '${pedido.pedidoList[index].cliente.nombre.nombre} ${pedido.pedidoList[index].cliente.nombre.apellido}',
+          subtitle: 'Total: \$${pedido.pedidoList[index].total.truncate()}',
         ),
-        onRefresh: () => _refreshList(pedido),
+        itemCount: pedido.pedidoList.length,
       ),
     );
   }
@@ -34,9 +31,5 @@ class PedidosPage extends StatelessWidget {
     // Provider.of<ProductoNotifier>(context, listen: false).getDetalleProducto();
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => PedidoDetailPage()));
-  }
-
-  Future<void> _refreshList(PedidoNotifier pedido) async {
-    pedido.getPedidos();
   }
 }
