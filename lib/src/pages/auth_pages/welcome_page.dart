@@ -58,7 +58,7 @@ class _WelcomePageState extends State<WelcomePage> {
           height: MediaQuery.of(context).size.height,
           decoration: new BoxDecoration(
               gradient: new LinearGradient(
-                  colors: [MyTheme.Colors.accent, MyTheme.Colors.primary],
+                  colors: [MyTheme.Colors.primary, MyTheme.Colors.secondary],
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   stops: const [0.15, 1.0])),

@@ -12,7 +12,7 @@ class PedidosPage extends StatelessWidget {
     return Consumer<PedidoNotifier>(
       builder: (context, pedido, _) => ListView.builder(
         itemBuilder: (BuildContext context, int index) => PedidoCardWidget(
-          estado: pedido.pedidoList[index].estado,
+          estado: pedido.pedidoList[index].estadoEntrega,
           action: () {
             pedido.pedidoActual = pedido.pedidoList[index];
             _goToDetails(context);

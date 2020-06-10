@@ -142,84 +142,40 @@ class PedidoDetailPage extends StatelessWidget {
       children: <Widget>[
         Text("Seleccione el estado del pedido"),
         Container(
-            height: 40,
-            padding: EdgeInsets.all(5),
-            child: ListView(
-              shrinkWrap: true,
-              scrollDirection: Axis.horizontal,
-              children: [
-                ChoiceChip(
-                  selected: !pedido.pedidoActual.pagado,
-                  selectedColor: MyTheme.lighten(MyTheme.Colors.warning, 0.6),
-                  label: Text('No Pagado'),
-                  labelStyle: TextStyle(
-                    color: pedido.pedidoActual.pagado != true
-                        ? MyTheme.darken(MyTheme.Colors.warning, 0.3)
-                        : MyTheme.Colors.black,
-                  ),
-                  onSelected: (nopagado) =>  !nopagado ? null : _setPagado(pedido),
+          height: 40,
+          padding: EdgeInsets.all(5),
+          child: ListView(
+            shrinkWrap: true,
+            scrollDirection: Axis.horizontal,
+            children: [
+              ChoiceChip(
+                selected: !pedido.pedidoActual.pagado,
+                selectedColor: MyTheme.lighten(MyTheme.Colors.warning, 0.6),
+                label: Text('No Pagado'),
+                labelStyle: TextStyle(
+                  color: pedido.pedidoActual.pagado != true
+                      ? MyTheme.darken(MyTheme.Colors.warning, 0.3)
+                      : MyTheme.Colors.black,
                 ),
-                SizedBox(
-                  width: 10,
+                onSelected: (nopagado) => !nopagado ? null : _setPagado(pedido),
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              ChoiceChip(
+                selected: pedido.pedidoActual.pagado,
+                selectedColor: MyTheme.lighten(MyTheme.Colors.green, 0.5),
+                label: Text('Pagado'),
+                labelStyle: TextStyle(
+                  color: pedido.pedidoActual.pagado == true
+                      ? MyTheme.darken(MyTheme.Colors.green, 0.3)
+                      : MyTheme.Colors.black,
                 ),
-                ChoiceChip(
-                  selected: pedido.pedidoActual.pagado,
-                  selectedColor: MyTheme.lighten(MyTheme.Colors.green, 0.5),
-                  label: Text('Pagado'),
-                  labelStyle: TextStyle(
-                    color: pedido.pedidoActual.pagado == true
-                        ? MyTheme.darken(MyTheme.Colors.green, 0.3)
-                        : MyTheme.Colors.black,
-                  ),
-                  onSelected:  (pagado) =>  !pagado ? null : _setPagado(pedido),
-                ),
-              ],
-            )
-            // TitleText(
-            //   text: pedido.pedidoActual.pagado == true ? 'Pagado' : 'No Pagado',
-            //   fontSize: 14,
-            //   fontWeight: FontWeight.w500,
-            // ),
-            // ChoiceChip(
-            //     label: Text(pedido.pedidoActual.pagado == true
-            //         ? 'Pagado'
-            //         : 'No Pagado'),
-            //     selected: pedido.pedidoActual.pagado == true ?? false,
-            //     onSelected: (pagado) => _setPagado(pedido),
-            //     selectedColor: MyTheme.lighten(MyTheme.Colors.green, 0.5),
-            //     backgroundColor: MyTheme.lighten(MyTheme.Colors.warning, 0.6),
-            //     labelStyle: TextStyle(color: pedido.pedidoActual.pagado == true
-            //           ? MyTheme.darken(MyTheme.Colors.green, 0.3)
-            //           : MyTheme.darken(MyTheme.Colors.warning, 0.2),),
-            //     avatar:
-            //      pedido.pedidoActual.pagado == true ?
-            //       CircleAvatar(
-            //       child: Icon(
-            //         Icons.check,
-            //       ),
-            //       backgroundColor: Colors.transparent,
-            //       foregroundColor: MyTheme.darken(MyTheme.Colors.green, 0.3),
-            //       )
-
-            //      :
-            //     CircleAvatar(
-            //       child: Icon(
-            //         Icons.close,
-            //       ),
-            //       backgroundColor: Colors.transparent,
-            //       foregroundColor: MyTheme.darken(MyTheme.Colors.warning, 0.2),
-
-            //     )),
-            // trailing: IconButton(
-            //     icon: Icon(
-            //       Icons.check_circle,
-            //       color: pedido.pedidoActual.pagado == true
-            //           ? Colors.green
-            //           : Colors.red,
-            //     ),
-            //     onPressed: () => _setPagado(pedido)),
-            // ),
-            ),
+                onSelected: (pagado) => !pagado ? null : _setPagado(pedido),
+              ),
+            ],
+          ),
+        ),
       ],
     );
   }
@@ -228,21 +184,38 @@ class PedidoDetailPage extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text("Seleccione Estado del envio:"),
+        Text("Seleccione el estado de entrega:"),
         Container(
+          height: 40,
           padding: EdgeInsets.all(5),
-          child: DropdownButton(
-            items: pedido.getEstadoEntrega
-                .map((value) =>
-                    DropdownMenuItem(child: Text(value), value: value))
-                .toList(),
-            onChanged: (value) {
-              pedido.setEstadoEntrega(value);
-            },
-            isExpanded: false,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            // pedido.getEstadoEntrega
+            //     .map((value) =>
+            //         DropdownMenuItem(child: Text(value), value: value))
+            //     .toList(),
+            // onChanged: (value) {
+            // pedido.setEstadoEntrega(value);
+            // },
+            // isExpanded: false,
             //Mostramos el valor del estado del pedido comparandolo con el vector cargado en firebase
-            value: pedido.getEstadoEntrega
-                .firstWhere((element) => element == pedido.pedidoActual.estado),
+            // value: pedido.getEstadoEntrega
+            // .firstWhere((element) => element == pedido.pedidoActual.estadoEntrega),
+
+            itemBuilder: (BuildContext context, int index) {
+              return ChoiceChip(
+                selected: pedido.pedidoActual.estadoEntrega.index == index,
+                selectedColor: MyTheme.lighten(MyTheme.Colors.green, 0.5),
+                label: Text(Convert.enumEntregaToString(
+                    pedido.pedidoActual.estadoEntrega)),
+                labelStyle: TextStyle(
+                  color: pedido.pedidoActual.pagado == true
+                      ? MyTheme.darken(MyTheme.Colors.green, 0.3)
+                      : MyTheme.Colors.black,
+                ),
+                onSelected: (pagado) => !pagado ? null : _setPagado(pedido),
+              );
+            },
           ),
         ),
       ],

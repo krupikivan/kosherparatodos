@@ -1,11 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:kosherparatodos/src/models/producto.dart';
+import 'package:kosherparatodos/src/utils/converter.dart';
 import 'cliente.dart';
+
+enum EnumEntrega { EnPreparacion, Entregado, Cancelado }
 
 class Pedido {
   String pedidoID;
   Cliente cliente;
-  String estado;
+  EnumEntrega estadoEntrega;
   Timestamp fecha;
   bool pagado;
   List productos;
@@ -14,7 +18,7 @@ class Pedido {
   Pedido({
     this.pedidoID,
     this.cliente,
-    this.estado,
+    this.estadoEntrega,
     this.fecha,
     this.pagado,
     this.total,
@@ -23,7 +27,7 @@ class Pedido {
 
   Pedido.fromFirebase(Map<String, dynamic> data, this.pedidoID) {
     cliente = Cliente.fromPedidos(data);
-    estado = data['estado'] as String;
+    estadoEntrega = Convert.stringToEnumEntrega(data['estado']);
     fecha = data['fecha'] as Timestamp;
     pagado = data['pagado'] as bool;
     productos = getProductosList(data['productos'] as List);
@@ -31,7 +35,7 @@ class Pedido {
   }
   Pedido.fromPedidos(Map<String, dynamic> data, this.pedidoID) {
     cliente = Cliente.fromPedidos(data);
-    estado = data['estado'] as String;
+    estadoEntrega = Convert.stringToEnumEntrega(data['estado']);
     fecha = data['fecha'] as Timestamp;
     pagado = data['pagado'] as bool;
     productos = getProductosList(data['productos']);
@@ -85,16 +89,16 @@ class Detalle {
 }
 
 class EstadoEntrega {
-  List entrega;
+  List<EnumEntrega> entrega;
 
   EstadoEntrega.fromMap(List data) {
     entrega = _getEstados(data);
   }
 
-  List _getEstados(List data) {
-    final List _list = [];
+  List<EnumEntrega> _getEstados(List data) {
+    final List<EnumEntrega> _list = [];
     for (var ent in data) {
-      _list.add(ent);
+      _list.add(Convert.stringToEnumEntrega(ent));
     }
     return _list;
   }

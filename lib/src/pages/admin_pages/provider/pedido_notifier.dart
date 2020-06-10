@@ -53,10 +53,10 @@ class PedidoNotifier with ChangeNotifier {
     }
   }
 
-  void setEstadoEntrega(String value) {
+  void setEstadoEntrega(EnumEntrega value) {
     try {
       _repository.setEstadoEntrega(_pedidoActual.pedidoID, value);
-      _pedidoActual.estado = value;
+      _pedidoActual.estadoEntrega = value;
       getPedidos();
     } catch (e) {
       print(e);

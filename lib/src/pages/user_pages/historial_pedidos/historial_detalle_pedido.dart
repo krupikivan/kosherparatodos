@@ -50,7 +50,7 @@ class HistorialDetallePedido extends StatelessWidget {
               ),
               floatingActionButton: !snapshot.hasData
                   ? Container()
-                  : _bntExpanded(context, pedidoSelected.estado),
+                  : _bntExpanded(context, pedidoSelected.estadoEntrega),
             );
           }
         });

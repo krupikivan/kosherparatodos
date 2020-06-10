@@ -44,7 +44,7 @@ class HistorialListadoPedidoPage extends StatelessWidget {
                         Text('Total: \$${snapshot.data[index].total}'),
                       ],
                     ),
-                    subtitle: Text(snapshot.data[index].estado),
+                    subtitle: Text(snapshot.data[index].estadoEntrega),
                     trailing: Icon(Icons.arrow_forward),
                     onTap: () =>
                         _goToDetails(context, snapshot.data[index].pedidoID),

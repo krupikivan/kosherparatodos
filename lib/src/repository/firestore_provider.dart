@@ -111,7 +111,7 @@ class FirestoreProvider implements Repository {
         .document(pedido.pedidoID)
         .updateData({
       'total': pedido.total,
-      'estado': pedido.estado,
+      'estado': pedido.estadoEntrega,
       'productos': _addProductosToPedido(pedido.productos),
     });
   }
