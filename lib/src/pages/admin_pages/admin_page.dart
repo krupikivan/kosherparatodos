@@ -34,12 +34,18 @@ class AdminPage extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        theme: ThemeData(textTheme: GoogleFonts.openSansTextTheme(textTheme)),
+        theme: ThemeData(
+          fontFamily: GoogleFonts.muli().fontFamily,
+          appBarTheme: AppBarTheme(
+            textTheme: TextTheme(headline6: TextStyle(fontFamily: GoogleFonts.muli().fontFamily, fontSize: 20,)),
+            brightness: Brightness.light,
+            color: Colors.grey.shade50,
+            elevation: 0,
+            iconTheme: IconThemeData(color: Colors.black),
+          ),
+        ),
         home: Scaffold(
           appBar: AppBar(
-            iconTheme: IconThemeData(color: MyTheme.Colors.black),
-            elevation: 0,
-            backgroundColor: MyTheme.Colors.white,
             title: StreamBuilder(
                 stream: bloc.getNavigation,
                 initialData: bloc.navigationProvider.currentNavigation,
@@ -109,21 +115,24 @@ class AdminPage extends StatelessWidget {
               ]),
             ),
           ),
-          body: StreamBuilder(
-            stream: bloc.getNavigation,
-            initialData: bloc.navigationProvider.currentNavigation,
-            builder: (context, snapshot) {
-              if (bloc.navigationProvider.currentNavigation == "Clientes") {
+          body: Container(
+            color: Colors.grey.shade50,
+            child: StreamBuilder(
+              stream: bloc.getNavigation,
+              initialData: bloc.navigationProvider.currentNavigation,
+              builder: (context, snapshot) {
+                if (bloc.navigationProvider.currentNavigation == "Clientes") {
+                  return ClientePage();
+                }
+                if (bloc.navigationProvider.currentNavigation == "Pedidos") {
+                  return PedidosPage();
+                }
+                if (bloc.navigationProvider.currentNavigation == "Productos") {
+                  return CategoriaPage();
+                }
                 return ClientePage();
-              }
-              if (bloc.navigationProvider.currentNavigation == "Pedidos") {
-                return PedidosPage();
-              }
-              if (bloc.navigationProvider.currentNavigation == "Productos") {
-                return CategoriaPage();
-              }
-              return ClientePage();
-            },
+              },
+            ),
           ),
         ),
       ),

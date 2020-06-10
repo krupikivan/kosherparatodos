@@ -24,11 +24,12 @@ class PedidoCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(10),
+      padding: const EdgeInsets.symmetric(horizontal:10, vertical: 2),
       child: Card(
-        color: color ?? MyTheme.Colors.grey,
-        elevation: elevation ?? 6,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+        shadowColor: Colors.black38,
+        color: color ?? MyTheme.Colors.white,
+        elevation: elevation ?? 10,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         child: ListTile(
           title: Text(
             title,

@@ -11,7 +11,7 @@ class TitleText extends StatelessWidget {
       {Key key,
       this.text,
       this.fontSize = 18,
-      this.color = MyTheme.Colors.accent,
+      this.color = MyTheme.Colors.primary,
       this.fontWeight = FontWeight.w800})
       : super(key: key);
   @override

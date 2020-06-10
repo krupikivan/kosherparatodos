@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class Colors {
   const Colors();
@@ -11,8 +12,7 @@ class Colors {
   static const Color black = Color(0xFF464646);
   static const Color grey = Color(0xFFefefef);
 
-  static const TextStyle headerStyle = TextStyle(
-      fontFamily: 'OpenSans', color: black, fontWeight: FontWeight.w600);
+  static const TextStyle headerStyle = TextStyle(color: Colors.black, fontWeight: FontWeight.w600);
 
   // Colores de usos
   static const Color yellowWarning = Color(0xFFffd643);

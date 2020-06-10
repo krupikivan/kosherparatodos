@@ -19,9 +19,10 @@ class ClienteCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: color ?? MyTheme.Colors.grey,
-      elevation: elevation ?? 6,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+      color: color ?? MyTheme.Colors.white,
+      elevation: elevation ?? 10,
+      shadowColor: Colors.black38,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       child: ListTile(
         title: Text(
           name,

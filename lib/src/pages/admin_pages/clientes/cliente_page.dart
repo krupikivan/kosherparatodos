@@ -10,7 +10,7 @@ class ClientePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 10),
-      color: MyTheme.Colors.white,
+      color: Colors.grey.shade50,
       child: Consumer<ClienteNotifier>(
         builder: (context, cliente, _) => RefreshIndicator(
           child: ListView.separated(

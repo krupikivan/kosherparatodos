@@ -11,79 +11,125 @@ class PedidoDetailPage extends StatelessWidget {
     final PedidoNotifier pedido = Provider.of<PedidoNotifier>(context);
     return Scaffold(
       appBar: AppBar(
-        brightness: Brightness.light,
-        elevation: 0,
-        backgroundColor: MyTheme.Colors.white,
         actionsIconTheme: IconThemeData(color: MyTheme.Colors.black),
-        iconTheme:IconThemeData(color: MyTheme.Colors.black),
+        iconTheme: IconThemeData(color: MyTheme.Colors.black),
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             Text(
-                'Cliente: ${pedido.pedidoActual.cliente.nombre.nombre} ${pedido.pedidoActual.cliente.nombre.apellido}'),
+              'Cliente: ${pedido.pedidoActual.cliente.nombre.nombre} ${pedido.pedidoActual.cliente.nombre.apellido}',
+              style: TextStyle(
+                  color: MyTheme.Colors.black,
+                  fontWeight: FontWeight.w700,
+                  fontSize: 20),
+            ),
             Text(
               'Fecha: ${convert.getFechaFromTimestamp(pedido.pedidoActual.fecha)}',
-              style: TextStyle(fontSize: 10),
+              style: TextStyle(
+                  fontSize: 15,
+                  color: MyTheme.Colors.black,
+                  fontWeight: FontWeight.w100),
             ),
           ],
         ),
       ),
-      body: Column(
-        children: <Widget>[
-          Expanded(
-            flex: 7,
-            child: pedido.pedidoActual.productos == null
-                ? Center(child: Text('No hay pedidos'))
-                : ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: pedido.pedidoActual.productos.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return ListTile(
-                        title: Text(
-                            '${pedido.pedidoActual.productos[index].cantidad} x ${pedido.pedidoActual.productos[index].descripcion}'),
-                        subtitle: Text(
-                            'Precio unitario: \$${pedido.pedidoActual.productos[index].precio}'),
-                      );
-                    },
-                  ),
-          ),
-          Expanded(
-            child: Divider(
-              height: 5,
-              color: Colors.grey,
+      body: Container(
+        color: Colors.grey.shade50,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Expanded(
+              flex: 7,
+              child: pedido.pedidoActual.productos == null
+                  ? Center(child: Text('No hay pedidos'))
+                  : ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: pedido.pedidoActual.productos.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return Column(
+                          children: <Widget>[
+                            ListTile(
+                              leading: Container(
+                                width: 30,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    Row(
+                                      children: <Widget>[
+                                        Text(
+                                          '${pedido.pedidoActual.productos[index].cantidad}',
+                                          style: TextStyle(fontSize: 20),
+                                        ),
+                                        Text(
+                                          'x',
+                                          style: TextStyle(fontSize: 15),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              title: Text(
+                                  '${pedido.pedidoActual.productos[index].descripcion}'),
+                              trailing: Text(
+
+                                  ///TODO: ESTE PRECIO DEBERIA SER EL TOTAL POR PRODUCTO
+                                  '\$${pedido.pedidoActual.productos[index].precio}'),
+                            ),
+                            Divider(
+                              height: 5,
+                              indent: 15,
+                              endIndent: 15,
+                            )
+                          ],
+                        );
+                      },
+                    ),
             ),
-          ),
-          Row(
-            children: <Widget>[
-              Expanded(child: _getEstadoPago(pedido)),
-              Expanded(child: _getEstadoEntregado(pedido)),
-            ],
-          ),
-          Expanded(
-            flex: 2,
-            child: _price(pedido),
-          ),
-        ],
+            Expanded(
+              flex: 0,
+              child: Divider(
+                height: 5,
+                color: Colors.grey,
+              ),
+            ),
+            Expanded(
+              flex: 2,
+              child: ListView(
+                children: <Widget>[
+                  _getEstadoPago(pedido),
+                  _getEstadoEntregado(pedido),
+                ],
+              ),
+            ),
+            Expanded(
+              flex: 2,
+              child: _price(pedido),
+            ),
+          ],
+        ),
       ),
     );
   }
 
   Widget _price(PedidoNotifier pedido) {
     return Container(
-      decoration: BoxDecoration(color: MyTheme.Colors.accent),
+      decoration: BoxDecoration(color: MyTheme.Colors.primary),
       padding: EdgeInsets.all(20),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           TitleText(
-            text: 'Cantidad:  ${pedido.pedidoActual.productos.length}',
+            text: 'Total',
             color: MyTheme.Colors.white,
-            fontSize: 14,
             fontWeight: FontWeight.w500,
           ),
           TitleText(
             color: MyTheme.Colors.white,
-            text: 'Total:  \$${pedido.pedidoActual.total}',
+            text: '\$${pedido.pedidoActual.total}',
+            fontWeight: FontWeight.w500,
           ),
         ],
       ),
@@ -91,43 +137,115 @@ class PedidoDetailPage extends StatelessWidget {
   }
 
   Widget _getEstadoPago(PedidoNotifier pedido) {
-    return Container(
-      decoration: BoxDecoration(color: MyTheme.Colors.white),
-      padding: EdgeInsets.all(5),
-      child: ListTile(
-        title: TitleText(
-          text: pedido.pedidoActual.pagado == true ? 'Pagado' : 'No Pagado',
-          fontSize: 14,
-          fontWeight: FontWeight.w500,
-        ),
-        trailing: IconButton(
-            icon: Icon(
-              Icons.check_circle,
-              color: pedido.pedidoActual.pagado == true
-                  ? Colors.green
-                  : Colors.red,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text("Seleccione el estado del pedido"),
+        Container(
+            height: 40,
+            padding: EdgeInsets.all(5),
+            child: ListView(
+              shrinkWrap: true,
+              scrollDirection: Axis.horizontal,
+              children: [
+                ChoiceChip(
+                  selected: !pedido.pedidoActual.pagado,
+                  selectedColor: MyTheme.lighten(MyTheme.Colors.warning, 0.6),
+                  label: Text('No Pagado'),
+                  labelStyle: TextStyle(
+                    color: pedido.pedidoActual.pagado != true
+                        ? MyTheme.darken(MyTheme.Colors.warning, 0.3)
+                        : MyTheme.Colors.black,
+                  ),
+                  onSelected: (nopagado) =>  !nopagado ? null : _setPagado(pedido),
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                ChoiceChip(
+                  selected: pedido.pedidoActual.pagado,
+                  selectedColor: MyTheme.lighten(MyTheme.Colors.green, 0.5),
+                  label: Text('Pagado'),
+                  labelStyle: TextStyle(
+                    color: pedido.pedidoActual.pagado == true
+                        ? MyTheme.darken(MyTheme.Colors.green, 0.3)
+                        : MyTheme.Colors.black,
+                  ),
+                  onSelected:  (pagado) =>  !pagado ? null : _setPagado(pedido),
+                ),
+              ],
+            )
+            // TitleText(
+            //   text: pedido.pedidoActual.pagado == true ? 'Pagado' : 'No Pagado',
+            //   fontSize: 14,
+            //   fontWeight: FontWeight.w500,
+            // ),
+            // ChoiceChip(
+            //     label: Text(pedido.pedidoActual.pagado == true
+            //         ? 'Pagado'
+            //         : 'No Pagado'),
+            //     selected: pedido.pedidoActual.pagado == true ?? false,
+            //     onSelected: (pagado) => _setPagado(pedido),
+            //     selectedColor: MyTheme.lighten(MyTheme.Colors.green, 0.5),
+            //     backgroundColor: MyTheme.lighten(MyTheme.Colors.warning, 0.6),
+            //     labelStyle: TextStyle(color: pedido.pedidoActual.pagado == true
+            //           ? MyTheme.darken(MyTheme.Colors.green, 0.3)
+            //           : MyTheme.darken(MyTheme.Colors.warning, 0.2),),
+            //     avatar:
+            //      pedido.pedidoActual.pagado == true ?
+            //       CircleAvatar(
+            //       child: Icon(
+            //         Icons.check,
+            //       ),
+            //       backgroundColor: Colors.transparent,
+            //       foregroundColor: MyTheme.darken(MyTheme.Colors.green, 0.3),
+            //       )
+
+            //      :
+            //     CircleAvatar(
+            //       child: Icon(
+            //         Icons.close,
+            //       ),
+            //       backgroundColor: Colors.transparent,
+            //       foregroundColor: MyTheme.darken(MyTheme.Colors.warning, 0.2),
+
+            //     )),
+            // trailing: IconButton(
+            //     icon: Icon(
+            //       Icons.check_circle,
+            //       color: pedido.pedidoActual.pagado == true
+            //           ? Colors.green
+            //           : Colors.red,
+            //     ),
+            //     onPressed: () => _setPagado(pedido)),
+            // ),
             ),
-            onPressed: () => _setPagado(pedido)),
-      ),
+      ],
     );
   }
 
   Widget _getEstadoEntregado(PedidoNotifier pedido) {
-    return Container(
-      decoration: BoxDecoration(color: MyTheme.Colors.white),
-      padding: EdgeInsets.all(5),
-      child: DropdownButton(
-        items: pedido.getEstadoEntrega
-            .map((value) => DropdownMenuItem(child: Text(value), value: value))
-            .toList(),
-        onChanged: (value) {
-          pedido.setEstadoEntrega(value);
-        },
-        isExpanded: false,
-        //Mostramos el valor del estado del pedido comparandolo con el vector cargado en firebase
-        value: pedido.getEstadoEntrega
-            .firstWhere((element) => element == pedido.pedidoActual.estado),
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text("Seleccione Estado del envio:"),
+        Container(
+          padding: EdgeInsets.all(5),
+          child: DropdownButton(
+            items: pedido.getEstadoEntrega
+                .map((value) =>
+                    DropdownMenuItem(child: Text(value), value: value))
+                .toList(),
+            onChanged: (value) {
+              pedido.setEstadoEntrega(value);
+            },
+            isExpanded: false,
+            //Mostramos el valor del estado del pedido comparandolo con el vector cargado en firebase
+            value: pedido.getEstadoEntrega
+                .firstWhere((element) => element == pedido.pedidoActual.estado),
+          ),
+        ),
+      ],
     );
   }
 
