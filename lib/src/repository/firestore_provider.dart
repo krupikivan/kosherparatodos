@@ -5,6 +5,7 @@ import 'package:kosherparatodos/src/models/cliente.dart';
 import 'package:kosherparatodos/src/models/pedido.dart';
 import 'package:kosherparatodos/src/models/producto.dart';
 import 'package:kosherparatodos/src/repository/repo.dart';
+import 'package:kosherparatodos/src/utils/converter.dart';
 
 class FirestoreProvider implements Repository {
   final Firestore _firestore = Firestore.instance;
@@ -111,7 +112,7 @@ class FirestoreProvider implements Repository {
         .document(pedido.pedidoID)
         .updateData({
       'total': pedido.total,
-      'estado': pedido.estadoEntrega,
+      'estado': Convert.enumEntregaToString(pedido.estadoEntrega),
       'productos': _addProductosToPedido(pedido.productos),
     });
   }
@@ -212,11 +213,11 @@ class FirestoreProvider implements Repository {
   }
 
   @override
-  Future<void> setEstadoEntrega(String idPedido, String value) async {
+  Future<void> setEstadoEntrega(String idPedido, EnumEntrega value) async {
     await _firestore
         .collection('pedidos')
         .document(idPedido)
-        .updateData({'estado': value});
+        .updateData({'estado': Convert.enumEntregaToString(value)});
   }
 
   @override

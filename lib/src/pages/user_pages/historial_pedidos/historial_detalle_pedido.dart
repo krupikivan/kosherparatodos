@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:kosherparatodos/src/models/pedido.dart';
 import 'package:kosherparatodos/src/pages/user_pages/pedido/pedido.dart';
+import 'package:kosherparatodos/src/utils/converter.dart';
 import 'package:kosherparatodos/src/utils/show_messages.dart';
 import 'package:kosherparatodos/style/theme.dart' as MyTheme;
 import 'bloc/bloc.dart';
@@ -50,7 +51,10 @@ class HistorialDetallePedido extends StatelessWidget {
               ),
               floatingActionButton: !snapshot.hasData
                   ? Container()
-                  : _bntExpanded(context, pedidoSelected.estadoEntrega),
+                  : _bntExpanded(
+                      context,
+                      Convert.enumEntregaToString(
+                          pedidoSelected.estadoEntrega)),
             );
           }
         });

@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:kosherparatodos/src/models/pedido.dart';
 import 'package:kosherparatodos/src/pages/user_pages/historial_pedidos/historial.dart';
+import 'package:kosherparatodos/src/utils/converter.dart';
 import 'package:kosherparatodos/style/theme.dart' as MyTheme;
 import 'bloc/bloc.dart';
 
@@ -44,7 +45,8 @@ class HistorialListadoPedidoPage extends StatelessWidget {
                         Text('Total: \$${snapshot.data[index].total}'),
                       ],
                     ),
-                    subtitle: Text(snapshot.data[index].estadoEntrega),
+                    subtitle: Text(Convert.enumEntregaToString(
+                        snapshot.data[index].estadoEntrega)),
                     trailing: Icon(Icons.arrow_forward),
                     onTap: () =>
                         _goToDetails(context, snapshot.data[index].pedidoID),

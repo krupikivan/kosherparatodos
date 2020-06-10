@@ -42,7 +42,7 @@ abstract class Repository {
 
   Future<void> setPagado(String idPedido, {bool pagado});
 
-  Future<void> setEstadoEntrega(String idPedido, String value);
+  Future<void> setEstadoEntrega(String idPedido, EnumEntrega value);
 
   Future<void> setAutenticado(String idCliente, {bool autenticado});
 

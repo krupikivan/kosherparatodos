@@ -201,19 +201,18 @@ class PedidoDetailPage extends StatelessWidget {
             //Mostramos el valor del estado del pedido comparandolo con el vector cargado en firebase
             // value: pedido.getEstadoEntrega
             // .firstWhere((element) => element == pedido.pedidoActual.estadoEntrega),
-
+            itemCount: pedido.getEstadoEntrega.length,
             itemBuilder: (BuildContext context, int index) {
               return ChoiceChip(
                 selected: pedido.pedidoActual.estadoEntrega.index == index,
                 selectedColor: MyTheme.lighten(MyTheme.Colors.green, 0.5),
                 label: Text(Convert.enumEntregaToString(
-                    pedido.pedidoActual.estadoEntrega)),
-                labelStyle: TextStyle(
-                  color: pedido.pedidoActual.pagado == true
-                      ? MyTheme.darken(MyTheme.Colors.green, 0.3)
-                      : MyTheme.Colors.black,
-                ),
-                onSelected: (pagado) => !pagado ? null : _setPagado(pedido),
+                    pedido.getEstadoEntrega[index])),
+                labelStyle:
+                    TextStyle(color: MyTheme.darken(MyTheme.Colors.green, 0.3)),
+                onSelected: (estado) => !estado
+                    ? null
+                    : pedido.setEstadoEntrega(pedido.getEstadoEntrega[index]),
               );
             },
           ),
