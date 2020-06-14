@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:kosherparatodos/src/Widget/admin_widgets/product_card_widget.dart';
 import 'package:kosherparatodos/src/Widget/admin_widgets/subcategorias_card_widget.dart';
 import 'package:kosherparatodos/src/Widget/admin_widgets/categorias_card_widget.dart';
+import 'package:kosherparatodos/src/Widget/shimmer_list_loading.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/productos/new_producto_page.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/productos/new_categoria_page.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/productos/producto_detail_page.dart';
@@ -78,7 +79,7 @@ class CategoriaPage extends StatelessWidget {
         itemBuilder: (BuildContext context, int index) => FutureBuilder(
           future: storage.getImage(producto.productoList[index].imagen),
           builder: (context, snapshot) => !snapshot.hasData
-              ? Center(child: CircularProgressIndicator())
+              ? ShimmerListLoadingEffect()
               : ProductCardWidget(
                   descripcion: producto.productoList[index].descripcion,
                   img: snapshot.data,

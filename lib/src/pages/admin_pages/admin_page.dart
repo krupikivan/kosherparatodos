@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/clientes/cliente_page.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/navigation_bloc.dart';
@@ -24,7 +25,7 @@ class AdminPage extends StatelessWidget {
   final TextStyle style = TextStyle(color: MyTheme.Colors.black);
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
+    // final textTheme = Theme.of(context).textTheme;
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => ClienteNotifier.init()),
@@ -37,7 +38,11 @@ class AdminPage extends StatelessWidget {
         theme: ThemeData(
           fontFamily: GoogleFonts.muli().fontFamily,
           appBarTheme: AppBarTheme(
-            textTheme: TextTheme(headline6: TextStyle(fontFamily: GoogleFonts.muli().fontFamily, fontSize: 20,)),
+            textTheme: TextTheme(
+                headline6: TextStyle(
+              fontFamily: GoogleFonts.muli().fontFamily,
+              fontSize: 20,
+            )),
             brightness: Brightness.light,
             color: Colors.grey.shade50,
             elevation: 0,
@@ -56,63 +61,79 @@ class AdminPage extends StatelessWidget {
                   );
                 }),
           ),
-          drawer: Builder(
-            builder: (context) => Drawer(
-              child: ListView(padding: EdgeInsets.zero, children: <Widget>[
-                UserAccountsDrawerHeader(
-                  currentAccountPicture: Icon(
-                    Icons.account_circle,
-                    size: 50,
-                    color: MyTheme.Colors.white,
+          drawerScrimColor: Colors.black54,
+          drawer: SizedBox(
+            width: MediaQuery.of(context).size.width / 1.5,
+            child: Builder(
+              builder: (context) => Drawer(
+                child: ListView(padding: EdgeInsets.zero, children: <Widget>[
+                  UserAccountsDrawerHeader(
+                    currentAccountPicture: CircleAvatar(
+                      backgroundColor: MyTheme.Colors.white,
+                      foregroundColor: MyTheme.Colors.black,
+                      child: Icon(
+                        Icons.person,
+                        size: 70,
+                        color: MyTheme.Colors.darkGrey,
+                      ),
+                    ),
+                    accountName: Text(
+                      'Administrador',
+                      style: TextStyle(
+                          color: MyTheme.Colors.darkGrey, fontSize: 23),
+                    ),
+                    accountEmail: Text(
+                      user.email,
+                      style: TextStyle(
+                          fontSize: 17, color: MyTheme.Colors.darkGrey),
+                    ),
+                    decoration: BoxDecoration(color: MyTheme.Colors.white),
                   ),
-                  accountName: Text(
-                    'Administrador',
-                    style: TextStyle(fontSize: 25),
-                  ),
-                  accountEmail: Text(
-                    user.email,
-                    style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600),
-                  ),
-                  decoration: BoxDecoration(
-                      image: DecorationImage(
-                          fit: BoxFit.fill,
-                          image: AssetImage('assets/back-drawer.jpg'))),
-                ),
-                // _createHeader(),
-                DrawerIconWidget(
-                    icon: Icons.contacts,
-                    text: 'Clientes',
+                  ListTile(
+                    title: Text('Clientes'),
+                    leading: Icon(
+                      Icons.people,
+                      color: MyTheme.Colors.primary,
+                    ),
                     onTap: () {
                       Navigator.of(context).pop();
                       bloc.updateNavigation('Clientes');
-                      // Navigator.of(context).push(MaterialPageRoute(
-                      //     builder: (BuildContext context) => ClientePage()));
-                    }),
-                DrawerIconWidget(
-                    icon: Icons.view_list,
-                    text: 'Pedidos',
+                    },
+                  ),
+                  ListTile(
+                    title: Text('Pedidos'),
+                    leading: Icon(
+                      Icons.shopping_basket,
+                      color: MyTheme.Colors.primary,
+                    ),
                     onTap: () {
                       Navigator.of(context).pop();
                       bloc.updateNavigation('Pedidos');
-                      // Navigator.of(context).push(MaterialPageRoute(
-                      //     builder: (BuildContext context) => PedidosPage()));
-                    }),
-                DrawerIconWidget(
-                    icon: Icons.shopping_basket,
-                    text: 'Administrar productos',
+                    },
+                  ),
+                  ListTile(
+                    title: Text('Categorias / Productos'),
+                    leading: Icon(
+                      Icons.list,
+                      color: MyTheme.Colors.primary,
+                    ),
                     onTap: () {
                       Navigator.of(context).pop();
                       bloc.updateNavigation('Productos');
-                      // Navigator.of(context).push(MaterialPageRoute(
-                      //     builder: (BuildContext context) => PedidosPage()));
-                    }),
-                DrawerIconWidget(
-                    icon: Icons.exit_to_app,
-                    text: 'Cerrar Sesion',
-                    onTap: () =>
-                        Provider.of<UserRepository>(context, listen: false)
-                            .signOut()),
-              ]),
+                    },
+                  ),
+                  Divider(color: MyTheme.Colors.darkGrey),
+                  ListTile(
+                      title: Text('Cerrar Sesion'),
+                      leading: Icon(
+                        Icons.exit_to_app,
+                        color: MyTheme.Colors.primary,
+                      ),
+                      onTap: () =>
+                          Provider.of<UserRepository>(context, listen: false)
+                              .signOut()),
+                ]),
+              ),
             ),
           ),
           body: Container(

@@ -11,8 +11,10 @@ class Colors {
   static const Color white = Color(0xFFffffff);
   static const Color black = Color(0xFF464646);
   static const Color grey = Color(0xFFefefef);
+  static const Color darkGrey = Color(0xFF615e59);
 
-  static const TextStyle headerStyle = TextStyle(color: Colors.black, fontWeight: FontWeight.w600);
+  static const TextStyle headerStyle =
+      TextStyle(color: Colors.black, fontWeight: FontWeight.w600);
 
   // Colores de usos
   static const Color yellowWarning = Color(0xFFffd643);

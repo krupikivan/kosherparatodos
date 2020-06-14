@@ -49,10 +49,7 @@ class UserPage extends StatelessWidget {
                 user.email,
                 style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600),
               ),
-              decoration: new BoxDecoration(
-                  image: new DecorationImage(
-                      fit: BoxFit.fill,
-                      image: new AssetImage('assets/back-drawer.jpg'))),
+              decoration: new BoxDecoration(color: MyTheme.Colors.white),
             ),
             DrawerIconWidget(
                 icon: Icons.history,
