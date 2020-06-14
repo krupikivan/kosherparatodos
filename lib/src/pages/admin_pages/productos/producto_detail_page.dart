@@ -12,6 +12,9 @@ class ProductoDetailPage extends StatelessWidget {
   TextEditingController _stockController;
   TextEditingController _precioController;
   TextEditingController _umController;
+  final String image;
+
+  ProductoDetailPage({Key key, this.image}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +39,7 @@ class ProductoDetailPage extends StatelessWidget {
                   fontWeight: FontWeight.w700,
                 ),
                 CircleAvatar(
-                  backgroundImage: NetworkImage(producto.productoActual.imagen),
+                  backgroundImage: NetworkImage(image),
                   radius: 40,
                 ),
               ],

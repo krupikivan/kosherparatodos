@@ -60,9 +60,7 @@ class CategoriaPage extends StatelessWidget {
                   //Muestra productos si se selecciono una categoria
                   Consumer<ProductoNotifier>(
                     builder: (context, producto, _) =>
-                        producto.productoActual != null
-                            ? SizedBox()
-                            : _fillProductos(context, producto),
+                        _fillProductos(context, producto),
                   ),
                 ],
               ),
@@ -80,13 +78,13 @@ class CategoriaPage extends StatelessWidget {
         itemBuilder: (BuildContext context, int index) => FutureBuilder(
           future: storage.getImage(producto.productoList[index].imagen),
           builder: (context, snapshot) => !snapshot.hasData
-              ? SizedBox()
+              ? Center(child: CircularProgressIndicator())
               : ProductCardWidget(
                   descripcion: producto.productoList[index].descripcion,
                   img: snapshot.data,
                   action: () {
                     producto.productoActual = producto.productoList[index];
-                    _detalleProducto(context);
+                    _detalleProducto(context, snapshot.data);
                   },
                 ),
         ),
@@ -94,9 +92,11 @@ class CategoriaPage extends StatelessWidget {
     );
   }
 
-  void _detalleProducto(BuildContext context) {
+  void _detalleProducto(BuildContext context, image) {
     Navigator.push(
-        context, MaterialPageRoute(builder: (context) => ProductoDetailPage()));
+        context,
+        MaterialPageRoute(
+            builder: (context) => ProductoDetailPage(image: image)));
   }
 
   void _addNewProducto(BuildContext context) {
