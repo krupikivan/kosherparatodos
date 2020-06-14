@@ -13,38 +13,35 @@ class ProductosPage extends StatelessWidget {
         children: <Widget>[
           Expanded(
             flex: 4,
-            child: RefreshIndicator(
-              onRefresh: () => /*_refreshList(context)*/ null,
-              child: ListView.separated(
-                itemBuilder: (BuildContext context, int index) => Dismissible(
-                  background: Container(
-                    color: Colors.red,
-                    alignment: AlignmentDirectional.centerStart,
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Icon(
-                      Icons.delete,
-                      color: Colors.white,
-                    ),
-                  ),
-                  key: Key(producto.productoList[index].productoID),
-                  confirmDismiss: (direction) => _deleteProducto(
-                      producto.productoList[index].productoID, context),
-                  child: ListTile(
-                    leading: Icon(Icons.list),
-                    // title: Text(DateFormat("HH:mm - dd/MM/yyyy").format(pedido.pedidoList[index].fecha.toDate())),
-                    title: Text(producto.productoList[index].descripcion),
-                    onTap: () {
-                      producto.productoActual = producto.productoList[index];
-                      _goToDetails(context);
-                    },
-                    trailing: Icon(Icons.arrow_forward),
+            child: ListView.separated(
+              itemBuilder: (BuildContext context, int index) => Dismissible(
+                background: Container(
+                  color: Colors.red,
+                  alignment: AlignmentDirectional.centerStart,
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Icon(
+                    Icons.delete,
+                    color: Colors.white,
                   ),
                 ),
-                itemCount: producto.productoList.length,
-                separatorBuilder: (BuildContext context, int index) =>
-                    const Divider(
-                  color: MyTheme.Colors.accent,
+                key: Key(producto.productoList[index].productoID),
+                confirmDismiss: (direction) => _deleteProducto(
+                    producto.productoList[index].productoID, context),
+                child: ListTile(
+                  leading: Icon(Icons.list),
+                  // title: Text(DateFormat("HH:mm - dd/MM/yyyy").format(pedido.pedidoList[index].fecha.toDate())),
+                  title: Text(producto.productoList[index].descripcion),
+                  onTap: () {
+                    producto.productoActual = producto.productoList[index];
+                    _goToDetails(context);
+                  },
+                  trailing: Icon(Icons.arrow_forward),
                 ),
+              ),
+              itemCount: producto.productoList.length,
+              separatorBuilder: (BuildContext context, int index) =>
+                  const Divider(
+                color: MyTheme.Colors.accent,
               ),
             ),
           ),
@@ -93,8 +90,4 @@ class ProductosPage extends StatelessWidget {
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => NewProducto()));
   }
-
-//   Future<void> _refreshList(context) async {
-//     Provider.of<ProductoNotifier>(context, listen: false).getProductos();
-// }
 }

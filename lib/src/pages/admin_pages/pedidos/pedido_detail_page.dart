@@ -40,7 +40,7 @@ class PedidoDetailPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Expanded(
-              flex: 7,
+              flex: 5,
               child: pedido.pedidoActual.productos == null
                   ? Center(child: Text('No hay pedidos'))
                   : ListView.builder(
@@ -97,15 +97,20 @@ class PedidoDetailPage extends StatelessWidget {
             ),
             Expanded(
               flex: 2,
-              child: ListView(
-                children: <Widget>[
-                  _getEstadoPago(pedido),
-                  _getEstadoEntregado(pedido),
-                ],
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                child: ListView(
+                  physics: NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  children: <Widget>[
+                    _getEstadoPago(pedido),
+                    _getEstadoEntregado(pedido),
+                  ],
+                ),
               ),
             ),
             Expanded(
-              flex: 2,
+              flex: 1,
               child: _price(pedido),
             ),
           ],
@@ -203,16 +208,27 @@ class PedidoDetailPage extends StatelessWidget {
             // .firstWhere((element) => element == pedido.pedidoActual.estadoEntrega),
             itemCount: pedido.getEstadoEntrega.length,
             itemBuilder: (BuildContext context, int index) {
-              return ChoiceChip(
-                selected: pedido.pedidoActual.estadoEntrega.index == index,
-                selectedColor: MyTheme.lighten(MyTheme.Colors.green, 0.5),
-                label: Text(Convert.enumEntregaToString(
-                    pedido.getEstadoEntrega[index])),
-                labelStyle:
-                    TextStyle(color: MyTheme.darken(MyTheme.Colors.green, 0.3)),
-                onSelected: (estado) => !estado
-                    ? null
-                    : pedido.setEstadoEntrega(pedido.getEstadoEntrega[index]),
+              return Row(
+                children: <Widget>[
+                  ChoiceChip(
+                    selected: pedido.pedidoActual.estadoEntrega.index == index,
+                    selectedColor: MyTheme.Colors.primary,
+                    label: Text(Convert.enumEntregaToString(
+                        pedido.getEstadoEntrega[index])),
+                    labelStyle: TextStyle(
+                      color: pedido.pedidoActual.estadoEntrega.index == index
+                          ? MyTheme.Colors.white
+                          : MyTheme.Colors.black,
+                    ),
+                    onSelected: (estado) => !estado
+                        ? null
+                        : pedido
+                            .setEstadoEntrega(pedido.getEstadoEntrega[index]),
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                ],
               );
             },
           ),

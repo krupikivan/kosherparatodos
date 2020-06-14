@@ -127,6 +127,11 @@ class ProductoNotifier with ChangeNotifier {
     notifyListeners();
   }
 
+  void clearProductoList() {
+    _productoList.clear();
+    notifyListeners();
+  }
+
 //---------------------------Producto que estoy viendo
   Producto _productoActual;
   Producto get productoActual => _productoActual;

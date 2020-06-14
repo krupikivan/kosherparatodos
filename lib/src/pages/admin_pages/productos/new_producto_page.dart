@@ -5,7 +5,7 @@ import 'package:kosherparatodos/src/models/producto.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/provider/categoria_notifier.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/provider/producto_notifier.dart';
 import 'package:kosherparatodos/style/theme.dart' as MyTheme;
-import 'package:kosherparatodos/src/Widget/new_categoria_on_producto_checkbox.dart';
+import 'package:kosherparatodos/src/Widget/admin_widgets/new_categoria_on_producto_checkbox.dart';
 import 'package:provider/provider.dart';
 
 class NewProducto extends StatefulWidget {

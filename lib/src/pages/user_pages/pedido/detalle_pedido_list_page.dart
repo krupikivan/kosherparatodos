@@ -73,7 +73,6 @@ class DetallePedidoListPage extends StatelessWidget {
                         text:
                             'Total del pedido: \$${snapshot.data.total.truncate().toString()}',
                         color: MyTheme.Colors.accent,
-                        fontSize: 18,
                         fontWeight: FontWeight.w500,
                       ),
                     ],
