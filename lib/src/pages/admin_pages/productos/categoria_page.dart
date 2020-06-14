@@ -78,7 +78,7 @@ class CategoriaPage extends StatelessWidget {
       child: ListView.builder(
         itemCount: producto.productoList.length,
         itemBuilder: (BuildContext context, int index) => FutureBuilder(
-          future: storage.getImage('Carne-10.png'),
+          future: storage.getImage(producto.productoList[index].imagen),
           builder: (context, snapshot) => !snapshot.hasData
               ? SizedBox()
               : ProductCardWidget(

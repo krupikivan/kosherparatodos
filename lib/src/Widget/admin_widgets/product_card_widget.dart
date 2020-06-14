@@ -18,18 +18,21 @@ class ProductCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      color: color ?? MyTheme.Colors.white,
-      elevation: elevation ?? 10,
-      shadowColor: Colors.black38,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      child: ListTile(
-        title: Text(
-          descripcion,
-          style: TextStyle(fontSize: 15),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal:10, vertical: 2),
+      child: Card(
+        color: color ?? MyTheme.Colors.white,
+        elevation: elevation ?? 10,
+        shadowColor: Colors.black38,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        child: ListTile(
+          title: Text(
+            descripcion,
+            style: TextStyle(fontSize: 15),
+          ),
+          leading: Image.network(img),
+          onTap: action,
         ),
-        leading: Image.network(img),
-        onTap: action,
       ),
     );
   }
