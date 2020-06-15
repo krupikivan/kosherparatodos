@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/clientes/cliente_page.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/navigation_bloc.dart';
@@ -12,7 +11,6 @@ import 'package:kosherparatodos/src/pages/admin_pages/provider/cliente_notifier.
 import 'package:kosherparatodos/src/pages/admin_pages/provider/pedido_notifier.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/provider/producto_notifier.dart';
 import 'package:kosherparatodos/style/theme.dart' as MyTheme;
-import 'package:kosherparatodos/src/Widget/drawer_icon_widget.dart';
 import 'package:kosherparatodos/user_repository.dart';
 import 'package:provider/provider.dart';
 

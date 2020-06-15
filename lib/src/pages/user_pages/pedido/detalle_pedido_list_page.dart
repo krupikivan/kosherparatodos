@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:kosherparatodos/src/Widget/item_detalle_pedido_widget.dart';
-import 'package:kosherparatodos/src/Widget/show_toast.dart';
 import 'package:kosherparatodos/src/Widget/title_text.dart';
 import 'package:kosherparatodos/src/models/pedido.dart';
 import 'package:kosherparatodos/src/pages/user_pages/pedido/bloc/bloc.dart';

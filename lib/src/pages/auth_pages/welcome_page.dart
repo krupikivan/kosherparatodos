@@ -1,82 +1,43 @@
 import 'package:flutter/material.dart';
+import 'package:kosherparatodos/src/Widget/auth_widgets/label_text.dart';
+import 'package:kosherparatodos/src/Widget/auth_widgets/submit_button.dart';
 import 'package:kosherparatodos/src/Widget/title_widget.dart';
 import 'package:kosherparatodos/style/theme.dart' as MyTheme;
 import 'package:kosherparatodos/user_repository.dart';
 import 'package:provider/provider.dart';
 
-class WelcomePage extends StatefulWidget {
-  WelcomePage({Key key, this.title}) : super(key: key);
-
+class WelcomePage extends StatelessWidget {
   final String title;
 
-  @override
-  _WelcomePageState createState() => _WelcomePageState();
-}
-
-class _WelcomePageState extends State<WelcomePage> {
-  Widget _submitButton() {
-    return MaterialButton(
-      onPressed: () {
-        Provider.of<UserRepository>(context, listen: false).goLogin();
-      },
-      color: MyTheme.Colors.secondary,
-      child: Text(
-        'INGRESAR',
-        style: TextStyle(fontSize: 20),
-      ),
-      minWidth: MediaQuery.of(context).size.width,
-      height: 60,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-    );
-  }
-
-  Widget _signUpButton() {
-    return MaterialButton(
-      onPressed: () {
-        Provider.of<UserRepository>(context, listen: false).goSignup();
-      },
-      color: MyTheme.Colors.accent,
-      child: Text(
-        'REGISTRARSE',
-        style: TextStyle(fontSize: 20),
-      ),
-      minWidth: MediaQuery.of(context).size.width,
-      height: 60,
-      textColor: MyTheme.Colors.secondary,
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15),
-          side: BorderSide(width: 2, color: MyTheme.Colors.secondary)),
-    );
-  }
-
+  const WelcomePage({Key key, this.title}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<UserRepository>(context, listen: false);
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 20),
+          padding: EdgeInsets.symmetric(horizontal: 35),
           height: MediaQuery.of(context).size.height,
-          decoration: new BoxDecoration(
-              gradient: new LinearGradient(
-                  colors: [MyTheme.Colors.primary, MyTheme.Colors.secondary],
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  stops: const [0.15, 1.0])),
+          decoration: new BoxDecoration(color: MyTheme.Colors.primary),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              SizedBox(
-                height: 1,
-              ),
               TitleLabel(),
               Column(
                 children: <Widget>[
-                  _submitButton(),
-                  SizedBox(
-                    height: 30,
+                  SubmitButton(
+                    action: () => user.goLogin(),
+                    text: 'INGRESAR',
                   ),
-                  _signUpButton(),
+                  SizedBox(height: 30),
+                  Labeltext(
+                    action: () =>
+                        Provider.of<UserRepository>(context, listen: false)
+                            .goSignup(),
+                    label: 'No tenes cuenta? Registrate!',
+                  ),
+                  // _goSignUp(context),
                 ],
               ),
             ],
@@ -85,4 +46,16 @@ class _WelcomePageState extends State<WelcomePage> {
       ),
     );
   }
+
+  // Widget _goSignUp(context) {
+  //   return InkWell(
+  //     onTap: () {
+  //       Provider.of<UserRepository>(context, listen: false).goSignup();
+  //     },
+  //     child: Text(
+  //       'No tenes cuenta? Registrate!',
+  //       style: TextStyle(fontSize: 15, color: MyTheme.Colors.white),
+  //     ),
+  //   );
+  // }
 }

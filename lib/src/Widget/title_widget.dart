@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:kosherparatodos/style/theme.dart' as MyTheme;
 
 class TitleLabel extends StatelessWidget {
@@ -8,28 +8,34 @@ class TitleLabel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
+        Icon(
+          FontAwesomeIcons.truck,
+          color: MyTheme.Colors.white,
+          size: 35,
+        ),
+        SizedBox(height: 25),
         RichText(
-          textAlign: TextAlign.center,
+          textAlign: TextAlign.left,
           text: TextSpan(
             text: 'Kosher Para Todos',
-            style: GoogleFonts.portLligatSans(
-              textStyle: Theme.of(context).textTheme.headline4,
-              fontSize: 40,
+            style: TextStyle(
+              fontSize: 30,
               fontWeight: FontWeight.w700,
-              color: MyTheme.Colors.secondary,
+              color: MyTheme.Colors.white,
             ),
           ),
         ),
+        SizedBox(height: 5),
         RichText(
-          textAlign: TextAlign.center,
+          textAlign: TextAlign.left,
           text: TextSpan(
             text: 'Carnes y lacteos kosher al costo',
-            style: GoogleFonts.portLligatSans(
-              textStyle: Theme.of(context).textTheme.headline4,
+            style: TextStyle(
               fontSize: 15,
-              fontWeight: FontWeight.w700,
-              color: MyTheme.Colors.secondary,
+              fontWeight: FontWeight.w300,
+              color: MyTheme.Colors.white,
             ),
           ),
         ),

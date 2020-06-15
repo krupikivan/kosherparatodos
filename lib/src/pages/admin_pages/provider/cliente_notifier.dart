@@ -38,7 +38,7 @@ class ClienteNotifier with ChangeNotifier {
   void setAutenticado({Cliente cliente}) {
     bool autenticado;
     if (_clienteActual != null) {
-      autenticado = _clienteActual.estaAutenticado == false ? true : false;
+      autenticado = !_clienteActual.estaAutenticado;
     }
     try {
       _repository.setAutenticado(

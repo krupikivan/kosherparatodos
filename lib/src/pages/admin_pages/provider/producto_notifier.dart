@@ -66,7 +66,7 @@ class ProductoNotifier with ChangeNotifier {
   // }
 
   void setHabilitado() {
-    final bool hab = _productoActual.habilitado == true ? false : true;
+    final bool hab = !_productoActual.habilitado;
     try {
       _repository.setHabilitado(_productoActual.productoID, habilitado: hab);
       _productoActual.habilitado = hab;

@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:kosherparatodos/src/repository/firestore_provider.dart';
-import 'package:kosherparatodos/src/repository/repo.dart';
+import 'package:kosherparatodos/src/Widget/auth_widgets/input_text.dart';
+import 'package:kosherparatodos/src/Widget/auth_widgets/submit_button.dart';
+import 'package:kosherparatodos/src/Widget/show_toast.dart';
 import 'package:kosherparatodos/user_repository.dart';
 import 'package:provider/provider.dart';
 import 'package:kosherparatodos/style/theme.dart' as MyTheme;
@@ -16,150 +17,15 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final Repository repo = FirestoreProvider();
   TextEditingController _email;
   TextEditingController _password;
   final _formKey = GlobalKey<FormState>();
-  final _key = GlobalKey<ScaffoldState>();
-  TextStyle style = TextStyle(color: MyTheme.Colors.secondary, fontSize: 20.0);
 
   @override
   void initState() {
     super.initState();
     _email = TextEditingController(text: "");
     _password = TextEditingController(text: "");
-  }
-
-  Widget _submitButton(UserRepository user) {
-    return MaterialButton(
-      onPressed: () async {
-        if (_formKey.currentState.validate()) {
-          _signIn(user);
-        }
-      },
-      color: MyTheme.Colors.secondary,
-      child: Text(
-        'INGRESAR',
-        style: TextStyle(fontSize: 20),
-      ),
-      minWidth: MediaQuery.of(context).size.width,
-      height: 60,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-    );
-  }
-
-  void _signIn(UserRepository user) async {
-    try {
-      await repo.isAuthenticated(_email.text).then((data) async {
-        if (data.documents.isEmpty ||
-            data.documents[0].data['estaAutenticado'] == true) {
-          if (!await user.signIn(_email.text, _password.text)) {
-            throw 'Ingreso incorrecto.';
-          }
-        } else {
-          throw 'Expere confirmacion por mail.';
-        }
-      });
-    } catch (e) {
-      _key.currentState.showSnackBar(SnackBar(
-        content: Text(e),
-      ));
-    }
-  }
-
-  Widget _createAccountLabel() {
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: 5),
-      alignment: Alignment.bottomCenter,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Text(
-            'Todavía no tenes una cuenta?',
-            style: TextStyle(
-                color: MyTheme.Colors.secondary,
-                fontSize: 13,
-                fontWeight: FontWeight.w600),
-          ),
-          const SizedBox(
-            width: 5,
-          ),
-          InkWell(
-            onTap: () {
-              Provider.of<UserRepository>(context, listen: false).goSignup();
-            },
-            child: Text(
-              'Registrate',
-              style: TextStyle(
-                  color: MyTheme.Colors.yellowWarning,
-                  fontSize: 13,
-                  fontWeight: FontWeight.w600),
-            ),
-          )
-        ],
-      ),
-    );
-  }
-
-  Widget _passwordWidget() {
-    return TextFormField(
-      obscureText: true,
-      controller: _password,
-      validator: (value) => (value.isEmpty) ? "Ingresa una contraseña" : null,
-      style: style,
-      cursorColor: MyTheme.Colors.secondary,
-      decoration: InputDecoration(
-          prefixIcon: Icon(
-            Icons.lock,
-            color: MyTheme.Colors.secondary,
-          ),
-          labelText: "Contraseña",
-          labelStyle: TextStyle(color: MyTheme.Colors.secondary),
-          errorStyle: TextStyle(color: MyTheme.Colors.secondary),
-          errorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(15),
-              borderSide: BorderSide(color: MyTheme.Colors.secondary)),
-          focusedErrorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(15),
-              borderSide: BorderSide(color: MyTheme.Colors.secondary)),
-          focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(15),
-              borderSide: BorderSide(color: MyTheme.Colors.secondary)),
-          enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(15),
-              borderSide: BorderSide(color: MyTheme.Colors.secondary))),
-    );
-  }
-
-  Widget _emailWidget() {
-    return TextFormField(
-      controller: _email,
-      validator: (value) => (value.isEmpty) ? "Ingresa un email" : null,
-      style: style,
-      cursorColor: MyTheme.Colors.secondary,
-      decoration: InputDecoration(
-          prefixIcon: Icon(
-            Icons.email,
-            color: MyTheme.Colors.secondary,
-          ),
-          labelText: "Email",
-          errorStyle: TextStyle(color: MyTheme.Colors.secondary),
-          focusedErrorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(15),
-              borderSide: BorderSide(color: MyTheme.Colors.secondary)),
-          errorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(15),
-              borderSide: BorderSide(color: MyTheme.Colors.secondary)),
-          focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(15),
-              borderSide: BorderSide(color: MyTheme.Colors.secondary)),
-          labelStyle: TextStyle(color: MyTheme.Colors.secondary),
-          enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(15),
-              borderSide: BorderSide(
-                color: MyTheme.Colors.secondary,
-              ))),
-    );
   }
 
   @override
@@ -170,14 +36,7 @@ class _LoginPageState extends State<LoginPage> {
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           height: MediaQuery.of(context).size.height,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-                colors: [MyTheme.Colors.accent, MyTheme.Colors.primary],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                stops: const [0.30, 1.0],
-                tileMode: TileMode.clamp),
-          ),
+          decoration: BoxDecoration(color: MyTheme.Colors.primary),
         ),
         Scaffold(
           backgroundColor: Colors.transparent,
@@ -191,76 +50,78 @@ class _LoginPageState extends State<LoginPage> {
               },
             ),
           ),
-          body: SingleChildScrollView(
-            physics: const NeverScrollableScrollPhysics(),
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              height: MediaQuery.of(context).size.height,
-              child: user.status == Status.Authenticating
-                  ? Center(
-                      child: CircularProgressIndicator(
-                      valueColor: new AlwaysStoppedAnimation<Color>(
-                          MyTheme.Colors.secondary),
-                    ))
-                  : Form(
-                      key: _formKey,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          Column(
-                            children: <Widget>[
-                              Row(
-                                children: <Widget>[
-                                  IconButton(
-                                    color: Colors.white,
-                                    icon: Icon(Icons.account_circle),
-                                    onPressed: () => setState(() {
-                                      _email.text = 'admin@admin.com';
-                                      _password.text = 'admin123';
-                                    }),
-                                  ),
-                                  IconButton(
-                                    color: Colors.white,
-                                    icon: Icon(Icons.account_circle),
-                                    onPressed: () => setState(() {
-                                      _email.text = 'ivan@ivan.com';
-                                      _password.text = 'ivan123';
-                                    }),
-                                  ),
-                                ],
-                              ),
-                              _emailWidget(),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              _passwordWidget(),
-                              const SizedBox(
-                                height: 40,
-                              ),
-                              _submitButton(user),
-                              Container(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 5),
-                                alignment: Alignment.centerRight,
-                                child: Text('Has olvidado la contraseña?',
-                                    style: TextStyle(
-                                        color: MyTheme.Colors.secondary,
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w500)),
-                              ),
-                            ],
-                          ),
-                          _createAccountLabel(),
-                          const SizedBox(
-                            height: 1,
-                          )
-                        ],
-                      ),
+          body: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            height: MediaQuery.of(context).size.height,
+            child: user.status == Status.Authenticating
+                ? Center(
+                    child: CircularProgressIndicator(
+                    valueColor:
+                        new AlwaysStoppedAnimation<Color>(MyTheme.Colors.white),
+                  ))
+                : Form(
+                    key: _formKey,
+                    child: ListView(
+                      physics: NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      children: <Widget>[
+                        SizedBox(height: 40),
+                        Row(
+                          children: <Widget>[
+                            IconButton(
+                              color: Colors.white,
+                              icon: Icon(Icons.account_circle),
+                              onPressed: () => setState(() {
+                                _email.text = 'admin@admin.com';
+                                _password.text = 'admin123';
+                              }),
+                            ),
+                            IconButton(
+                              color: Colors.white,
+                              icon: Icon(Icons.account_circle),
+                              onPressed: () => setState(() {
+                                _email.text = 'ivan@ivan.com';
+                                _password.text = 'ivan123';
+                              }),
+                            ),
+                          ],
+                        ),
+                        InputText(
+                          controller: _email,
+                          isPass: false,
+                          error: "Ingresa un email",
+                          label: "Email",
+                        ),
+                        SizedBox(height: 25),
+                        InputText(
+                          controller: _password,
+                          isPass: true,
+                          error: "Ingresa una contraseña",
+                          label: "Contraseña",
+                        ),
+                        SizedBox(height: 25),
+                        SubmitButton(
+                          text: 'INGRESAR',
+                          action: () => _formKey.currentState.validate()
+                              ? user
+                                  .beforeSignIn(_email.text, _password.text)
+                                  .then((value) => true,
+                                      onError: (e) => ShowToast().show(e, 5))
+                              : null,
+                        ),
+                        SizedBox(height: 15),
+                        Container(
+                          padding: const EdgeInsets.symmetric(vertical: 5),
+                          alignment: Alignment.center,
+                          child: Text('Has olvidado la contraseña?',
+                              style: TextStyle(
+                                  color: MyTheme.Colors.white,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w300)),
+                        ),
+                      ],
                     ),
-            ),
+                  ),
           ),
         ),
       ],

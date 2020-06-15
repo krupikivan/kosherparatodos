@@ -12,7 +12,7 @@ class UserDataWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      isThreeLine: multiLines == true ? true : false,
+      isThreeLine: multiLines,
       title: Text(dato1),
       subtitle: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

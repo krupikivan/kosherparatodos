@@ -19,6 +19,7 @@ class UserRepository with ChangeNotifier {
   final FirebaseAuth _auth;
   FirebaseUser _user;
   Status _status = Status.Uninitialized;
+  final Repository repo = FirestoreProvider();
 
   List _adminList = [];
 
@@ -46,7 +47,6 @@ class UserRepository with ChangeNotifier {
   FirebaseUser get user => _user;
 
   Future<bool> signIn(String email, String password) async {
-    // signOut();
     try {
       _status = Status.Authenticating;
       await _auth.signInWithEmailAndPassword(email: email, password: password);
@@ -71,20 +71,18 @@ class UserRepository with ChangeNotifier {
       final HttpsCallable callable = CloudFunctions.instance.getHttpsCallable(
         functionName: 'addUser',
       );
-//    dynamic resp = await callable.call();
       await callable.call(<String, dynamic>{
         'name': name,
         'uid': firebaseUser.user.uid,
       });
-      //   _status = Status.Register;
-      // notifyListeners();
-    }).catchError((onError) {
+    }, onError: (e) {
       _status = Status.Register;
       notifyListeners();
+      throw 'Error!';
     });
   }
 
-  Future<void> goLogin() async {
+  goLogin() {
     _status = Status.Unauthenticated;
     notifyListeners();
   }
@@ -123,5 +121,18 @@ class UserRepository with ChangeNotifier {
       }
     }
     notifyListeners();
+  }
+
+  Future<void> beforeSignIn(String email, String password) async {
+    await repo.isAuthenticated(email).then((data) async {
+      if (data.documents.isEmpty ||
+          data.documents[0].data['estaAutenticado'] == true) {
+        if (!await signIn(email, password)) {
+          throw 'Ingreso incorrecto.';
+        }
+      } else {
+        throw 'Expere confirmacion por mail.';
+      }
+    });
   }
 }
