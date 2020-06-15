@@ -34,6 +34,7 @@ class ProductoDetailPage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 TitleText(
+                  color: MyTheme.Colors.black,
                   text: 'Detalle del producto',
                   fontSize: 20,
                   fontWeight: FontWeight.w700,
