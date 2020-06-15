@@ -22,69 +22,54 @@ class ProductoDetailPage extends StatelessWidget {
     _fillControllerData(producto);
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: MyTheme.Colors.accent,
       ),
       body: ListView(
         scrollDirection: Axis.vertical,
         shrinkWrap: true,
         children: <Widget>[
           Padding(
-            padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
+            padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 TitleText(
-                  text: 'Datos del producto',
+                  text: 'Detalle del producto',
                   fontSize: 20,
                   fontWeight: FontWeight.w700,
                 ),
-                CircleAvatar(
-                  backgroundImage: NetworkImage(image),
-                  radius: 40,
+                Column(
+                  children: [
+
+                    GestureDetector(
+                      child: CircleAvatar(
+                                    backgroundImage: NetworkImage(image),
+                        radius: 40,
+                      ),
+                      
+                      onTap: () => print("hola"),
+                    ),
+                    Text("Imagen")
+                  ],
                 ),
+
               ],
             ),
           ),
-          ListTile(
-            title: Text(_codigoController.text),
-            subtitle: const Text('Codigo'),
-            leading: Icon(Icons.edit),
-            onTap: () => _editData('Codigo', _codigoController, context, 'C'),
-          ),
-          ListTile(
-            title: Text(_descripcionController.text),
-            subtitle: const Text('Descripcion'),
-            leading: Icon(Icons.edit),
-            onTap: () =>
-                _editData('Descripcion', _descripcionController, context, 'D'),
-          ),
-          ListTile(
-            title: Text(_umController.text),
-            subtitle: const Text('Unidad medida'),
-            leading: Icon(Icons.edit),
-            onTap: () =>
-                _editData('Unidad Medida', _umController, context, 'UM'),
-          ),
-          ListTile(
-            title: Text(_stockController.text),
-            subtitle: const Text('Stock'),
-            leading: Icon(Icons.edit),
-            onTap: () => _editData('Stock', _stockController, context, 'S'),
-          ),
-          ListTile(
-            title: Text('\$${_precioController.text}'),
-            subtitle: const Text('Precio unitario'),
-            leading: Icon(Icons.edit),
-            onTap: () =>
-                _editData('Precio unitario', _precioController, context, 'P'),
-          ),
+
+          Field(controller: _descripcionController, type: 'D', description: "Descripcion"),
+          Field(controller: _codigoController, type: 'D', description: 'Codigo',),
+          Field(controller: _umController, type: 'D', description: 'Unidad de medida',),
+          Field(controller: _stockController, type: 'N', description: 'Stock',),
+          Field(controller: _precioController, type: 'N', description: 'Precio unitario,'),
+
           _getEstado(context),
         ],
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => _updateAllData(context),
         label: const Text('Guardar'),
-        backgroundColor: MyTheme.Colors.accent,
+        backgroundColor: MyTheme.Colors.primary,
       ),
     );
   }
@@ -93,6 +78,7 @@ class ProductoDetailPage extends StatelessWidget {
     final ProductoNotifier producto =
         Provider.of<ProductoNotifier>(context, listen: false);
     return ListTile(
+      
       title: TitleText(
         text: producto.productoActual.habilitado == true
             ? 'Habilitado para el cliente'
@@ -100,14 +86,9 @@ class ProductoDetailPage extends StatelessWidget {
         fontSize: 14,
         fontWeight: FontWeight.w500,
       ),
-      leading: IconButton(
-          icon: Icon(
-            Icons.check_circle,
-            color: producto.productoActual.habilitado == true
-                ? Colors.green
-                : Colors.red,
-          ),
-          onPressed: () => _setHabilitado(producto)),
+      leading: 
+      Switch( value:  producto.productoActual.habilitado == true, onChanged: (val) => _setHabilitado(producto)),
+      
     );
   }
 
@@ -119,59 +100,6 @@ class ProductoDetailPage extends StatelessWidget {
     } catch (e) {
       ShowToast().show('Error!', 5);
     }
-  }
-
-  void _editData(String name, TextEditingController controller,
-      BuildContext context, String tipo) {
-    showDialog(
-      context: context,
-      builder: (contex) => AlertDialog(
-        content: Container(
-          padding: const EdgeInsets.only(top: 10),
-          child: ListView(
-            shrinkWrap: true,
-            children: <Widget>[
-              const TitleText(
-                text: 'Editando',
-              ),
-              Row(
-                children: <Widget>[
-                  Expanded(
-                    child: TitleText(
-                      text: name,
-                      fontSize: 15,
-                    ),
-                  ),
-                  Expanded(
-                    child: TextField(
-                      keyboardType: controller == _precioController ||
-                              controller == _stockController
-                          ? TextInputType.number
-                          : TextInputType.text,
-                      inputFormatters: controller == _precioController ||
-                              controller == _stockController
-                          ? [WhitelistingTextInputFormatter.digitsOnly]
-                          : null,
-                      controller: controller,
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-        actions: <Widget>[
-          FlatButton(
-            onPressed: () => _saveData(contex, context, tipo, controller),
-            child: const Text("Guardar"),
-          ),
-          FlatButton(
-            onPressed: () => Navigator.pop(contex),
-            child: const Text('Volver'),
-          ),
-        ],
-      ),
-    );
   }
 
   void _saveData(BuildContext contex, BuildContext context, String tipo,
@@ -196,5 +124,36 @@ class ProductoDetailPage extends StatelessWidget {
 
   void _setHabilitado(ProductoNotifier producto) {
     producto.setHabilitado();
+  }
+}
+
+class Field extends StatelessWidget {
+  const Field({
+    Key key,
+    @required TextEditingController controller,
+    @required String type,
+    @required String description,
+
+  }) : _controller = controller, _type = type, _description = description, super(key: key);
+
+  final TextEditingController _controller;
+  final String _type;
+  final String _description;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      title: TextField(
+        decoration: InputDecoration(border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none), filled: true, ),
+                keyboardType: _type == 'N'
+                    ? TextInputType.number
+                    : TextInputType.text,
+                inputFormatters: _type == 'N'
+                    ? [WhitelistingTextInputFormatter.digitsOnly]
+                    : null,
+                controller: _controller,
+              ),
+      subtitle: Text(_description),
+    );
   }
 }
