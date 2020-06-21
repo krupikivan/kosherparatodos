@@ -24,8 +24,8 @@ class CategoriaCheckboxWidget extends StatelessWidget {
                   esProducto: esProducto,
                 ));
       },
-      textColor: MyTheme.Colors.accent,
-      child: Text('Categorias'),
+      textColor: MyTheme.Colors.primary,
+      child: Text('Seleccionar Categorias'),
     );
   }
 }
@@ -50,7 +50,8 @@ class _CategoriaDialogState extends State<CategoriaDialog> {
   Widget build(BuildContext context) {
     return AlertDialog(
       content: Container(
-        height: MediaQuery.of(context).size.height / 2,
+        height: MediaQuery.of(context).size.height / 3,
+        width: MediaQuery.of(context).size.width / 2,
         padding: EdgeInsets.only(top: 20),
         child: ListView(
           shrinkWrap: true,
@@ -98,7 +99,10 @@ class _CategoriaDialogState extends State<CategoriaDialog> {
       ),
       actions: <Widget>[
         FlatButton(
-          child: Text("Volver"),
+          child: Text(
+            "Volver",
+            style: TextStyle(color: MyTheme.Colors.primary),
+          ),
           onPressed: () => Navigator.pop(context),
         ),
       ],

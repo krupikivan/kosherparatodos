@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:kosherparatodos/src/Widget/admin_widgets/field_widget.dart';
 import 'package:kosherparatodos/src/Widget/title_text.dart';
 import 'package:kosherparatodos/src/models/categoria.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/provider/categoria_notifier.dart';
@@ -30,80 +31,42 @@ class _NewCategoriaState extends State<NewCategoria> {
         Provider.of<CategoriaNotifier>(context, listen: false);
     cateNot.getAllCategorias();
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: MyTheme.Colors.accent,
-        title: const Text('Nueva Categoria'),
-      ),
+      appBar: AppBar(),
       body: Container(
         padding: const EdgeInsets.all(20),
         margin: const EdgeInsets.only(bottom: 20),
         child: ListView(
           shrinkWrap: true,
           children: <Widget>[
-            _getRow('Nombre:', _nombreController, false),
+            Padding(
+              padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
+              child: TitleText(
+                color: MyTheme.Colors.black,
+                text: 'Agregar nueva categoria',
+                fontSize: 20,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+            Field(
+                controller: _nombreController,
+                isNum: false,
+                description: 'Nombre'),
             _getHabilitado(),
+            _esPadre == false
+                ? const CategoriaCheckboxWidget(esProducto: false)
+                : const SizedBox(
+                    height: 1,
+                  ),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => _addCategoria(context),
         label: const Text('Agregar'),
-        backgroundColor: MyTheme.Colors.accent,
+        backgroundColor: MyTheme.Colors.primary,
       ),
     );
   }
-
-  Widget _getRow(String name, TextEditingController controller, bool isNum) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 20),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: <Widget>[
-          Expanded(
-            child: TitleText(
-              text: name,
-              fontSize: 15,
-            ),
-          ),
-          Expanded(
-            flex: 2,
-            child: TextFormField(
-              onChanged: _setCategoriaData(),
-              enabled: true,
-              controller: controller,
-              inputFormatters: isNum == true
-                  ? [WhitelistingTextInputFormatter.digitsOnly]
-                  : null,
-              keyboardType: isNum == true ? TextInputType.number : null,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  // Widget _viewItems() {
-  //   return Expanded(
-  //     flex: 2,
-  //     child: ListView.builder(
-  //         physics: ScrollPhysics(),
-  //         shrinkWrap: true,
-  //         itemCount: _categoriaList.length,
-  //         itemBuilder: (BuildContext context, int index) => ListTile(
-  //               title: Text(_categoriaList[index].nombre),
-  //               leading: IconButton(
-  //                   icon: Icon(
-  //                     Icons.clear,
-  //                     color: Colors.red,
-  //                   ),
-  //                   onPressed: () {
-  //                     _categoriaList.removeAt(index);
-  //                     setState(() {});
-  //                   }),
-  //             )),
-  //   );
-  // }
 
   _setCategoriaData() {
     final categoria = Provider.of<CategoriaNotifier>(context, listen: false);
@@ -129,11 +92,6 @@ class _NewCategoriaState extends State<NewCategoria> {
           ),
           onPressed: () => _changeBool(),
         ),
-        _esPadre == false
-            ? const CategoriaCheckboxWidget(esProducto: false)
-            : const SizedBox(
-                height: 1,
-              ),
       ],
     );
   }

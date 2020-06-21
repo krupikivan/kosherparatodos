@@ -93,57 +93,61 @@ class _SignUpPageState extends State<SignUpPage> {
                           MyTheme.Colors.white),
                     ),
                   )
-                : Form(
-                    key: _formKey,
-                    child: ListView(
-                      shrinkWrap: true,
-                      children: <Widget>[
-                        SizedBox(height: 40),
-                        InputText(
-                          controller: _name,
-                          label: "Nombre",
-                          isPass: false,
-                          error: "Ingrese nombre",
-                        ),
-                        SizedBox(
-                          height: 25,
-                        ),
-                        InputText(
-                          controller: _email,
-                          label: "Email",
-                          isPass: false,
-                          error: "Ingrese email",
-                        ),
-                        SizedBox(
-                          height: 25,
-                        ),
-                        InputText(
-                          controller: _password,
-                          label: "Contraseña",
-                          isPass: true,
-                          error: "Ingrese contraseña",
-                        ),
-                        SizedBox(height: 25),
-                        SubmitButton(
-                          text: "REGISTRARSE",
-                          action: () => _formKey.currentState.validate()
-                              ? user
-                                  .signup(
-                                      _name.text, _email.text, _password.text)
-                                  .then((value) {
-                                  user.signOutOnRegister();
-                                  ShowToast().show('Usuario creado', 5);
-                                }, onError: (e) => ShowToast().show('Error', 5))
-                              : null,
-                        ),
-                        SizedBox(height: 30),
-                        Labeltext(
-                          action: () => Provider.of<UserRepository>(context,
-                                  listen: false)
-                              .goLogin(),
-                          label: 'Ya tienes una cuenta? Iniciar Sesion!',
-                        ),
-                      ],
+                : Center(
+                    child: Form(
+                      key: _formKey,
+                      child: ListView(
+                        shrinkWrap: true,
+                        children: <Widget>[
+                          SizedBox(height: 40),
+                          InputText(
+                            controller: _name,
+                            label: "Nombre",
+                            isPass: false,
+                            error: "Ingrese nombre",
+                          ),
+                          SizedBox(
+                            height: 25,
+                          ),
+                          InputText(
+                            controller: _email,
+                            label: "Email",
+                            isPass: false,
+                            error: "Ingrese email",
+                          ),
+                          SizedBox(
+                            height: 25,
+                          ),
+                          InputText(
+                            controller: _password,
+                            label: "Contraseña",
+                            isPass: true,
+                            error: "Ingrese contraseña",
+                          ),
+                          SizedBox(height: 25),
+                          SubmitButton(
+                            text: "REGISTRARSE",
+                            action: () => _formKey.currentState.validate()
+                                ? user
+                                    .signup(
+                                        _name.text, _email.text, _password.text)
+                                    .then((value) {
+                                    user.signOutOnRegister();
+                                    ShowToast().show('Usuario creado', 5);
+                                  },
+                                        onError: (e) =>
+                                            ShowToast().show('Error', 5))
+                                : null,
+                          ),
+                          SizedBox(height: 30),
+                          Labeltext(
+                            action: () => Provider.of<UserRepository>(context,
+                                    listen: false)
+                                .goLogin(),
+                            label: 'Ya tienes una cuenta? Iniciar Sesion!',
+                          ),
+                        ],
+                      ),
                     ),
                   ),
           ),

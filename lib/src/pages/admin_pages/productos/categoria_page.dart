@@ -59,10 +59,7 @@ class CategoriaPage extends StatelessWidget {
                           ),
                         ),
                   //Muestra productos si se selecciono una categoria
-                  Consumer<ProductoNotifier>(
-                    builder: (context, producto, _) =>
-                        _fillProductos(context, producto),
-                  ),
+                  _fillProductos(context),
                 ],
               ),
       ),
@@ -70,7 +67,8 @@ class CategoriaPage extends StatelessWidget {
     );
   }
 
-  Widget _fillProductos(BuildContext context, ProductoNotifier producto) {
+  Widget _fillProductos(BuildContext context) {
+    final producto = Provider.of<ProductoNotifier>(context);
     var storage = Provider.of<FireStorageService>(context, listen: false);
     return Expanded(
       flex: 2,
@@ -117,7 +115,7 @@ class CategoriaPage extends StatelessWidget {
       overlayOpacity: 0.3,
       overlayColor: MyTheme.Colors.white,
       heroTag: 'bntExpand',
-      backgroundColor: MyTheme.Colors.accent,
+      backgroundColor: MyTheme.Colors.primary,
       child: Icon(
         Icons.add,
         color: MyTheme.Colors.white,
@@ -125,16 +123,16 @@ class CategoriaPage extends StatelessWidget {
       children: [
         SpeedDialChild(
           child: Icon(FontAwesomeIcons.listUl, color: MyTheme.Colors.white),
-          backgroundColor: MyTheme.Colors.accent,
+          backgroundColor: MyTheme.Colors.primary,
           label: 'Agregar Categoria',
-          labelStyle: TextStyle(color: MyTheme.Colors.accent),
+          labelStyle: TextStyle(color: MyTheme.Colors.primary),
           onTap: () => _addNewCategoria(context),
         ),
         SpeedDialChild(
           child: Icon(FontAwesomeIcons.cartPlus, color: MyTheme.Colors.white),
-          backgroundColor: MyTheme.Colors.accent,
+          backgroundColor: MyTheme.Colors.primary,
           label: 'Agregar Producto',
-          labelStyle: TextStyle(color: MyTheme.Colors.accent),
+          labelStyle: TextStyle(color: MyTheme.Colors.primary),
           onTap: () => _addNewProducto(context),
         )
       ],

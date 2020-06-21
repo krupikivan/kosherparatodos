@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:kosherparatodos/src/Widget/admin_widgets/field_widget.dart';
+import 'package:kosherparatodos/src/Widget/admin_widgets/habilitado_widget.dart';
 import 'package:kosherparatodos/src/Widget/show_toast.dart';
 import 'package:kosherparatodos/src/Widget/title_text.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/provider/producto_notifier.dart';
@@ -21,8 +23,7 @@ class ProductoDetailPage extends StatelessWidget {
     final ProductoNotifier producto = Provider.of<ProductoNotifier>(context);
     _fillControllerData(producto);
     return Scaffold(
-      appBar: AppBar(
-      ),
+      appBar: AppBar(),
       body: ListView(
         scrollDirection: Axis.vertical,
         shrinkWrap: true,
@@ -41,30 +42,44 @@ class ProductoDetailPage extends StatelessWidget {
                 ),
                 Column(
                   children: [
-
                     GestureDetector(
                       child: CircleAvatar(
-                                    backgroundImage: NetworkImage(image),
+                        backgroundImage: NetworkImage(image),
                         radius: 40,
                       ),
-                      
-                      onTap: () => print("hola"),
+                      onTap: () => null,
                     ),
                     Text("Imagen")
                   ],
                 ),
-
               ],
             ),
           ),
-
-          Field(controller: _descripcionController, type: 'D', description: "Descripcion"),
-          Field(controller: _codigoController, type: 'D', description: 'Codigo',),
-          Field(controller: _umController, type: 'D', description: 'Unidad de medida',),
-          Field(controller: _stockController, type: 'N', description: 'Stock',),
-          Field(controller: _precioController, type: 'N', description: 'Precio unitario,'),
-
-          _getEstado(context),
+          Field(
+              controller: _descripcionController,
+              isNum: false,
+              description: "Descripcion"),
+          Field(
+            controller: _codigoController,
+            isNum: false,
+            description: 'Codigo',
+          ),
+          Field(
+            controller: _umController,
+            isNum: false,
+            description: 'Unidad de medida',
+          ),
+          Field(
+            controller: _stockController,
+            isNum: true,
+            description: 'Stock',
+          ),
+          Field(
+              controller: _precioController,
+              isNum: true,
+              description: 'Precio unitario,'),
+          EstadoHabilitado(),
+          // _getEstado(context),
         ],
       ),
       floatingActionButton: FloatingActionButton.extended(
@@ -75,23 +90,22 @@ class ProductoDetailPage extends StatelessWidget {
     );
   }
 
-  Widget _getEstado(BuildContext context) {
-    final ProductoNotifier producto =
-        Provider.of<ProductoNotifier>(context, listen: false);
-    return ListTile(
-      
-      title: TitleText(
-        text: producto.productoActual.habilitado == true
-            ? 'Habilitado para el cliente'
-            : 'Deshabilitado para el cliente',
-        fontSize: 14,
-        fontWeight: FontWeight.w500,
-      ),
-      leading: 
-      Switch( value:  producto.productoActual.habilitado == true, onChanged: (val) => _setHabilitado(producto)),
-      
-    );
-  }
+  // Widget _getEstado(BuildContext context) {
+  //   final ProductoNotifier producto =
+  //       Provider.of<ProductoNotifier>(context, listen: false);
+  //   return ListTile(
+  //     title: TitleText(
+  //       text: producto.productoActual.habilitado == true
+  //           ? 'Habilitado para el cliente'
+  //           : 'Deshabilitado para el cliente',
+  //       fontSize: 14,
+  //       fontWeight: FontWeight.w500,
+  //     ),
+  //     leading: Switch(
+  //         value: producto.productoActual.habilitado == true,
+  //         onChanged: (val) => _setHabilitado(producto)),
+  //   );
+  // }
 
   void _updateAllData(BuildContext context) {
     try {
@@ -121,40 +135,5 @@ class ProductoDetailPage extends StatelessWidget {
         TextEditingController(text: producto.productoActual.stock.toString());
     _precioController =
         TextEditingController(text: producto.productoActual.precio.toString());
-  }
-
-  void _setHabilitado(ProductoNotifier producto) {
-    producto.setHabilitado();
-  }
-}
-
-class Field extends StatelessWidget {
-  const Field({
-    Key key,
-    @required TextEditingController controller,
-    @required String type,
-    @required String description,
-
-  }) : _controller = controller, _type = type, _description = description, super(key: key);
-
-  final TextEditingController _controller;
-  final String _type;
-  final String _description;
-
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      title: TextField(
-        decoration: InputDecoration(border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none), filled: true, ),
-                keyboardType: _type == 'N'
-                    ? TextInputType.number
-                    : TextInputType.text,
-                inputFormatters: _type == 'N'
-                    ? [WhitelistingTextInputFormatter.digitsOnly]
-                    : null,
-                controller: _controller,
-              ),
-      subtitle: Text(_description),
-    );
   }
 }

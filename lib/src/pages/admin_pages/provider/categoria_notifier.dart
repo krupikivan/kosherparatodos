@@ -12,9 +12,9 @@ class CategoriaNotifier with ChangeNotifier {
     getCategoriasPrincipales();
   }
 
-  void getCategoriasPrincipales() {
+  Future getCategoriasPrincipales() async {
     final List<Categoria> _list = [];
-    _repository.getCategoriasPrincipal().then((DocumentSnapshot value) {
+    await _repository.getCategoriasPrincipal().then((DocumentSnapshot value) {
       final List _listPrincipal = value.data['categorias'] as List;
       _listPrincipal.forEach((element) {
         final Categoria _categoria = Categoria.fromPrincipal(element);

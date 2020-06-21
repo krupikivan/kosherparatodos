@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:kosherparatodos/src/Widget/admin_widgets/field_widget.dart';
+import 'package:kosherparatodos/src/Widget/admin_widgets/habilitado_widget.dart';
 import 'package:kosherparatodos/src/Widget/title_text.dart';
 import 'package:kosherparatodos/src/models/producto.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/provider/categoria_notifier.dart';
@@ -39,85 +40,66 @@ class _NewProductoState extends State<NewProducto> {
         Provider.of<CategoriaNotifier>(context, listen: false);
     cateNot.getAllCategorias();
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: MyTheme.Colors.accent,
-        title: const Text('Nuevo producto'),
-      ),
+      appBar: AppBar(),
       body: Container(
         padding: const EdgeInsets.all(20),
         margin: const EdgeInsets.only(bottom: 20),
         child: ListView(
           shrinkWrap: true,
           children: <Widget>[
-            _getRow('Codigo:', _codigoController, false),
-            _getRow('Descripcion:', _descripcionController, false),
-            _getRow('Precio: \$', _precioController, true),
-            _getRow('Stock', _stockController, true),
-            _getRow('Unidad Mediad:', _unidadMedidaController, false),
-            _getHabilitado(),
+            Padding(
+              padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
+              child: TitleText(
+                color: MyTheme.Colors.black,
+                text: 'Agregar nuevo Producto',
+                fontSize: 20,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+            Field(
+                controller: _codigoController,
+                isNum: false,
+                description: 'Codigo'),
+            Field(
+                controller: _descripcionController,
+                isNum: false,
+                description: 'Descripcion'),
+            Field(
+                controller: _precioController,
+                isNum: true,
+                description: 'Precio'),
+            Field(
+                controller: _stockController,
+                isNum: true,
+                description: 'Stock'),
+            Field(
+                controller: _unidadMedidaController,
+                isNum: false,
+                description: 'Unidad Mediad'),
+            ListTile(
+              title: TitleText(
+                text: _habilitado
+                    ? 'Habilitado para el cliente'
+                    : 'Deshabilitado para el cliente',
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+              ),
+              leading:
+                  Switch(value: _habilitado, onChanged: (val) => _changeBool()),
+            ),
+            CategoriaCheckboxWidget(
+              esProducto: true,
+            ),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => _addProduct(context),
         label: const Text('Agregar'),
-        backgroundColor: MyTheme.Colors.accent,
+        backgroundColor: MyTheme.Colors.primary,
       ),
     );
   }
-
-  Widget _getRow(name, controller, isNum) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 20),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: <Widget>[
-          Expanded(
-            flex: 1,
-            child: TitleText(
-              text: name as String,
-              fontSize: 15,
-            ),
-          ),
-          Expanded(
-            flex: 2,
-            child: TextField(
-              onChanged: _setProductData(),
-              enabled: true,
-              controller: controller as TextEditingController,
-              inputFormatters: isNum == true
-                  ? [WhitelistingTextInputFormatter.digitsOnly]
-                  : null,
-              keyboardType: isNum == true ? TextInputType.number : null,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  // Widget _viewItems() {
-  //   return Expanded(
-  //     flex: 2,
-  //     child: ListView.builder(
-  //         physics: ScrollPhysics(),
-  //         shrinkWrap: true,
-  //         itemCount: _categoriaList.length,
-  //         itemBuilder: (BuildContext context, int index) => ListTile(
-  //               title: Text(_categoriaList[index].nombre),
-  //               leading: IconButton(
-  //                   icon: Icon(
-  //                     Icons.clear,
-  //                     color: Colors.red,
-  //                   ),
-  //                   onPressed: () {
-  //                     _categoriaList.removeAt(index);
-  //                     setState(() {});
-  //                   }),
-  //             )),
-  //   );
-  // }
 
   _setProductData() {
     final ProductoNotifier producto =
@@ -139,17 +121,6 @@ class _NewProductoState extends State<NewProducto> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
-        TitleText(
-          text: _habilitado == true ? 'Disponible' : 'No disponible',
-          fontSize: 15,
-        ),
-        IconButton(
-          icon: Icon(
-            Icons.check_circle,
-            color: _habilitado == true ? Colors.green : Colors.red,
-          ),
-          onPressed: () => _changeBool(),
-        ),
         const CategoriaCheckboxWidget(
           esProducto: true,
         ),

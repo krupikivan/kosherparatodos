@@ -17,10 +17,10 @@ class InputText extends StatelessWidget {
     return TextFormField(
       controller: controller,
       obscureText: isPass,
-      validator: (value) =>
-          (value.isEmpty || !Validator.getValidators(label, value))
-              ? error
-              : null,
+      // validator: (value) =>
+      //     (value.isEmpty || !Validator.getValidators(label, value))
+      //         ? error
+      //         : null,
       style: style,
       cursorColor: MyTheme.Colors.white,
       decoration: InputDecoration(

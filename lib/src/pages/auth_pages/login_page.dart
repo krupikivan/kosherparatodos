@@ -59,67 +59,69 @@ class _LoginPageState extends State<LoginPage> {
                     valueColor:
                         new AlwaysStoppedAnimation<Color>(MyTheme.Colors.white),
                   ))
-                : Form(
-                    key: _formKey,
-                    child: ListView(
-                      physics: NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      children: <Widget>[
-                        SizedBox(height: 40),
-                        Row(
-                          children: <Widget>[
-                            IconButton(
-                              color: Colors.white,
-                              icon: Icon(Icons.account_circle),
-                              onPressed: () => setState(() {
-                                _email.text = 'admin@admin.com';
-                                _password.text = 'admin123';
-                              }),
-                            ),
-                            IconButton(
-                              color: Colors.white,
-                              icon: Icon(Icons.account_circle),
-                              onPressed: () => setState(() {
-                                _email.text = 'ivan@ivan.com';
-                                _password.text = 'ivan123';
-                              }),
-                            ),
-                          ],
-                        ),
-                        InputText(
-                          controller: _email,
-                          isPass: false,
-                          error: "Ingresa un email",
-                          label: "Email",
-                        ),
-                        SizedBox(height: 25),
-                        InputText(
-                          controller: _password,
-                          isPass: true,
-                          error: "Ingresa una contraseña",
-                          label: "Contraseña",
-                        ),
-                        SizedBox(height: 25),
-                        SubmitButton(
-                          text: 'INGRESAR',
-                          action: () => _formKey.currentState.validate()
-                              ? user
-                                  .beforeSignIn(_email.text, _password.text)
-                                  .then((value) => true,
-                                      onError: (e) => ShowToast().show(e, 5))
-                              : null,
-                        ),
-                        SizedBox(height: 15),
-                        Container(
-                          padding: const EdgeInsets.symmetric(vertical: 5),
-                          alignment: Alignment.center,
-                          child: Text('Has olvidado la contraseña?',
-                              style: TextStyle(
-                                  color: MyTheme.Colors.white,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w300)),
-                        ),
-                      ],
+                : Center(
+                    child: Form(
+                      key: _formKey,
+                      child: ListView(
+                        physics: NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        children: <Widget>[
+                          SizedBox(height: 40),
+                          Row(
+                            children: <Widget>[
+                              IconButton(
+                                color: Colors.white,
+                                icon: Icon(Icons.account_circle),
+                                onPressed: () => setState(() {
+                                  _email.text = 'admin@admin.com';
+                                  _password.text = 'admin123';
+                                }),
+                              ),
+                              IconButton(
+                                color: Colors.white,
+                                icon: Icon(Icons.account_circle),
+                                onPressed: () => setState(() {
+                                  _email.text = 'ivan@ivan.com';
+                                  _password.text = 'ivan123';
+                                }),
+                              ),
+                            ],
+                          ),
+                          InputText(
+                            controller: _email,
+                            isPass: false,
+                            error: "Ingresa un email",
+                            label: "Email",
+                          ),
+                          SizedBox(height: 25),
+                          InputText(
+                            controller: _password,
+                            isPass: true,
+                            error: "Ingresa una contraseña",
+                            label: "Contraseña",
+                          ),
+                          SizedBox(height: 25),
+                          SubmitButton(
+                            text: 'INGRESAR',
+                            action: () => _formKey.currentState.validate()
+                                ? user
+                                    .beforeSignIn(_email.text, _password.text)
+                                    .then((value) => true,
+                                        onError: (e) => ShowToast().show(e, 5))
+                                : null,
+                          ),
+                          SizedBox(height: 15),
+                          Container(
+                            padding: const EdgeInsets.symmetric(vertical: 5),
+                            alignment: Alignment.center,
+                            child: Text('Has olvidado la contraseña?',
+                                style: TextStyle(
+                                    color: MyTheme.Colors.white,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w300)),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
           ),
