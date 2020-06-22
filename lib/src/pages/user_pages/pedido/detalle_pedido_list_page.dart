@@ -25,7 +25,10 @@ class DetallePedidoListPage extends StatelessWidget {
 
   Widget _getRowText(String text) {
     return Text(text,
-        style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500));
+        style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.w500,
+            color: MyTheme.Colors.primary));
   }
 
   Widget _productItems() {
@@ -71,7 +74,7 @@ class DetallePedidoListPage extends StatelessWidget {
                       TitleText(
                         text:
                             'Total del pedido: \$${snapshot.data.total.truncate().toString()}',
-                        color: MyTheme.Colors.accent,
+                        color: MyTheme.Colors.primary,
                         fontWeight: FontWeight.w500,
                       ),
                     ],
@@ -109,7 +112,7 @@ class DetallePedidoListPage extends StatelessWidget {
                           },
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(15)),
-                          color: MyTheme.Colors.accent,
+                          color: MyTheme.Colors.primary,
                           child: Container(
                             alignment: Alignment.center,
                             padding: EdgeInsets.symmetric(vertical: 12),
@@ -124,7 +127,7 @@ class DetallePedidoListPage extends StatelessWidget {
                           onPressed: () => blocPedidoVigente.clearPedido(),
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(15)),
-                          color: MyTheme.Colors.accent,
+                          color: MyTheme.Colors.primary,
                           child: Container(
                             alignment: Alignment.center,
                             padding: EdgeInsets.symmetric(vertical: 12),
@@ -143,10 +146,12 @@ class DetallePedidoListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: MyTheme.Colors.accent,
-        title: Text("Detalle del Pedido"),
+        iconTheme: IconThemeData(color: MyTheme.Colors.black),
+        elevation: 0,
+        backgroundColor: MyTheme.Colors.white,
       ),
       body: Container(
+        color: MyTheme.Colors.white,
         padding: EdgeInsets.all(10),
         child: Column(
           children: <Widget>[

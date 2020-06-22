@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:kosherparatodos/src/Widget/admin_widgets/admin_widget_export.dart';
 import 'package:kosherparatodos/src/models/pedido.dart';
 import 'package:kosherparatodos/src/pages/user_pages/historial_pedidos/historial.dart';
 import 'package:kosherparatodos/src/utils/converter.dart';
@@ -23,34 +24,15 @@ class HistorialListadoPedidoPage extends StatelessWidget {
             return ListView.builder(
               itemCount: snapshot.data.length,
               itemBuilder: (BuildContext context, int index) {
-                return Card(
-                  elevation: 2,
-                  child: ListTile(
-                    leading: snapshot.data[index].pagado == true
-                        ? FaIcon(
-                            FontAwesomeIcons.moneyBillAlt,
-                            size: 35,
-                            color: MyTheme.Colors.green,
-                          )
-                        : FaIcon(
-                            FontAwesomeIcons.moneyBillAlt,
-                            size: 35,
-                            color: MyTheme.Colors.yellowWarning,
-                          ),
-                    title: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(DateFormat("dd/MM/yyyy")
-                            .format(snapshot.data[index].fecha.toDate())),
-                        Text('Total: \$${snapshot.data[index].total}'),
-                      ],
-                    ),
-                    subtitle: Text(Convert.enumEntregaToString(
-                        snapshot.data[index].estadoEntrega)),
-                    trailing: Icon(Icons.arrow_forward),
-                    onTap: () =>
-                        _goToDetails(context, snapshot.data[index].pedidoID),
-                  ),
+                return PedidoCardWidget(
+                  estado: Convert.enumEntregaToString(
+                      snapshot.data[index].estadoEntrega),
+                  action: () =>
+                      _goToDetails(context, snapshot.data[index].pedidoID),
+                  pagado: snapshot.data[index].pagado,
+                  title:
+                      '${snapshot.data[index].cliente.nombre.nombre} ${snapshot.data[index].cliente.nombre.apellido}',
+                  subtitle: 'Total: \$${snapshot.data[index].total.truncate()}',
                 );
               },
             );

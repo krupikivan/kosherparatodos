@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:kosherparatodos/src/Widget/admin_widgets/user_data_widget.dart';
+import 'package:kosherparatodos/src/Widget/title_text.dart';
 import 'package:kosherparatodos/src/models/pedido.dart';
 import 'package:kosherparatodos/src/pages/user_pages/pedido/pedido.dart';
 import 'package:kosherparatodos/src/utils/converter.dart';
@@ -28,25 +29,63 @@ class HistorialDetallePedido extends StatelessWidget {
                 .firstWhere((element) => element.pedidoID == pedidoID);
             return Scaffold(
               appBar: AppBar(
-                backgroundColor: MyTheme.Colors.accent,
-                title: Text("Detalle de pedido"),
+                iconTheme: IconThemeData(color: MyTheme.Colors.black),
+                elevation: 0,
+                backgroundColor: MyTheme.Colors.white,
               ),
               body: Container(
+                margin: EdgeInsets.only(
+                    bottom: MediaQuery.of(context).size.height / 8),
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                color: MyTheme.Colors.white,
                 child: !snapshot.hasData
                     ? Center(
                         child: CircularProgressIndicator(
                         valueColor: new AlwaysStoppedAnimation<Color>(
                             MyTheme.Colors.accent),
                       ))
-                    : ListView.builder(
-                        itemCount: pedidoSelected.productos.length,
-                        itemBuilder: (BuildContext context, int index) =>
-                            ListTile(
-                          title:
-                              Text(pedidoSelected.productos[index].descripcion),
-                          subtitle: Text(
-                              '\$${pedidoSelected.productos[index].precio}'),
-                        ),
+                    : Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                            'Detalle del pedido',
+                            style: TextStyle(
+                                color: MyTheme.Colors.primary, fontSize: 30),
+                          ),
+                          Expanded(
+                            flex: 3,
+                            child: ListView.builder(
+                              itemCount: pedidoSelected.productos.length,
+                              itemBuilder: (BuildContext context, int index) =>
+                                  ListTile(
+                                title: Text(
+                                    '${pedidoSelected.productos[index].cantidad}x  ${pedidoSelected.productos[index].descripcion}'),
+                                subtitle: Text(
+                                    '\$${pedidoSelected.productos[index].precio}'),
+                              ),
+                            ),
+                          ),
+                          Container(
+                            decoration:
+                                BoxDecoration(color: MyTheme.Colors.primary),
+                            padding: EdgeInsets.all(20),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                TitleText(
+                                  text: 'Total',
+                                  color: MyTheme.Colors.white,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                                TitleText(
+                                  color: MyTheme.Colors.white,
+                                  text: '\$${pedidoSelected.total.truncate()}',
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
               ),
               floatingActionButton: !snapshot.hasData
@@ -61,28 +100,11 @@ class HistorialDetallePedido extends StatelessWidget {
   }
 
   Widget _bntExpanded(BuildContext context, String estado) {
-    return SpeedDial(
-      marginRight: 10,
-      visible: estado != 'Entregado' ? true : false,
-      overlayOpacity: 0.3,
-      overlayColor: MyTheme.Colors.white,
-      heroTag: 'bntExpand',
-      backgroundColor: MyTheme.Colors.accent,
-      children: [
-        SpeedDialChild(
-          child: Icon(Icons.edit, size: 36.0, color: MyTheme.Colors.white),
-          backgroundColor: MyTheme.Colors.accent,
-          label: "Editar",
-          onTap: () => _editarPedido(context),
-        ),
-        SpeedDialChild(
-          child: Icon(Icons.clear, size: 36.0, color: MyTheme.Colors.white),
-          backgroundColor: MyTheme.Colors.accent,
-          label: "Eliminar",
-          onTap: () => _eliminarPedido(context),
-        )
-      ],
-      child: Icon(Icons.add, color: MyTheme.Colors.white),
+    return FloatingActionButton.extended(
+      onPressed: () => _eliminarPedido(context),
+      backgroundColor: MyTheme.Colors.primary,
+      label: Text('Eliminar'),
+      icon: Icon(Icons.clear, size: 36.0, color: MyTheme.Colors.white),
     );
   }
 
