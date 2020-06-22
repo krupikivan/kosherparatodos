@@ -2,9 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:kosherparatodos/src/pages/admin_pages/clientes/cliente_page.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/navigation_bloc.dart';
-import 'package:kosherparatodos/src/pages/admin_pages/pedidos/pedidos_page.dart';
+import 'package:kosherparatodos/src/pages/admin_pages/pedidos/export.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/productos/categoria_page.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/provider/categoria_notifier.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/provider/cliente_notifier.dart';
@@ -13,6 +12,8 @@ import 'package:kosherparatodos/src/pages/admin_pages/provider/producto_notifier
 import 'package:kosherparatodos/style/theme.dart' as MyTheme;
 import 'package:kosherparatodos/user_repository.dart';
 import 'package:provider/provider.dart';
+
+import 'clientes/export.dart';
 
 class AdminPage extends StatelessWidget {
   final FirebaseUser user;
@@ -23,7 +24,6 @@ class AdminPage extends StatelessWidget {
   final TextStyle style = TextStyle(color: MyTheme.Colors.black);
   @override
   Widget build(BuildContext context) {
-    // final textTheme = Theme.of(context).textTheme;
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => ClienteNotifier.init()),
@@ -141,15 +141,15 @@ class AdminPage extends StatelessWidget {
               initialData: bloc.navigationProvider.currentNavigation,
               builder: (context, snapshot) {
                 if (bloc.navigationProvider.currentNavigation == "Clientes") {
-                  return ClientePage();
+                  return ClienteListPage();
                 }
                 if (bloc.navigationProvider.currentNavigation == "Pedidos") {
-                  return PedidosPage();
+                  return PedidosListPage();
                 }
                 if (bloc.navigationProvider.currentNavigation == "Productos") {
                   return CategoriaPage();
                 }
-                return ClientePage();
+                return ClienteListPage();
               },
             ),
           ),

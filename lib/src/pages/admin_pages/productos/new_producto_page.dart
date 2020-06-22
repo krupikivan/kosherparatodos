@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:kosherparatodos/src/Widget/admin_widgets/field_widget.dart';
-import 'package:kosherparatodos/src/Widget/admin_widgets/habilitado_widget.dart';
+import 'package:kosherparatodos/src/Widget/export.dart';
 import 'package:kosherparatodos/src/Widget/title_text.dart';
 import 'package:kosherparatodos/src/models/producto.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/provider/categoria_notifier.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/provider/producto_notifier.dart';
 import 'package:kosherparatodos/style/theme.dart' as MyTheme;
-import 'package:kosherparatodos/src/Widget/admin_widgets/new_categoria_on_producto_checkbox.dart';
 import 'package:provider/provider.dart';
 
 class NewProducto extends StatefulWidget {
@@ -56,23 +54,23 @@ class _NewProductoState extends State<NewProducto> {
                 fontWeight: FontWeight.w700,
               ),
             ),
-            Field(
+            InputDataField(
                 controller: _codigoController,
                 isNum: false,
                 description: 'Codigo'),
-            Field(
+            InputDataField(
                 controller: _descripcionController,
                 isNum: false,
                 description: 'Descripcion'),
-            Field(
+            InputDataField(
                 controller: _precioController,
                 isNum: true,
                 description: 'Precio'),
-            Field(
+            InputDataField(
                 controller: _stockController,
                 isNum: true,
                 description: 'Stock'),
-            Field(
+            InputDataField(
                 controller: _unidadMedidaController,
                 isNum: false,
                 description: 'Unidad Mediad'),
@@ -117,16 +115,16 @@ class _NewProductoState extends State<NewProducto> {
     producto.creatingProducto(nuevo);
   }
 
-  Widget _getHabilitado() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: <Widget>[
-        const CategoriaCheckboxWidget(
-          esProducto: true,
-        ),
-      ],
-    );
-  }
+  // Widget _getHabilitado() {
+  //   return Row(
+  //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //     children: <Widget>[
+  //       const CategoriaCheckboxWidget(
+  //         esProducto: true,
+  //       ),
+  //     ],
+  //   );
+  // }
 
   void _changeBool() {
     if (_habilitado == true) {

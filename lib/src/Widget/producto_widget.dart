@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:kosherparatodos/src/Widget/export.dart';
 import 'package:kosherparatodos/src/models/producto.dart';
 import 'package:kosherparatodos/src/pages/user_pages/pedido/bloc/bloc.dart';
 import 'package:kosherparatodos/style/theme.dart' as MyTheme;
-
-import '../show_toast.dart';
 
 class ProductoItemWidget extends StatefulWidget {
   final Producto producto;
@@ -46,7 +45,6 @@ class _ProductoItemWidgetState extends State<ProductoItemWidget> {
                             )),
                   height: 45,
                   width: 45,
-                  // color: Colors.white30,
                 ),
               )
             ],
@@ -59,14 +57,10 @@ class _ProductoItemWidgetState extends State<ProductoItemWidget> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
                       SizedBox(
-                        width: 5,
-                      ),
-                      SizedBox(
-                        width: 5,
+                        width: 10,
                       ),
                       Center(
                         child: Column(
-                          // crossAxisAlignment: ,
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: <Widget>[
@@ -126,24 +120,10 @@ class _ProductoItemWidgetState extends State<ProductoItemWidget> {
                             _isPressed = false;
                             setState(() {});
                           },
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Image.asset(
-                                'assets/images/add-bag.png',
-                                height: 20,
-                                width: 20,
-                              ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Text(
-                                'Agregar',
-                                style: TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.w600),
-                              )
-                            ],
+                          child: Text(
+                            'Agregar',
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.w600),
                           ),
                         ),
                       ),
@@ -158,11 +138,10 @@ class _ProductoItemWidgetState extends State<ProductoItemWidget> {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          // Image.network(widget.producto.imagen),
                           Text(
                             widget.producto.descripcion,
                             style: TextStyle(
-                                fontWeight: FontWeight.w600, fontSize: 20),
+                                fontWeight: FontWeight.w500, fontSize: 20),
                           ),
                         ],
                       ),
@@ -179,10 +158,6 @@ class _ProductoItemWidgetState extends State<ProductoItemWidget> {
                               )
                             ],
                           ),
-                          Image.asset(
-                            'assets/images/info.png',
-                            height: 25,
-                          )
                         ],
                       ),
                     ],

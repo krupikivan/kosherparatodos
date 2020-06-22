@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:kosherparatodos/src/Widget/admin_widgets/field_widget.dart';
+import 'package:kosherparatodos/src/Widget/export.dart';
 import 'package:kosherparatodos/src/Widget/title_text.dart';
 import 'package:kosherparatodos/src/models/categoria.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/provider/categoria_notifier.dart';
 import 'package:kosherparatodos/style/theme.dart' as MyTheme;
-import 'package:kosherparatodos/src/Widget/admin_widgets/new_categoria_on_producto_checkbox.dart';
 import 'package:provider/provider.dart';
 
 class NewCategoria extends StatefulWidget {
@@ -47,7 +45,7 @@ class _NewCategoriaState extends State<NewCategoria> {
                 fontWeight: FontWeight.w700,
               ),
             ),
-            Field(
+            InputDataField(
                 controller: _nombreController,
                 isNum: false,
                 description: 'Nombre'),

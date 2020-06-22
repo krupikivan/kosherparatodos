@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:kosherparatodos/src/Widget/admin_widgets/admin_widget_export.dart';
+import 'package:kosherparatodos/src/Widget/export.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/pedidos/pedido_detail_page.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/provider/pedido_notifier.dart';
 import 'package:kosherparatodos/src/utils/converter.dart';
 import 'package:provider/provider.dart';
 
-class PedidosPage extends StatelessWidget {
-  const PedidosPage({Key key}) : super(key: key);
+class PedidosListPage extends StatelessWidget {
+  const PedidosListPage({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +30,6 @@ class PedidosPage extends StatelessWidget {
   }
 
   void _goToDetails(context) {
-    // Provider.of<ProductoNotifier>(context, listen: false).getDetalleProducto();
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => PedidoDetailPage()));
   }

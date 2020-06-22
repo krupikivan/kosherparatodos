@@ -120,7 +120,7 @@ class FirestoreProvider implements Repository {
   List<Map<String, dynamic>> _addProductosToPedido(List productos) {
     final List<Map<String, dynamic>> _list = [];
     for (int i = 0; i < productos.length; i++) {
-      var det = productos[i];
+      final det = productos[i];
       _list.add(det.toFirebase());
     }
     return _list;

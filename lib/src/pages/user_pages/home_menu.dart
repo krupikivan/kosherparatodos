@@ -1,14 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:kosherparatodos/src/Widget/user_widgets/user_widgets_export.dart';
+import 'package:kosherparatodos/src/Widget/export.dart';
 import 'package:kosherparatodos/src/models/cliente.dart';
-import 'package:kosherparatodos/src/pages/user_pages/historial_pedidos/historial.dart';
 import 'package:kosherparatodos/src/pages/user_pages/pedido/pedido.dart';
 import 'package:kosherparatodos/style/theme.dart' as MyTheme;
 import 'package:provider/provider.dart';
 import '../../../user_repository.dart';
 import 'historial_pedidos/bloc/bloc.dart';
-import 'package:kosherparatodos/src/Widget/drawer_icon_widget.dart';
+import 'historial_pedidos/export.dart';
 
 class UserPage extends StatelessWidget {
   final FirebaseUser user;
@@ -103,12 +102,12 @@ class UserPage extends StatelessWidget {
         builder: (context, snapshot) {
           if (blocNav.navigationProvider.currentNavigation == "Historial") {
             blocUserData.getPedidos(user.uid);
-            return HistorialListadoPedidoPage();
+            return UserPedidoListPage();
           }
           if (blocNav.navigationProvider.currentNavigation == "Productos") {
             return ProductoGridPage();
           }
-          return HistorialListadoPedidoPage();
+          return UserPedidoListPage();
         },
       ),
     );

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:kosherparatodos/src/Widget/admin_widgets/field_widget.dart';
-import 'package:kosherparatodos/src/Widget/admin_widgets/habilitado_widget.dart';
+import 'package:kosherparatodos/src/Widget/export.dart';
 import 'package:kosherparatodos/src/Widget/show_toast.dart';
 import 'package:kosherparatodos/src/Widget/title_text.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/provider/producto_notifier.dart';
@@ -55,26 +53,26 @@ class ProductoDetailPage extends StatelessWidget {
               ],
             ),
           ),
-          Field(
+          InputDataField(
               controller: _descripcionController,
               isNum: false,
               description: "Descripcion"),
-          Field(
+          InputDataField(
             controller: _codigoController,
             isNum: false,
             description: 'Codigo',
           ),
-          Field(
+          InputDataField(
             controller: _umController,
             isNum: false,
             description: 'Unidad de medida',
           ),
-          Field(
+          InputDataField(
             controller: _stockController,
             isNum: true,
             description: 'Stock',
           ),
-          Field(
+          InputDataField(
               controller: _precioController,
               isNum: true,
               description: 'Precio unitario,'),
@@ -117,12 +115,12 @@ class ProductoDetailPage extends StatelessWidget {
     }
   }
 
-  void _saveData(BuildContext contex, BuildContext context, String tipo,
-      TextEditingController controller) {
-    Provider.of<ProductoNotifier>(context, listen: false)
-        .setData(tipo, controller.text);
-    Navigator.pop(contex);
-  }
+  // void _saveData(BuildContext contex, BuildContext context, String tipo,
+  //     TextEditingController controller) {
+  //   Provider.of<ProductoNotifier>(context, listen: false)
+  //       .setData(tipo, controller.text);
+  //   Navigator.pop(contex);
+  // }
 
   void _fillControllerData(ProductoNotifier producto) {
     _codigoController =

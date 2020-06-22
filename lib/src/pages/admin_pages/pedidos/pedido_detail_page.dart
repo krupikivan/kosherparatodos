@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kosherparatodos/src/Widget/title_text.dart';
+import 'package:kosherparatodos/src/Widget/export.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/provider/pedido_notifier.dart';
 import 'package:kosherparatodos/src/utils/converter.dart';
 import 'package:provider/provider.dart';
@@ -13,32 +13,18 @@ class PedidoDetailPage extends StatelessWidget {
       appBar: AppBar(
         actionsIconTheme: IconThemeData(color: MyTheme.Colors.black),
         iconTheme: IconThemeData(color: MyTheme.Colors.black),
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            Text(
-              'Cliente: ${pedido.pedidoActual.cliente.nombre.nombre} ${pedido.pedidoActual.cliente.nombre.apellido}',
-              style: TextStyle(
-                  color: MyTheme.Colors.black,
-                  fontWeight: FontWeight.w700,
-                  fontSize: 20),
-            ),
-            Text(
-              'Fecha: ${convert.getFechaFromTimestamp(pedido.pedidoActual.fecha)}',
-              style: TextStyle(
-                  fontSize: 15,
-                  color: MyTheme.Colors.black,
-                  fontWeight: FontWeight.w100),
-            ),
-          ],
-        ),
       ),
       body: Container(
         color: Colors.grey.shade50,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
+            TitleDetailPage(
+              title:
+                  'Cliente: ${pedido.pedidoActual.cliente.nombre.nombre} ${pedido.pedidoActual.cliente.nombre.apellido}',
+              subtitle:
+                  'Fecha: ${convert.getFechaFromTimestamp(pedido.pedidoActual.fecha)}',
+            ),
             Expanded(
               flex: 5,
               child: pedido.pedidoActual.productos == null
@@ -49,34 +35,8 @@ class PedidoDetailPage extends StatelessWidget {
                       itemBuilder: (BuildContext context, int index) {
                         return Column(
                           children: <Widget>[
-                            ListTile(
-                              leading: Container(
-                                width: 30,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: <Widget>[
-                                    Row(
-                                      children: <Widget>[
-                                        Text(
-                                          '${pedido.pedidoActual.productos[index].cantidad}',
-                                          style: TextStyle(fontSize: 20),
-                                        ),
-                                        Text(
-                                          'x',
-                                          style: TextStyle(fontSize: 15),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              title: Text(
-                                  '${pedido.pedidoActual.productos[index].descripcion}'),
-                              trailing: Text(
-
-                                  ///TODO: ESTE PRECIO DEBERIA SER EL TOTAL POR PRODUCTO
-                                  '\$${pedido.pedidoActual.productos[index].precio}'),
+                            PedidoDetailItem(
+                              detalle: pedido.pedidoActual.productos[index],
                             ),
                             Divider(
                               height: 5,
@@ -110,33 +70,10 @@ class PedidoDetailPage extends StatelessWidget {
               ),
             ),
             Expanded(
-              flex: 1,
-              child: _price(pedido),
+              child: BottomPedidoTotal(total: pedido.pedidoActual.total),
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget _price(PedidoNotifier pedido) {
-    return Container(
-      decoration: BoxDecoration(color: MyTheme.Colors.primary),
-      padding: EdgeInsets.all(20),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          TitleText(
-            text: 'Total',
-            color: MyTheme.Colors.white,
-            fontWeight: FontWeight.w500,
-          ),
-          TitleText(
-            color: MyTheme.Colors.white,
-            text: '\$${pedido.pedidoActual.total}',
-            fontWeight: FontWeight.w500,
-          ),
-        ],
       ),
     );
   }

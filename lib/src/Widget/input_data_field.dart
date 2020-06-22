@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class Field extends StatelessWidget {
-  const Field({
+class InputDataField extends StatelessWidget {
+  const InputDataField({
     Key key,
     @required TextEditingController controller,
     @required bool isNum,

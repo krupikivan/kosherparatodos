@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:intl/intl.dart';
-import 'package:kosherparatodos/src/Widget/admin_widgets/admin_widget_export.dart';
+import 'package:kosherparatodos/src/Widget/pedido_card_widget.dart';
 import 'package:kosherparatodos/src/models/pedido.dart';
-import 'package:kosherparatodos/src/pages/user_pages/historial_pedidos/historial.dart';
+import 'package:kosherparatodos/src/pages/user_pages/historial_pedidos/export.dart';
 import 'package:kosherparatodos/src/utils/converter.dart';
 import 'package:kosherparatodos/style/theme.dart' as MyTheme;
 import 'bloc/bloc.dart';
 
-class HistorialListadoPedidoPage extends StatelessWidget {
+class UserPedidoListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<List<Pedido>>(
@@ -43,7 +41,7 @@ class HistorialListadoPedidoPage extends StatelessWidget {
     Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) => HistorialDetallePedido(
+            builder: (context) => UserPedidoDetailPage(
                   pedidoID: pedidoID,
                 )));
   }

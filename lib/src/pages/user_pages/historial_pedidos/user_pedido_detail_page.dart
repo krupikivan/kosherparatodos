@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:kosherparatodos/src/Widget/admin_widgets/user_data_widget.dart';
-import 'package:kosherparatodos/src/Widget/title_text.dart';
+import 'package:kosherparatodos/src/Widget/export.dart';
 import 'package:kosherparatodos/src/models/pedido.dart';
-import 'package:kosherparatodos/src/pages/user_pages/pedido/pedido.dart';
 import 'package:kosherparatodos/src/utils/converter.dart';
 import 'package:kosherparatodos/src/utils/show_messages.dart';
 import 'package:kosherparatodos/style/theme.dart' as MyTheme;
 import 'bloc/bloc.dart';
 
-class HistorialDetallePedido extends StatelessWidget {
-  HistorialDetallePedido({Key key, this.pedidoID, this.pedidoSelected})
+class UserPedidoDetailPage extends StatelessWidget {
+  UserPedidoDetailPage({Key key, this.pedidoID, this.pedidoSelected})
       : super(key: key);
   final String pedidoID;
   Pedido pedidoSelected;
@@ -47,44 +45,20 @@ class HistorialDetallePedido extends StatelessWidget {
                     : Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          Text(
-                            'Detalle del pedido',
-                            style: TextStyle(
-                                color: MyTheme.Colors.primary, fontSize: 30),
+                          TitleDetailPage(
+                            title: 'Detalle del pedido',
                           ),
                           Expanded(
                             flex: 3,
                             child: ListView.builder(
                               itemCount: pedidoSelected.productos.length,
                               itemBuilder: (BuildContext context, int index) =>
-                                  ListTile(
-                                title: Text(
-                                    '${pedidoSelected.productos[index].cantidad}x  ${pedidoSelected.productos[index].descripcion}'),
-                                subtitle: Text(
-                                    '\$${pedidoSelected.productos[index].precio}'),
+                                  PedidoDetailItem(
+                                detalle: pedidoSelected.productos[index],
                               ),
                             ),
                           ),
-                          Container(
-                            decoration:
-                                BoxDecoration(color: MyTheme.Colors.primary),
-                            padding: EdgeInsets.all(20),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                TitleText(
-                                  text: 'Total',
-                                  color: MyTheme.Colors.white,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                                TitleText(
-                                  color: MyTheme.Colors.white,
-                                  text: '\$${pedidoSelected.total.truncate()}',
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ],
-                            ),
-                          ),
+                          BottomPedidoTotal(total: pedidoSelected.total),
                         ],
                       ),
               ),
@@ -108,13 +82,6 @@ class HistorialDetallePedido extends StatelessWidget {
     );
   }
 
-  void _editarPedido(BuildContext context) {
-    blocUserData.editarPedido(pedidoSelected);
-    Navigator.pop(context);
-    Navigator.of(context).push(new MaterialPageRoute(
-        builder: (BuildContext context) => new DetallePedidoListPage()));
-  }
-
   void _eliminarPedido(BuildContext context) {
     blocUserData.eliminarPedido(pedidoSelected).then((value) {
       Show('Eliminando pedido...');
@@ -122,6 +89,5 @@ class HistorialDetallePedido extends StatelessWidget {
       Navigator.of(context).pop();
       blocUserData.updatePedidoFromBloc(pedidoSelected.pedidoID);
     }, onError: (onError) => Show('No se pudo eliminar.'));
-    // .whenComplete(() {});
   }
 }

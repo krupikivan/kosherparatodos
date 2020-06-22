@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:kosherparatodos/src/Widget/user_widgets/producto_widget.dart';
+import 'package:kosherparatodos/src/Widget/export.dart';
 import 'package:kosherparatodos/src/models/producto.dart';
 import 'package:kosherparatodos/style/theme.dart' as MyTheme;
 import 'bloc/bloc.dart';

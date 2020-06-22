@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kosherparatodos/src/Widget/admin_widgets/admin_widget_export.dart';
+import 'package:kosherparatodos/src/Widget/export.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/provider/cliente_notifier.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/provider/pedido_notifier.dart';
 import 'package:provider/provider.dart';
@@ -23,20 +23,20 @@ class ClienteDetailPage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              UserDataWidget(
+              CustomDataList(
                   multiLines: false,
                   campo: 'Nombre',
                   dato1:
                       '${cliente.clienteActual.nombre.nombre} ${cliente.clienteActual.nombre.apellido}'),
-              UserDataWidget(
+              CustomDataList(
                   multiLines: false,
                   campo: 'Email',
                   dato1: cliente.clienteActual.email),
-              UserDataWidget(
+              CustomDataList(
                   multiLines: false,
                   campo: 'Telefono',
                   dato1: cliente.clienteActual.telefono.toString()),
-              UserDataWidget(
+              CustomDataList(
                   multiLines: true,
                   campo: 'Direccion',
                   dato1:

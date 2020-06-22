@@ -34,7 +34,6 @@ class Producto {
 
   Producto.fromProductosCollection(Map<String, dynamic> data, this.productoID) {
     categorias = categoriaListFill(data['categorias'] as List).cast<String>();
-    // productoID = producto;
     codigo = data['codigo'] as String;
     descripcion = data['descripcion'] as String;
     habilitado = data['habilitado'] as bool;
@@ -54,25 +53,6 @@ class Producto {
 
   Producto.newProducto(this.categorias, this.productoID, this.descripcion,
       this.habilitado, this.imagen, this.precio, this.stock, this.unidadMedida);
-  // Producto.newProducto(List cate, String idProd, String desc, bool hab, String img, double pre, int stk, String um) {
-  //   categorias = cate;
-  //   productoID = idProd;
-  //   descripcion = desc;
-  //   habilitado = hab;
-  //   imagen = img;
-  //   precio = pre;
-  //   stock = stk;
-  //   unidadMedida = um;
-  // }
-
-  // List<Opcion> getOpcionesList(List list){
-  //   List<Opcion> _list = List();
-  //   for(var opcion in list){
-  //     _list.add(Opcion.fromFirebase(opcion));
-  //   }
-  //   return _list;
-  // }
-
 }
 
 class ItemPedido {

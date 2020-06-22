@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kosherparatodos/src/utils/validators.dart';
+// import 'package:kosherparatodos/src/utils/validators.dart';
 import 'package:kosherparatodos/style/theme.dart' as MyTheme;
 
 class InputText extends StatelessWidget {
@@ -18,11 +18,11 @@ class InputText extends StatelessWidget {
       controller: controller,
       obscureText: isPass,
 
-      ///TODO: Ver que pasa con el usuario
-      validator: (value) =>
-          (value.isEmpty || !Validator.getValidators(label, value))
-              ? error
-              : null,
+      ///TODO: Volver activar este validador
+      // validator: (value) =>
+      //     (value.isEmpty || !Validator.getValidators(label, value))
+      //         ? error
+      //         : null,
       style: style,
       cursorColor: MyTheme.Colors.white,
       decoration: InputDecoration(

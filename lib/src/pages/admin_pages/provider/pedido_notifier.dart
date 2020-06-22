@@ -16,9 +16,8 @@ class PedidoNotifier with ChangeNotifier {
 
   PedidoNotifier.init() {
     getPedidos();
-    _getEstadosEntrega(); 
+    _getEstadosEntrega();
   }
-
 
   void getPedidos() {
     final List<Pedido> _list = [];
@@ -27,15 +26,15 @@ class PedidoNotifier with ChangeNotifier {
       listPed.documents.forEach((pedido) {
         final Pedido _pedido =
             Pedido.fromPedidos(pedido.data, pedido.documentID);
-        _list.add(_pedido);;
+        _list.add(_pedido);
       });
-        _pedidoList = _list;
-        notifyListeners();
+      _pedidoList = _list;
+      notifyListeners();
     });
   }
 
   void _getEstadosEntrega() async {
-   await _repository.getEstadoEntrega().then((data) {
+    await _repository.getEstadoEntrega().then((data) {
       final EstadoEntrega _ee = EstadoEntrega.fromMap(data['estado'] as List);
       _estadoEntrega = _ee.entrega;
       notifyListeners();

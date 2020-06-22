@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-class UserDataWidget extends StatelessWidget {
+class CustomDataList extends StatelessWidget {
   final String dato1;
   final String dato2;
   final String campo;
   final bool multiLines;
 
-  const UserDataWidget(
+  const CustomDataList(
       {Key key, this.dato1, this.campo, this.multiLines, this.dato2})
       : super(key: key);
   @override

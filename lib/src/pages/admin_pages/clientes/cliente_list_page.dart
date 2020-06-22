@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:kosherparatodos/src/Widget/admin_widgets/admin_widget_export.dart';
+import 'package:kosherparatodos/src/Widget/export.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/clientes/cliente_detail_page.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/provider/cliente_notifier.dart';
 import 'package:provider/provider.dart';
 
-class ClientePage extends StatelessWidget {
+class ClienteListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(

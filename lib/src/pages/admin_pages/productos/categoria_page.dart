@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:kosherparatodos/src/Widget/admin_widgets/product_card_widget.dart';
-import 'package:kosherparatodos/src/Widget/admin_widgets/subcategorias_card_widget.dart';
-import 'package:kosherparatodos/src/Widget/admin_widgets/categorias_card_widget.dart';
+import 'package:kosherparatodos/src/Widget/export.dart';
 import 'package:kosherparatodos/src/Widget/shimmer_list_loading.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/productos/new_producto_page.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/productos/new_categoria_page.dart';
@@ -69,7 +67,7 @@ class CategoriaPage extends StatelessWidget {
 
   Widget _fillProductos(BuildContext context) {
     final producto = Provider.of<ProductoNotifier>(context);
-    var storage = Provider.of<FireStorageService>(context, listen: false);
+    final storage = Provider.of<FireStorageService>(context, listen: false);
     return Expanded(
       flex: 2,
       child: ListView.builder(
