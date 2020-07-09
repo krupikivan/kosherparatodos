@@ -78,6 +78,7 @@ class _SignUpPageState extends State<SignUpPage> {
             elevation: 0,
             title: const Text('Registrarse'),
             leading: BackButton(
+              color: MyTheme.Colors.white,
               onPressed: () {
                 Provider.of<UserRepository>(context, listen: false).goWelcome();
               },

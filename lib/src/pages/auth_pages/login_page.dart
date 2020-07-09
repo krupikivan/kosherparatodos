@@ -45,6 +45,7 @@ class _LoginPageState extends State<LoginPage> {
             elevation: 0,
             title: const Text('Inicio de sesion'),
             leading: BackButton(
+              color: MyTheme.Colors.white,
               onPressed: () {
                 Provider.of<UserRepository>(context, listen: false).goWelcome();
               },

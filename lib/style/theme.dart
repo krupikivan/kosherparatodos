@@ -1,4 +1,6 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class Colors {
   const Colors();
@@ -48,4 +50,19 @@ Color lighten(Color color, [double amount = .1]) {
   return hslLight.toColor();
 }
 
-final Colors myTheme = Colors();
+ThemeData themeData() {
+  return ThemeData(
+    fontFamily: GoogleFonts.muli().fontFamily,
+    appBarTheme: AppBarTheme(
+      textTheme: TextTheme(
+          headline6: TextStyle(
+        fontFamily: GoogleFonts.muli().fontFamily,
+        fontSize: 20,
+      )),
+      brightness: Brightness.light,
+      color: Colors.grey,
+      elevation: 0,
+      iconTheme: IconThemeData(color: Colors.black),
+    ),
+  );
+}

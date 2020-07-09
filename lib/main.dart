@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kosherparatodos/src/providers/connectivity.dart';
+import 'package:kosherparatodos/style/theme.dart';
 import 'app.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -28,9 +29,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       key: navigatorKey,
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-          textTheme: GoogleFonts.openSansTextTheme(textTheme),
-          fontFamily: 'OpenSans'),
+      // theme: ThemeData(
+      //     textTheme: GoogleFonts.openSansTextTheme(textTheme),
+      //     fontFamily: 'OpenSans'),
+      theme: themeData(),
       home: App(),
     );
   }
