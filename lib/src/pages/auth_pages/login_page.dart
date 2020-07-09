@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:kosherparatodos/src/Widget/auth_widgets/input_text.dart';
 import 'package:kosherparatodos/src/Widget/auth_widgets/submit_button.dart';
 import 'package:kosherparatodos/src/Widget/show_toast.dart';
-import 'package:kosherparatodos/user_repository.dart';
+import 'package:kosherparatodos/src/providers/user_repository.dart';
 import 'package:provider/provider.dart';
 import 'package:kosherparatodos/style/theme.dart' as MyTheme;
 
@@ -108,6 +108,7 @@ class _LoginPageState extends State<LoginPage> {
                                     .beforeSignIn(_email.text, _password.text)
                                     .then((value) => true,
                                         onError: (e) => ShowToast().show(e, 5))
+                                    .catchError((e) => ShowToast().show(e, 5))
                                 : null,
                           ),
                           SizedBox(height: 15),

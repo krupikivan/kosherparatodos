@@ -4,7 +4,7 @@ import 'package:kosherparatodos/src/pages/admin_pages/admin_page.dart';
 import 'package:kosherparatodos/src/pages/auth_pages/export.dart';
 import 'package:kosherparatodos/src/pages/user_pages/home_menu.dart';
 import 'package:kosherparatodos/src/repository/firebase_storage.dart';
-import 'package:kosherparatodos/user_repository.dart';
+import 'package:kosherparatodos/src/providers/user_repository.dart';
 import 'package:provider/provider.dart';
 import 'src/pages/auth_pages/export.dart';
 

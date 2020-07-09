@@ -8,7 +8,7 @@ import 'package:kosherparatodos/src/pages/user_pages/pedido/bloc/categoria_provi
 import 'package:kosherparatodos/src/pages/user_pages/pedido/pedido.dart';
 import 'package:kosherparatodos/style/theme.dart' as MyTheme;
 import 'package:provider/provider.dart';
-import '../../../user_repository.dart';
+import '../../providers/user_repository.dart';
 import 'historial_pedidos/bloc/bloc.dart';
 import 'historial_pedidos/export.dart';
 

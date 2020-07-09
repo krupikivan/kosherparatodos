@@ -3,7 +3,8 @@ import 'package:flutter/widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:kosherparatodos/src/repository/firestore_provider.dart';
 import 'dart:collection';
-import 'src/repository/repo.dart';
+import '../repository/repo.dart';
+import 'connectivity.dart';
 
 enum Status {
   Uninitialized,
@@ -12,7 +13,7 @@ enum Status {
   Unauthenticated,
   Choosing,
   Register,
-  Registering
+  Registering,
 }
 
 class UserRepository with ChangeNotifier {
@@ -124,17 +125,26 @@ class UserRepository with ChangeNotifier {
   }
 
   Future<void> beforeSignIn(String email, String password) async {
-    _status = Status.Authenticating;
-    notifyListeners();
-    await repo.isAuthenticated(email).then((data) async {
-      if (data.documents.isEmpty ||
-          data.documents[0].data['estaAutenticado'] == true) {
-        if (!await signIn(email, password)) {
-          throw 'Ingreso incorrecto.';
-        }
+    try {
+      final cone = ConnectivityProvider.getInstance();
+      if (cone.hasConnection) {
+        _status = Status.Authenticating;
+        notifyListeners();
+        await repo.isAuthenticated(email).then((data) async {
+          if (data.documents.isEmpty ||
+              data.documents[0].data['estaAutenticado'] == true) {
+            if (!await signIn(email, password)) {
+              throw 'Ingreso incorrecto.';
+            }
+          } else {
+            throw 'Expere confirmacion por mail.';
+          }
+        });
       } else {
-        throw 'Expere confirmacion por mail.';
+        throw 'No hay conexion a internet';
       }
-    });
+    } catch (e) {
+      throw e.toString();
+    }
   }
 }

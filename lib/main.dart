@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:kosherparatodos/src/providers/connectivity.dart';
 import 'app.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final ConnectivityProvider connection = ConnectivityProvider.getInstance();
+  connection.initialize();
   runApp(MyApp());
 }
 
@@ -16,6 +21,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
     final textTheme = Theme.of(context).textTheme;
     return MaterialApp(
       key: navigatorKey,

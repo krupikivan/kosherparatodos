@@ -3,7 +3,7 @@ import 'package:kosherparatodos/src/Widget/auth_widgets/input_text.dart';
 import 'package:kosherparatodos/src/Widget/auth_widgets/label_text.dart';
 import 'package:kosherparatodos/src/Widget/auth_widgets/submit_button.dart';
 import 'package:kosherparatodos/src/Widget/show_toast.dart';
-import 'package:kosherparatodos/user_repository.dart';
+import 'package:kosherparatodos/src/providers/user_repository.dart';
 import 'package:provider/provider.dart';
 import 'package:kosherparatodos/style/theme.dart' as MyTheme;
 

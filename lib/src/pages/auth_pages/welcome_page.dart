@@ -3,7 +3,7 @@ import 'package:kosherparatodos/src/Widget/auth_widgets/label_text.dart';
 import 'package:kosherparatodos/src/Widget/auth_widgets/submit_button.dart';
 import 'package:kosherparatodos/src/Widget/title_widget.dart';
 import 'package:kosherparatodos/style/theme.dart' as MyTheme;
-import 'package:kosherparatodos/user_repository.dart';
+import 'package:kosherparatodos/src/providers/user_repository.dart';
 import 'package:provider/provider.dart';
 
 class WelcomePage extends StatelessWidget {

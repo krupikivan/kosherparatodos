@@ -10,7 +10,7 @@ import 'package:kosherparatodos/src/pages/admin_pages/provider/cliente_notifier.
 import 'package:kosherparatodos/src/pages/admin_pages/provider/pedido_notifier.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/provider/producto_notifier.dart';
 import 'package:kosherparatodos/style/theme.dart' as MyTheme;
-import 'package:kosherparatodos/user_repository.dart';
+import 'package:kosherparatodos/src/providers/user_repository.dart';
 import 'package:provider/provider.dart';
 
 import 'clientes/export.dart';
