@@ -14,9 +14,47 @@ class PedidoNotifier with ChangeNotifier {
   UnmodifiableListView<Pedido> get pedidoList =>
       UnmodifiableListView(_pedidoList);
 
+  List<Pedido> _filterList = [];
+  UnmodifiableListView<Pedido> get filterList =>
+      UnmodifiableListView(_filterList);
+
   PedidoNotifier.init() {
     getPedidos();
     _getEstadosEntrega();
+  }
+
+  bool filtrar(String char) {
+    bool empty = false;
+    switch (char) {
+      case 'E':
+        _filterList = _pedidoList
+            .where((element) => element.estadoEntrega == EnumEntrega.Entregado)
+            .toList();
+        break;
+      case 'EP':
+        _filterList = _pedidoList
+            .where(
+                (element) => element.estadoEntrega == EnumEntrega.EnPreparacion)
+            .toList();
+        break;
+      case 'C':
+        _filterList = _pedidoList
+            .where((element) => element.estadoEntrega == EnumEntrega.Cancelado)
+            .toList();
+        break;
+      case 'P':
+        _filterList = _pedidoList.where((element) => element.pagado).toList();
+        break;
+      case 'NP':
+        _filterList = _pedidoList.where((element) => !element.pagado).toList();
+        break;
+      default:
+    }
+    if (_filterList.isEmpty) {
+      empty = true;
+    }
+    notifyListeners();
+    return empty;
   }
 
   void getPedidos() {
@@ -66,6 +104,11 @@ class PedidoNotifier with ChangeNotifier {
 
   set pedidoList(List<Pedido> pedidoList) {
     _pedidoList = pedidoList;
+    notifyListeners();
+  }
+
+  set filterList(List<Pedido> pedidoList) {
+    _filterList = pedidoList;
     notifyListeners();
   }
 

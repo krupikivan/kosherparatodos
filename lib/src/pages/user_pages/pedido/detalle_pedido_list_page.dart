@@ -9,7 +9,6 @@ import 'package:kosherparatodos/style/theme.dart' as MyTheme;
 class DetallePedidoListPage extends StatelessWidget {
   Widget _addHeader() {
     return Expanded(
-      flex: 1,
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 10),
         child: Row(

@@ -16,4 +16,4 @@ export './habilitado_widget.dart';
 export './bottom_pedido_total.dart';
 export './title_detail_page.dart';
 export './icon_cart.dart';
-export './producto_widget.dart';
+export './product_card.dart';

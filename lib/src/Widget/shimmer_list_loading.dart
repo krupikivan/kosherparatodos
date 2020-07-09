@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 
 class ShimmerListLoadingEffect extends StatelessWidget {
-  const ShimmerListLoadingEffect({Key key, this.index}) : super(key: key);
-  final int index;
+  const ShimmerListLoadingEffect({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

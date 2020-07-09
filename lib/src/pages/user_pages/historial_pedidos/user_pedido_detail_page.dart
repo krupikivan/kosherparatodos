@@ -64,10 +64,14 @@ class UserPedidoDetailPage extends StatelessWidget {
               ),
               floatingActionButton: !snapshot.hasData
                   ? Container()
-                  : _bntExpanded(
-                      context,
-                      Convert.enumEntregaToString(
-                          pedidoSelected.estadoEntrega)),
+                  : pedidoSelected.pagado ||
+                          pedidoSelected.estadoEntrega !=
+                              EnumEntrega.EnPreparacion
+                      ? SizedBox()
+                      : _bntExpanded(
+                          context,
+                          Convert.enumEntregaToString(
+                              pedidoSelected.estadoEntrega)),
             );
           }
         });

@@ -9,7 +9,13 @@ class BottomPedidoTotal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(color: MyTheme.Colors.primary),
+      decoration: BoxDecoration(
+          color: MyTheme.Colors.primary,
+          border: new Border.all(
+              color: MyTheme.Colors.primary,
+              width: 2.0,
+              style: BorderStyle.solid),
+          borderRadius: BorderRadius.all(Radius.circular(25))),
       padding: EdgeInsets.all(20),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

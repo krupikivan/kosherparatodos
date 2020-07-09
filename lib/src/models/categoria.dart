@@ -1,7 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class Categoria {
   String categoriaID;
   String nombre;
-  List<String> ancestro;
+  List ancestro;
   bool selected;
   bool esPadre;
 
@@ -15,9 +17,17 @@ class Categoria {
 
   Categoria.fromFirebase(Map<String, dynamic> data, this.categoriaID) {
     nombre = data['nombre'] as String;
-    ancestro = getAncestrosList(data['ancestro'] as List<String>);
+    ancestro = getAncestrosList(data['ancestro'] as List);
     selected = false;
     esPadre = data['esPadre'] as bool;
+  }
+
+  Categoria.fromDatabase(DocumentSnapshot doc) {
+    categoriaID = doc.documentID;
+    nombre = doc.data['nombre'] as String;
+    ancestro = getAncestrosList(doc.data['ancestro'] as List);
+    selected = false;
+    esPadre = doc.data['esPadre'] as bool;
   }
 
   Categoria.fromPrincipal(data) {
@@ -37,9 +47,9 @@ class Categoria {
     categoriaID = data.documentID as String;
   }
 
-  List<String> getAncestrosList(List<String> list) {
-    final List<String> _list = [];
-    for (String ancestro in list) {
+  List getAncestrosList(List list) {
+    final List _list = [];
+    for (var ancestro in list) {
       _list.add(ancestro);
     }
     return _list;

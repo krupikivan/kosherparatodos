@@ -305,10 +305,7 @@ class FirestoreProvider implements Repository {
 
   @override
   Future<QuerySnapshot> getAllCategorias() async {
-    return _firestore
-        .collection('categorias')
-        .where('esPadre', isEqualTo: true)
-        .getDocuments();
+    return _firestore.collection('categorias').getDocuments();
   }
 
   @override
