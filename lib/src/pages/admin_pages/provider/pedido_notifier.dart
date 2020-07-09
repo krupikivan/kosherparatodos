@@ -23,7 +23,7 @@ class PedidoNotifier with ChangeNotifier {
     _getEstadosEntrega();
   }
 
-  bool filtrar(String char) {
+  bool filtrar({String char}) {
     bool empty = false;
     switch (char) {
       case 'E':
@@ -49,6 +49,7 @@ class PedidoNotifier with ChangeNotifier {
         _filterList = _pedidoList.where((element) => !element.pagado).toList();
         break;
       default:
+        _filterList.clear();
     }
     if (_filterList.isEmpty) {
       empty = true;

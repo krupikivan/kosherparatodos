@@ -63,10 +63,17 @@ class PedidosListPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             FlatButton(
+                child: Text("Todos", style: style),
+                onPressed: () {
+                  if (Provider.of<PedidoNotifier>(context1, listen: false)
+                      .filtrar()) {}
+                  Navigator.of(context).pop();
+                }),
+            FlatButton(
                 child: Text("Entregados", style: style),
                 onPressed: () {
                   if (Provider.of<PedidoNotifier>(context1, listen: false)
-                      .filtrar('E')) {
+                      .filtrar(char: 'E')) {
                     ShowToast().show('No se encontraron', 5);
                   }
                   Navigator.of(context).pop();
@@ -75,7 +82,7 @@ class PedidosListPage extends StatelessWidget {
                 child: Text("En Preparacion", style: style),
                 onPressed: () {
                   if (Provider.of<PedidoNotifier>(context1, listen: false)
-                      .filtrar('EP')) {
+                      .filtrar(char: 'EP')) {
                     ShowToast().show('No se encontraron', 5);
                   }
                   Navigator.of(context).pop();
@@ -83,7 +90,7 @@ class PedidosListPage extends StatelessWidget {
             FlatButton(
               onPressed: () {
                 if (Provider.of<PedidoNotifier>(context1, listen: false)
-                    .filtrar('C')) {
+                    .filtrar(char: 'C')) {
                   ShowToast().show('No se encontraron', 5);
                 }
                 Navigator.of(context).pop();
@@ -93,7 +100,7 @@ class PedidosListPage extends StatelessWidget {
             FlatButton(
               onPressed: () {
                 if (Provider.of<PedidoNotifier>(context1, listen: false)
-                    .filtrar('P')) {
+                    .filtrar(char: 'P')) {
                   ShowToast().show('No se encontraron', 5);
                 }
                 Navigator.of(context).pop();
@@ -103,7 +110,7 @@ class PedidosListPage extends StatelessWidget {
             FlatButton(
               onPressed: () {
                 if (Provider.of<PedidoNotifier>(context1, listen: false)
-                    .filtrar('NP')) {
+                    .filtrar(char: 'NP')) {
                   ShowToast().show('No se encontraron', 5);
                 }
                 Navigator.of(context).pop();
