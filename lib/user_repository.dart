@@ -124,6 +124,8 @@ class UserRepository with ChangeNotifier {
   }
 
   Future<void> beforeSignIn(String email, String password) async {
+    _status = Status.Authenticating;
+    notifyListeners();
     await repo.isAuthenticated(email).then((data) async {
       if (data.documents.isEmpty ||
           data.documents[0].data['estaAutenticado'] == true) {
