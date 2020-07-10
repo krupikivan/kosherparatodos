@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-class ProductCardWidget extends StatelessWidget {
+class ProductoCardWidget extends StatelessWidget {
   final String descripcion;
   final String img;
   final double elevation;
   final Color color;
   final VoidCallback action;
-  const ProductCardWidget(
+  const ProductoCardWidget(
       {Key key,
       this.descripcion,
       this.action,

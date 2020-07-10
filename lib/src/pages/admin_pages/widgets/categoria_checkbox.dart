@@ -52,46 +52,39 @@ class _CategoriaDialogState extends State<CategoriaDialog> {
         height: MediaQuery.of(context).size.height / 3,
         width: MediaQuery.of(context).size.width / 2,
         padding: EdgeInsets.only(top: 20),
-        child: ListView(
-          shrinkWrap: true,
+        child: Column(
           children: <Widget>[
             TitleText(
               text: 'Agregar categoria',
             ),
-            Row(
-              children: <Widget>[
-                Expanded(
-                  flex: 4,
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: widget.categoria.categoriaList.length,
-                    itemBuilder: (BuildContext context, int index) =>
-                        CheckboxListTile(
-                      value: widget.categoria.categoriaList[index].selected,
-                      onChanged: (bool val) {
-                        widget.esProducto == true
-                            ? val == true
-                                ? widget.producto.categoriaString.add(widget
-                                    .categoria.categoriaList[index].categoriaID)
-                                : widget.producto.categoriaString.remove(widget
-                                    .categoria.categoriaList[index].categoriaID)
-                            : val == true
-                                ? widget.categoria.categoriaString.add(widget
-                                    .categoria.categoriaList[index].categoriaID)
-                                : widget.categoria.categoriaString.remove(widget
-                                    .categoria
-                                    .categoriaList[index]
-                                    .categoriaID);
-                        widget.categoria.changeSelected(
-                            widget.categoria.categoriaList[index].categoriaID,
-                            val);
-                        setState(() {});
-                      },
-                      title: Text(widget.categoria.categoriaList[index].nombre),
-                    ),
-                  ),
+            Expanded(
+              flex: 4,
+              child: ListView.builder(
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                itemCount: widget.categoria.categoriaList.length,
+                itemBuilder: (BuildContext context, int index) =>
+                    CheckboxListTile(
+                  value: widget.categoria.categoriaList[index].selected,
+                  onChanged: (bool val) {
+                    widget.esProducto == true
+                        ? val == true
+                            ? widget.producto.categoriaString.add(widget
+                                .categoria.categoriaList[index].categoriaID)
+                            : widget.producto.categoriaString.remove(widget
+                                .categoria.categoriaList[index].categoriaID)
+                        : val == true
+                            ? widget.categoria.categoriaString.add(widget
+                                .categoria.categoriaList[index].categoriaID)
+                            : widget.categoria.categoriaString.remove(widget
+                                .categoria.categoriaList[index].categoriaID);
+                    widget.categoria.changeSelected(
+                        widget.categoria.categoriaList[index].categoriaID, val);
+                    setState(() {});
+                  },
+                  title: Text(widget.categoria.categoriaList[index].nombre),
                 ),
-              ],
+              ),
             ),
           ],
         ),

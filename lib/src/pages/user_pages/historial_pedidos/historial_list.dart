@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:kosherparatodos/src/Widget/pedido_card_widget.dart';
+import 'package:kosherparatodos/src/pages/admin_pages/widgets/pedido_card_widget.dart';
 import 'package:kosherparatodos/src/models/pedido.dart';
 import 'package:kosherparatodos/src/pages/user_pages/historial_pedidos/export.dart';
 import 'bloc/bloc.dart';

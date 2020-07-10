@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:kosherparatodos/src/models/producto.dart';
 import 'package:kosherparatodos/src/pages/user_pages/pedido/bloc/bloc.dart';
 
-import 'export.dart';
+import '../../../Widget/export.dart';
 
 class ProductoCard extends StatefulWidget {
   ProductoCard({Key key, this.producto, this.imagen}) : super(key: key);
@@ -25,7 +25,7 @@ class _ProductoCardState extends State<ProductoCard> {
       margin: EdgeInsets.symmetric(horizontal: 20),
       clipBehavior: Clip.antiAliasWithSaveLayer,
       semanticContainer: true,
-      elevation: 5,
+      elevation: 3,
       color: Colors.white,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
       child: Stack(

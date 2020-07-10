@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:kosherparatodos/src/Widget/export.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/clientes/cliente_detail_page.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/provider/cliente_notifier.dart';
+import 'package:kosherparatodos/src/pages/admin_pages/widgets/export.dart';
 import 'package:provider/provider.dart';
 
 class ClienteListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 10),
-      color: Colors.grey.shade50,
+    return Padding(
+      padding: const EdgeInsets.only(top: 20),
       child: Consumer<ClienteNotifier>(
         builder: (context, cliente, _) => RefreshIndicator(
           child: ListView.separated(

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kosherparatodos/src/Widget/item_detalle_pedido_widget.dart';
+import 'package:kosherparatodos/src/pages/user_pages/widgets/item_detalle_pedido_widget.dart';
 import 'package:kosherparatodos/src/Widget/title_text.dart';
 import 'package:kosherparatodos/src/models/pedido.dart';
 import 'package:kosherparatodos/src/pages/user_pages/pedido/bloc/bloc.dart';
@@ -36,7 +36,7 @@ class DetallePedidoListPage extends StatelessWidget {
           stream: blocPedidoVigente.getPedido,
           builder: (context, snapshot) {
             if (!snapshot.hasData || snapshot.data.productos == null)
-              return _noHayPedidos();
+              return _cleanCart();
             else
               return ListView.builder(
                 itemCount: snapshot.data.productos.length,
@@ -50,12 +50,8 @@ class DetallePedidoListPage extends StatelessWidget {
     );
   }
 
-  Widget _noHayPedidos() {
-    return const Center(
-        child: Text(
-      'No tiene pedidos',
-      style: TextStyle(fontSize: 20),
-    ));
+  Widget _cleanCart() {
+    return const Center(child: Text('Vacio', style: TextStyle(fontSize: 20)));
   }
 
   Widget _getTotal() {
@@ -92,35 +88,39 @@ class DetallePedidoListPage extends StatelessWidget {
                 ? SizedBox()
                 : Column(
                     children: [
-                      FlatButton(
-                          onPressed: () {
-                            if (snapshot.data.total != 0.0) {
-                              blocPedidoVigente.realizarPedido().then((value) {
-                                Show('Realizando pedido');
-                                Show('Pedido realizado!');
-                              },
-                                  onError: (onError) => Show(
-                                      'No hay stock disponible')).whenComplete(
-                                  () {
-                                blocPedidoVigente.clearPedido();
-                              });
-                            } else {
-                              Show('El pedido esta vacio');
-                            }
-                          },
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15)),
-                          color: Theme.of(context).primaryColor,
-                          child: Container(
-                            alignment: Alignment.center,
-                            padding: EdgeInsets.symmetric(vertical: 12),
-                            child: Text(
-                              snapshot.data.pedidoID == null
-                                  ? 'Realizar pedido'
-                                  : 'Modificar pedido',
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          )),
+                      StreamBuilder<bool>(
+                        stream: blocPedidoVigente.getLoading,
+                        builder: (context, load) => !load.data
+                            ? FlatButton(
+                                onPressed: () {
+                                  if (snapshot.data.total != 0.0) {
+                                    blocPedidoVigente.realizarPedido().then(
+                                        (value) {
+                                      Show('Realizando pedido');
+                                      Show('Pedido realizado!');
+                                    },
+                                        onError: (onError) => Show(
+                                            'No hay stock disponible')).whenComplete(
+                                        () {
+                                      blocPedidoVigente.clearPedido();
+                                    });
+                                  } else {
+                                    Show('El pedido esta vacio');
+                                  }
+                                },
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(15)),
+                                color: Theme.of(context).primaryColor,
+                                child: Container(
+                                  alignment: Alignment.center,
+                                  padding: EdgeInsets.symmetric(vertical: 12),
+                                  child: Text(
+                                    'Realizar pedido',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                ))
+                            : CircularProgressIndicator(),
+                      ),
                       FlatButton(
                           onPressed: () => blocPedidoVigente.clearPedido(),
                           shape: RoundedRectangleBorder(

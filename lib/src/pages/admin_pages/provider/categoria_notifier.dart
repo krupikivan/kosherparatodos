@@ -25,17 +25,19 @@ class CategoriaNotifier with ChangeNotifier {
     });
   }
 
-  void getAllCategorias() {
-    final List<Categoria> _list = [];
-    _repository.getAllCategorias().then((value) {
-      final List _listAllCategorias = value.documents;
-      _listAllCategorias.forEach((element) {
-        final Categoria _categoria = Categoria.fromShowOnNewProduct(element);
-        _list.add(_categoria);
+  void getAllCategoriasHijos() {
+    if (_categoriaList.isEmpty) {
+      final List<Categoria> _list = [];
+      _repository.getAllCategoriasHijos().then((value) {
+        final List _listAllCategorias = value.documents;
+        _listAllCategorias.forEach((element) {
+          final Categoria _categoria = Categoria.fromShowOnNewProduct(element);
+          _list.add(_categoria);
+        });
+        _categoriaList = _list;
+        notifyListeners();
       });
-      _categoriaList = _list;
-      notifyListeners();
-    });
+    }
   }
 
   void getCategoriasHijos() {

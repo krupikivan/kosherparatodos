@@ -15,7 +15,7 @@ class PedidoDetailPage extends StatelessWidget {
         iconTheme: IconThemeData(color: Colors.black),
       ),
       body: Container(
-        color: Colors.grey.shade50,
+        color: Theme.of(context).backgroundColor,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -92,11 +92,11 @@ class PedidoDetailPage extends StatelessWidget {
             children: [
               ChoiceChip(
                 selected: !pedido.pedidoActual.pagado,
-                selectedColor: Theme.of(context).errorColor,
+                selectedColor: Theme.of(context).primaryColor,
                 label: Text('No Pagado'),
                 labelStyle: TextStyle(
                   color: pedido.pedidoActual.pagado != true
-                      ? Theme.of(context).errorColor
+                      ? Colors.white
                       : Colors.black,
                 ),
                 onSelected: (nopagado) => !nopagado ? null : _setPagado(pedido),

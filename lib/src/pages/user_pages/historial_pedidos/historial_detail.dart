@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:kosherparatodos/src/Widget/export.dart';
-import 'package:kosherparatodos/src/Widget/pedido_detail_info_card.dart';
+import 'package:kosherparatodos/src/Widget/title_detail_page.dart';
+import 'package:kosherparatodos/src/pages/user_pages/widgets/export.dart';
+import 'package:kosherparatodos/src/pages/user_pages/widgets/historial_detail_info_card.dart';
 import 'package:kosherparatodos/src/models/pedido.dart';
-import 'package:kosherparatodos/src/utils/converter.dart';
 import 'package:kosherparatodos/src/utils/show_messages.dart';
 import 'bloc/bloc.dart';
 
@@ -49,7 +50,7 @@ class HistorialDetail extends StatelessWidget {
                           TitleDetailPage(
                             title: 'Pedido del ${DateFormat('dd/MM').format(pedidoSelected.fecha.toDate()) }',
                           ),
-                          PedidoDetailInfoCard(
+                          HistorialDetailInfoCard(
                             pedido: pedidoSelected,
                           ),
                           Expanded(
@@ -85,7 +86,10 @@ class HistorialDetail extends StatelessWidget {
     return FloatingActionButton.extended(
       onPressed: () => _eliminarPedido(context),
       backgroundColor: Theme.of(context).primaryColor,
-      label: Text('Eliminar'),
+      label: Text(
+        'Eliminar',
+        style: TextStyle(color: Colors.white),
+      ),
       icon: Icon(Icons.clear, size: 36.0, color: Colors.white),
     );
   }

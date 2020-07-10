@@ -29,7 +29,9 @@ class PedidoCardWidget extends StatelessWidget {
         shadowColor: Colors.black38,
         color: color ?? Colors.white,
         elevation: elevation ?? 10,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+            side: BorderSide(color: Theme.of(context).cardColor)),
         child: ListTile(
           title: Text(
             title,

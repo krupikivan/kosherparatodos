@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kosherparatodos/src/Widget/export.dart';
-import 'package:kosherparatodos/src/Widget/product_card.dart';
+import 'package:kosherparatodos/src/pages/user_pages/widgets/product_card.dart';
 import 'package:kosherparatodos/src/pages/user_pages/pedido/bloc/categoria_provider.dart';
 import 'package:kosherparatodos/src/pages/user_pages/pedido/widgets/categoria_card_hijo.dart';
 import 'package:kosherparatodos/src/pages/user_pages/pedido/widgets/categoria_card_padre.dart';

@@ -57,7 +57,9 @@ ThemeData themeData() {
     errorColor: Color(0xFFCC0000),
     primaryColorLight: Color(0xFF07ADA3),
     backgroundColor: Color(0xFFffffff),
-    accentColor: Color(0xFFFBBF3B),
+    hoverColor: Colors.black26,
+    accentColor: Color(0xFF1A446E),
+    cardColor: Colors.grey[400],
     dividerColor: Colors.grey[300],
     appBarTheme: AppBarTheme(
       textTheme: TextTheme(
@@ -66,7 +68,7 @@ ThemeData themeData() {
         fontSize: 20,
       )),
       brightness: Brightness.light,
-      color: Colors.grey,
+      color: Colors.white,
       elevation: 0,
       iconTheme: IconThemeData(color: Colors.black),
     ),
