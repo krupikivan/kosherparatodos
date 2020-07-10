@@ -32,7 +32,7 @@ class ClienteCardWidget extends StatelessWidget {
         leading: Icon(
           Icons.account_circle,
           size: 40,
-          color: Colors.black,
+          color: Colors.grey,
         ),
         subtitle: Text(
           estado == true ? 'Habilitado' : 'No Habilitado',

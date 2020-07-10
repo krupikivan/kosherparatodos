@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kosherparatodos/src/Widget/export.dart';
+import 'package:kosherparatodos/src/models/cliente.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/provider/cliente_notifier.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/provider/pedido_notifier.dart';
 import 'package:provider/provider.dart';
@@ -30,17 +31,17 @@ class ClienteDetailPage extends StatelessWidget {
                   multiLines: false,
                   campo: 'Email',
                   dato1: cliente.clienteActual.email),
-              CustomDataList(
-                  multiLines: false,
-                  campo: 'Telefono',
-                  dato1: cliente.clienteActual.telefono.toString()),
+              cliente.clienteActual.telefono == 0
+                  ? SizedBox()
+                  : CustomDataList(
+                      multiLines: false,
+                      campo: 'Telefono',
+                      dato1: cliente.clienteActual.telefono.toString()),
               CustomDataList(
                   multiLines: true,
                   campo: 'Direccion',
-                  dato1:
-                      '${cliente.clienteActual.direccion.calle} ${cliente.clienteActual.direccion.numero} ${cliente.clienteActual.direccion.piso} ${cliente.clienteActual.direccion.depto}',
-                  dato2:
-                      '${cliente.clienteActual.direccion.codigoPostal}, ${cliente.clienteActual.direccion.ciudad}, ${cliente.clienteActual.direccion.provincia}, ${cliente.clienteActual.direccion.aclaracion}'),
+                  dato1: _getDato1(cliente.clienteActual.direccion),
+                  dato2: _getDato2(cliente.clienteActual.direccion)),
               _getAutenticado(cliente, context),
             ],
           ),
@@ -72,7 +73,7 @@ class ClienteDetailPage extends StatelessWidget {
                   label: Text(
                     'Habilitar',
                     style: TextStyle(
-                        color: auth == true ? Colors.white : Colors.black),
+                        color: auth == true ? Colors.white : Colors.white),
                   ),
                   onPressed: () => cliente.setAutenticado(),
                 )
@@ -80,5 +81,50 @@ class ClienteDetailPage extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  String _getDato1(Direccion direccion) {
+    String dato1 = '';
+    final String calle = direccion.calle != "" ? direccion.calle : null;
+    final int numero = direccion.numero != 0 ? direccion.numero : null;
+    final String piso = direccion.piso != "" ? direccion.piso : null;
+    final String depto = direccion.depto != "" ? direccion.depto : null;
+    if (calle != null) {
+      dato1 = calle;
+    }
+    if (numero != null) {
+      dato1 = dato1 != '' ? '$dato1, $numero' : numero.toString();
+    }
+    if (piso != null) {
+      dato1 = dato1 != '' ? '$dato1, $piso' : piso;
+    }
+    if (depto != null) {
+      dato1 = dato1 != '' ? '$dato1, $depto' : depto;
+    }
+    return dato1;
+  }
+
+  String _getDato2(Direccion direccion) {
+    String dato2 = '';
+    final int codigoPostal =
+        direccion.codigoPostal != 0 ? direccion.codigoPostal : null;
+    final String ciudad = direccion.ciudad != '' ? direccion.ciudad : null;
+    final String provincia =
+        direccion.provincia != "" ? direccion.provincia : null;
+    final String aclaracion =
+        direccion.aclaracion != "" ? direccion.aclaracion : null;
+    if (codigoPostal != null) {
+      dato2 = codigoPostal.toString();
+    }
+    if (ciudad != null) {
+      dato2 = dato2 != '' ? '$dato2, $ciudad' : ciudad;
+    }
+    if (provincia != null) {
+      dato2 = dato2 != '' ? '$dato2, $provincia' : provincia;
+    }
+    if (aclaracion != null) {
+      dato2 = dato2 != '' ? '$dato2, $aclaracion' : aclaracion;
+    }
+    return dato2;
   }
 }

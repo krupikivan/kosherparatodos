@@ -14,13 +14,20 @@ class CustomDataList extends StatelessWidget {
     return ListTile(
       isThreeLine: multiLines,
       title: Text(dato1),
-      subtitle: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          multiLines == false ? SizedBox() : Text(dato2),
-          Text(campo),
-        ],
-      ),
+      subtitle: dato2 != ""
+          ? Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                multiLines == false
+                    ? SizedBox()
+                    : Text(
+                        dato2,
+                        style: TextStyle(color: Colors.black),
+                      ),
+                Text(campo),
+              ],
+            )
+          : SizedBox(),
     );
   }
 }

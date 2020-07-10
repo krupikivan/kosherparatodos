@@ -22,7 +22,7 @@ class ClienteListPage extends StatelessWidget {
                 }),
             itemCount: cliente.clienteList.length,
             separatorBuilder: (BuildContext context, int index) => Divider(
-              color: Colors.grey,
+              color: Theme.of(context).dividerColor,
             ),
           ),
           onRefresh: () => _refreshList(cliente),
