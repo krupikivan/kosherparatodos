@@ -39,6 +39,11 @@ class Nombre {
     apellido = data['apellido'] as String;
   }
 
+  Map<String, String> toJson() => {
+        'nombre': nombre,
+        'apellido': apellido,
+      };
+
   Nombre.fromAddressEditing(Nombre nom) {
     nombre = nom.nombre;
     apellido = nom.apellido;

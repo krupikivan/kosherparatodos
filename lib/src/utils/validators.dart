@@ -4,6 +4,7 @@ mixin Validator {
   );
   static final RegExp _password = RegExp(
     r'^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$',
+    // r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$',
   );
   static final RegExp _number = RegExp(r'^[0-9]+$');
   static final RegExp _name = RegExp(r'^[A-Za-z0-9 ]+$');
@@ -26,13 +27,13 @@ mixin Validator {
 
   static bool getValidators(String label, String value) {
     switch (label) {
-      case "Nombre":
+      case "txt":
         return isValidName(value);
         break;
-      case "Email":
+      case "email":
         return isValidEmail(value);
         break;
-      case "Contraseña":
+      case "pass":
         return isValidPassword(value);
         break;
       default:

@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:kosherparatodos/src/utils/validators.dart';
 
 class InputText extends StatelessWidget {
-  InputText({Key key, this.controller, this.error, this.label, this.isPass})
+  InputText(
+      {Key key,
+      this.controller,
+      this.error,
+      this.label,
+      this.isPass,
+      this.type})
       : super(key: key);
   TextStyle style = TextStyle(color: Colors.white, fontSize: 20.0);
 
@@ -9,18 +16,17 @@ class InputText extends StatelessWidget {
   final String error;
   final String label;
   final bool isPass;
+  final String type;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       controller: controller,
       obscureText: isPass,
-
-      ///TODO: Volver activar este validador
-      // validator: (value) =>
-      //     (value.isEmpty || !Validator.getValidators(label, value))
-      //         ? error
-      //         : null,
+      validator: (value) =>
+          (value.isEmpty || !Validator.getValidators(type, value))
+              ? error
+              : null,
       style: style,
       cursorColor: Colors.white,
       decoration: InputDecoration(

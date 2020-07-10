@@ -1,6 +1,7 @@
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:flutter/widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:kosherparatodos/src/models/cliente.dart';
 import 'package:kosherparatodos/src/repository/firestore_provider.dart';
 import 'dart:collection';
 import '../repository/repo.dart';
@@ -21,7 +22,7 @@ class UserRepository with ChangeNotifier {
   FirebaseUser _user;
   Status _status = Status.Uninitialized;
   final Repository repo = FirestoreProvider();
-
+  final _conex = ConnectivityProvider.getInstance();
   List _adminList = [];
 
   UnmodifiableListView get adminList => UnmodifiableListView(_adminList);
@@ -60,27 +61,43 @@ class UserRepository with ChangeNotifier {
     }
   }
 
-  Future<void> signup(String name, String email, String password) async {
-    _status = Status.Registering;
-    notifyListeners();
-    return _auth
-        .createUserWithEmailAndPassword(
-      email: email,
-      password: password,
-    )
-        .then((firebaseUser) async {
-      final HttpsCallable callable = CloudFunctions.instance.getHttpsCallable(
-        functionName: 'addUser',
-      );
-      await callable.call(<String, dynamic>{
-        'name': name,
-        'uid': firebaseUser.user.uid,
-      });
-    }, onError: (e) {
+  Future<void> signup(
+      String name, String lastName, String email, String password) async {
+    try {
+      if (_conex.hasConnection) {
+        _status = Status.Registering;
+        notifyListeners();
+        AuthResult firebaseUser = await _auth.createUserWithEmailAndPassword(
+          email: email,
+          password: password,
+        );
+        if (firebaseUser != null) {
+          final Map nombre = {
+            'nombre': name,
+            'apellido': lastName,
+          };
+          final HttpsCallable callable =
+              CloudFunctions.instance.getHttpsCallable(
+            functionName: 'addUser',
+          );
+          await callable.call(<String, dynamic>{
+            'nombre': nombre,
+            'uid': firebaseUser.user.uid,
+          });
+          _status = Status.Register;
+          notifyListeners();
+        } else {
+          _status = Status.Register;
+          notifyListeners();
+          throw 'Datos incorrectos';
+        }
+      } else {
+        throw 'No hay conexion';
+      }
+    } catch (e) {
       _status = Status.Register;
-      notifyListeners();
-      throw 'Error!';
-    });
+      throw e.toString();
+    }
   }
 
   goLogin() {

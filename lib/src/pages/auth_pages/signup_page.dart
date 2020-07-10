@@ -18,15 +18,17 @@ class SignUpPage extends StatefulWidget {
 class _SignUpPageState extends State<SignUpPage> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController _name;
+  TextEditingController _lastName;
   TextEditingController _email;
   TextEditingController _password;
 
   @override
   void initState() {
     super.initState();
-    _name = TextEditingController(text: "");
-    _email = TextEditingController(text: "");
-    _password = TextEditingController(text: "");
+    _name = TextEditingController(text: "dani");
+    _lastName = TextEditingController(text: "apellido");
+    _email = TextEditingController(text: "dan@gmail.com");
+    _password = TextEditingController(text: "Dani1234");
   }
 
   // Widget _submitButton(UserRepository user) {
@@ -86,7 +88,7 @@ class _SignUpPageState extends State<SignUpPage> {
           body: Container(
             padding: EdgeInsets.symmetric(horizontal: 20),
             height: MediaQuery.of(context).size.height,
-            child: user.status == Status.Authenticating
+            child: user.status == Status.Registering
                 ? Center(
                     child: CircularProgressIndicator(
                       valueColor:
@@ -102,15 +104,25 @@ class _SignUpPageState extends State<SignUpPage> {
                           SizedBox(height: 40),
                           InputText(
                             controller: _name,
+                            type: 'txt',
                             label: "Nombre",
                             isPass: false,
                             error: "Ingrese nombre",
+                          ),
+                          SizedBox(height: 25),
+                          InputText(
+                            controller: _lastName,
+                            type: 'txt',
+                            label: "Apellido",
+                            isPass: false,
+                            error: "Ingrese apellido",
                           ),
                           SizedBox(
                             height: 25,
                           ),
                           InputText(
                             controller: _email,
+                            type: 'email',
                             label: "Email",
                             isPass: false,
                             error: "Ingrese email",
@@ -120,24 +132,16 @@ class _SignUpPageState extends State<SignUpPage> {
                           ),
                           InputText(
                             controller: _password,
+                            type: 'pass',
                             label: "Contraseña",
                             isPass: true,
-                            error: "Ingrese contraseña",
+                            error:
+                                "Contraseña debe tener 8 caracteres 1 mayuscula y numeros",
                           ),
                           SizedBox(height: 25),
                           SubmitButton(
                             text: "REGISTRARSE",
-                            action: () => _formKey.currentState.validate()
-                                ? user
-                                    .signup(
-                                        _name.text, _email.text, _password.text)
-                                    .then((value) {
-                                    user.signOutOnRegister();
-                                    ShowToast().show('Usuario creado', 5);
-                                  },
-                                        onError: (e) =>
-                                            ShowToast().show('Error', 5))
-                                : null,
+                            action: () => _signUp(user),
                           ),
                           SizedBox(height: 30),
                           Labeltext(
@@ -154,5 +158,21 @@ class _SignUpPageState extends State<SignUpPage> {
         ),
       ],
     );
+  }
+
+  void _signUp(UserRepository user) async {
+    if (_formKey.currentState.validate()) {
+      try {
+        await user.signup(
+            _name.text, _lastName.text, _email.text, _password.text);
+        await user.signOutOnRegister();
+        ShowToast().show('Usuario creado', 5);
+      } catch (e) {
+        await user.signOutOnRegister();
+        ShowToast().show('El usuario ya existe', 5);
+      }
+    } else {
+      ShowToast().show('Faltan datos', 5);
+    }
   }
 }
