@@ -4,7 +4,6 @@ import 'package:kosherparatodos/src/Widget/show_toast.dart';
 import 'package:kosherparatodos/src/Widget/title_text.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/provider/producto_notifier.dart';
 import 'package:provider/provider.dart';
-import 'package:kosherparatodos/style/theme.dart' as MyTheme;
 
 class ProductoDetailPage extends StatelessWidget {
   TextEditingController _codigoController;
@@ -33,7 +32,7 @@ class ProductoDetailPage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 TitleText(
-                  color: MyTheme.Colors.black,
+                  color: Colors.black,
                   text: 'Detalle del producto',
                   fontSize: 20,
                   fontWeight: FontWeight.w700,
@@ -83,7 +82,7 @@ class ProductoDetailPage extends StatelessWidget {
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => _updateAllData(context),
         label: const Text('Guardar'),
-        backgroundColor: MyTheme.Colors.primary,
+        backgroundColor: Theme.of(context).primaryColor,
       ),
     );
   }

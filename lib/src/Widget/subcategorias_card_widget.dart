@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/provider/categoria_notifier.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/provider/producto_notifier.dart';
-import 'package:kosherparatodos/style/theme.dart' as MyTheme;
 
 //Esta clase me muestra las sub categorias si tienen ancestros
 
@@ -30,7 +29,7 @@ class SubcategoriaCardWidget extends StatelessWidget {
                         categoria.categoriaHijoList[index]
                     ? TextStyle(
                         fontWeight: FontWeight.w900,
-                        color: MyTheme.Colors.primary)
+                        color: Theme.of(context).primaryColor)
                     : TextStyle(fontWeight: FontWeight.w300)),
           ),
           SizedBox(

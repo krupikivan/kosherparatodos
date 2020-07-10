@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:kosherparatodos/src/models/producto.dart';
 import 'package:kosherparatodos/src/pages/user_pages/pedido/bloc/bloc.dart';
-import 'package:kosherparatodos/style/theme.dart' as MyTheme;
 
 import 'export.dart';
 
@@ -33,76 +32,77 @@ class _ProductoCardState extends State<ProductoCard> {
         children: <Widget>[
           _isPressed
               ? Row(
-                children: <Widget>[
-                  Expanded(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        Container(
-                          height: 82,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: <Widget>[
-                               RawMaterialButton(
-                                  onPressed: () {
-                                    setState(() {
-                                      if (_cantidad > 0) _cantidad--;
-                                    });
-                                  },
-                                  shape: CircleBorder(
-                                      side: BorderSide(
-                                          color: MyTheme.Colors.primary)),
-                                  child: Icon(
-                                    Icons.remove,
-                                    color: MyTheme.Colors.primary,
-                                  )),
-                              Text(_cantidad.toString(),
-                                  style: TextStyle(
-                                      color: MyTheme.Colors.primary,
-                                      fontWeight: FontWeight.bold)),
-                              RawMaterialButton(
-                                  onPressed: () {
-                                    setState(() {
-                                      _cantidad++;
-                                    });
-                                  },
-                                  shape: CircleBorder(
-                                      side: BorderSide(
-                                          color: MyTheme.Colors.primary)),
-                                  child: Icon(Icons.add,
-                                      color: MyTheme.Colors.primary)),
-                            ],
+                  children: <Widget>[
+                    Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          Container(
+                            height: 82,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                RawMaterialButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        if (_cantidad > 0) _cantidad--;
+                                      });
+                                    },
+                                    shape: CircleBorder(
+                                        side: BorderSide(
+                                            color: Theme.of(context)
+                                                .primaryColor)),
+                                    child: Icon(
+                                      Icons.remove,
+                                      color: Theme.of(context).primaryColor,
+                                    )),
+                                Text(_cantidad.toString(),
+                                    style: TextStyle(
+                                        color: Theme.of(context).primaryColor,
+                                        fontWeight: FontWeight.bold)),
+                                RawMaterialButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        _cantidad++;
+                                      });
+                                    },
+                                    shape: CircleBorder(
+                                        side: BorderSide(
+                                            color: Theme.of(context)
+                                                .primaryColor)),
+                                    child: Icon(Icons.add,
+                                        color: Theme.of(context).primaryColor)),
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                   RawMaterialButton(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15)),
-                          fillColor: MyTheme.Colors.secondary,
-                          elevation: 0,
-                          onPressed: () {
-                            blocPedidoVigente.updateCarrito(widget.producto,
-                                _cantidad, widget.producto.stock);
-                            _showMessage('Agregado al carrito');
-                            _isPressed = false;
-                            setState(() {});
-                          },
-                          child: Text(
-                            'Agregar',
-                            style: TextStyle(
-                                color: MyTheme.Colors.white,
-                                fontSize: 15,
-                                fontWeight: FontWeight.w600),
-                          ),
-                        ),
-                  Align(
-                      alignment: Alignment.centerRight, child: _getIcon()),
-                ],
-              )
+                    RawMaterialButton(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15)),
+                      fillColor: Theme.of(context).primaryColorLight,
+                      elevation: 0,
+                      onPressed: () {
+                        blocPedidoVigente.updateCarrito(
+                            widget.producto, _cantidad, widget.producto.stock);
+                        _showMessage('Agregado al carrito');
+                        _isPressed = false;
+                        setState(() {});
+                      },
+                      child: Text(
+                        'Agregar',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 15,
+                            fontWeight: FontWeight.w600),
+                      ),
+                    ),
+                    Align(alignment: Alignment.centerRight, child: _getIcon()),
+                  ],
+                )
               : Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
@@ -136,7 +136,7 @@ class _ProductoCardState extends State<ProductoCard> {
                                 widget.producto.descripcion,
                                 maxLines: 3,
                                 style: TextStyle(
-                                    color: MyTheme.Colors.primary,
+                                    color: Theme.of(context).primaryColor,
                                     fontWeight: FontWeight.bold,
                                     fontSize: 18),
                               ),
@@ -147,8 +147,8 @@ class _ProductoCardState extends State<ProductoCard> {
                             Text(
                               '\$${widget.producto.precio.truncate()}',
                               style: TextStyle(
-                                  color: MyTheme.Colors.primary,
-                                  fontWeight: FontWeight.normal,
+                                  color: Theme.of(context).primaryColor,
+                                  fontWeight: FontWeight.bold,
                                   fontSize: 18),
                             ),
                           ],
@@ -167,11 +167,11 @@ class _ProductoCardState extends State<ProductoCard> {
     return RawMaterialButton(
       onPressed: toggleProductAdder,
       shape: CircleBorder(),
-      fillColor: MyTheme.Colors.primary,
+      fillColor: Theme.of(context).primaryColor,
       child: Icon(
         _isPressed ? Icons.remove : Icons.add,
         size: 20,
-        color: MyTheme.Colors.white,
+        color: Colors.white,
       ),
     );
   }

@@ -1,13 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:kosherparatodos/src/Widget/export.dart';
 import 'package:kosherparatodos/src/models/cliente.dart';
-import 'package:kosherparatodos/src/pages/admin_pages/provider/categoria_notifier.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/provider/producto_notifier.dart';
 import 'package:kosherparatodos/src/pages/user_pages/pedido/bloc/categoria_provider.dart';
 import 'package:kosherparatodos/src/pages/user_pages/pedido/pedido.dart';
-import 'package:kosherparatodos/style/theme.dart' as MyTheme;
 import 'package:kosherparatodos/style/theme.dart';
 import 'package:provider/provider.dart';
 import '../../providers/user_repository.dart';
@@ -23,7 +20,7 @@ class UserPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     blocUserData.getUserDataFromFirebase(user.uid);
-    style = TextStyle(color: MyTheme.Colors.black);
+    style = TextStyle(color: Colors.black);
     final size = MediaQuery.of(context).size;
     return MultiProvider(
       providers: [
@@ -36,8 +33,8 @@ class UserPage extends StatelessWidget {
         home: Scaffold(
           appBar: AppBar(
             elevation: 0,
-            iconTheme: IconThemeData(color: MyTheme.Colors.black),
-            backgroundColor: MyTheme.Colors.white,
+            iconTheme: IconThemeData(color: Colors.black),
+            backgroundColor: Colors.white,
             title: Text(
               "Kosher para todos",
               style: style,
@@ -66,25 +63,24 @@ class UserPage extends StatelessWidget {
                                     Icon(
                                       Icons.account_circle,
                                       size: 60,
-                                      color: MyTheme.Colors.white,
+                                      color: Colors.white,
                                     ),
                                     SizedBox(height: 20),
                                     Text(
                                       'Hola ${snapshot.data.nombre.nombre}',
                                       style: TextStyle(
-                                          fontSize: 25,
-                                          color: MyTheme.Colors.white),
+                                          fontSize: 25, color: Colors.white),
                                     ),
                                   ],
                                 ),
                                 decoration: new BoxDecoration(
-                                    color: MyTheme.Colors.primary),
+                                    color: Theme.of(context).primaryColor),
                               ),
                               ListTile(
                                 title: Text('Historial de pedidos'),
                                 leading: Icon(
                                   Icons.history,
-                                  color: MyTheme.Colors.primary,
+                                  color: Theme.of(context).primaryColor,
                                 ),
                                 onTap: () {
                                   Navigator.of(context).pop();
@@ -95,7 +91,7 @@ class UserPage extends StatelessWidget {
                                 title: Text('Productos'),
                                 leading: Icon(
                                   Icons.fastfood,
-                                  color: MyTheme.Colors.primary,
+                                  color: Theme.of(context).primaryColor,
                                 ),
                                 onTap: () {
                                   Navigator.of(context).pop();
@@ -106,7 +102,7 @@ class UserPage extends StatelessWidget {
                                 title: Text('Cerrar Sesion'),
                                 leading: Icon(
                                   Icons.exit_to_app,
-                                  color: MyTheme.Colors.primary,
+                                  color: Theme.of(context).primaryColor,
                                 ),
                                 onTap: () => Provider.of<UserRepository>(
                                         context,
@@ -124,12 +120,12 @@ class UserPage extends StatelessWidget {
             builder: (context, snapshot) {
               if (blocNav.navigationProvider.currentNavigation == "Historial") {
                 blocUserData.getPedidos(user.uid);
-                return UserPedidoListPage();
+                return HistorialList();
               }
               if (blocNav.navigationProvider.currentNavigation == "Productos") {
                 return ProductoGridPage();
               }
-              return UserPedidoListPage();
+              return HistorialList();
             },
           ),
         ),

@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-// import 'package:kosherparatodos/src/utils/validators.dart';
-import 'package:kosherparatodos/style/theme.dart' as MyTheme;
 
 class InputText extends StatelessWidget {
   InputText({Key key, this.controller, this.error, this.label, this.isPass})
       : super(key: key);
-  TextStyle style = TextStyle(color: MyTheme.Colors.white, fontSize: 20.0);
+  TextStyle style = TextStyle(color: Colors.white, fontSize: 20.0);
 
   final TextEditingController controller;
   final String error;
@@ -24,28 +22,28 @@ class InputText extends StatelessWidget {
       //         ? error
       //         : null,
       style: style,
-      cursorColor: MyTheme.Colors.white,
+      cursorColor: Colors.white,
       decoration: InputDecoration(
           prefixIcon: Icon(
             Icons.email,
-            color: MyTheme.Colors.white,
+            color: Colors.white,
           ),
           labelText: label,
-          errorStyle: TextStyle(color: MyTheme.Colors.white),
+          errorStyle: TextStyle(color: Colors.white),
           focusedErrorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(15),
-              borderSide: BorderSide(color: MyTheme.Colors.white)),
+              borderSide: BorderSide(color: Colors.white)),
           errorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(15),
-              borderSide: BorderSide(color: MyTheme.Colors.white)),
+              borderSide: BorderSide(color: Colors.white)),
           focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(15),
-              borderSide: BorderSide(color: MyTheme.Colors.white)),
-          labelStyle: TextStyle(color: MyTheme.Colors.white),
+              borderSide: BorderSide(color: Colors.white)),
+          labelStyle: TextStyle(color: Colors.white),
           enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(15),
               borderSide: BorderSide(
-                color: MyTheme.Colors.white,
+                color: Colors.white,
               ))),
     );
   }

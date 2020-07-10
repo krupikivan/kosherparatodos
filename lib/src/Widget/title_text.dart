@@ -1,4 +1,3 @@
-import 'package:kosherparatodos/style/theme.dart' as MyTheme;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -11,7 +10,7 @@ class TitleText extends StatelessWidget {
       {Key key,
       this.text,
       this.fontSize = 18,
-      this.color = MyTheme.Colors.primary,
+      this.color,
       this.fontWeight = FontWeight.w800})
       : super(key: key);
   @override

@@ -3,10 +3,9 @@ import 'package:kosherparatodos/src/Widget/pedido_card_widget.dart';
 import 'package:kosherparatodos/src/models/pedido.dart';
 import 'package:kosherparatodos/src/pages/user_pages/historial_pedidos/export.dart';
 import 'package:kosherparatodos/src/utils/converter.dart';
-import 'package:kosherparatodos/style/theme.dart' as MyTheme;
 import 'bloc/bloc.dart';
 
-class UserPedidoListPage extends StatelessWidget {
+class HistorialList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<List<Pedido>>(
@@ -15,15 +14,15 @@ class UserPedidoListPage extends StatelessWidget {
           if (!snapshot.hasData)
             return Center(
                 child: CircularProgressIndicator(
-              valueColor:
-                  new AlwaysStoppedAnimation<Color>(MyTheme.Colors.primary),
+              valueColor: new AlwaysStoppedAnimation<Color>(
+                  Theme.of(context).primaryColor),
             ));
           else
             return ListView.builder(
               itemCount: snapshot.data.length,
               itemBuilder: (BuildContext context, int index) {
                 return PedidoCardWidget(
-                  estado: Convert.enumEntregaToString(
+                  estado: Pedido.enumEntregaToString(
                       snapshot.data[index].estadoEntrega),
                   action: () =>
                       _goToDetails(context, snapshot.data[index].pedidoID),
@@ -41,7 +40,7 @@ class UserPedidoListPage extends StatelessWidget {
     Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) => UserPedidoDetailPage(
+            builder: (context) => HistorialDetail(
                   pedidoID: pedidoID,
                 )));
   }

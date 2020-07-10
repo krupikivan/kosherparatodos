@@ -8,7 +8,6 @@ import 'package:kosherparatodos/src/pages/admin_pages/provider/categoria_notifie
 import 'package:kosherparatodos/src/pages/admin_pages/provider/cliente_notifier.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/provider/pedido_notifier.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/provider/producto_notifier.dart';
-import 'package:kosherparatodos/style/theme.dart' as MyTheme;
 import 'package:kosherparatodos/src/providers/user_repository.dart';
 import 'package:kosherparatodos/style/theme.dart';
 import 'package:provider/provider.dart';
@@ -21,7 +20,7 @@ class AdminPage extends StatelessWidget {
   final GlobalKey<NavigatorState> navigatorKey =
       GlobalKey(debugLabel: "Admin Main");
 
-  final TextStyle style = TextStyle(color: MyTheme.Colors.black);
+  final TextStyle style = TextStyle(color: Colors.black);
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -44,11 +43,11 @@ class AdminPage extends StatelessWidget {
                 builder: (context, snapshot) {
                   return Text(
                     _getTitle(bloc.navigationProvider.currentNavigation),
-                    style: MyTheme.Colors.headerStyle,
+                    style: style,
                   );
                 }),
           ),
-          drawerScrimColor: MyTheme.Colors.black,
+          drawerScrimColor: Theme.of(context).primaryColor,
           drawer: SizedBox(
             width: MediaQuery.of(context).size.width / 1.5,
             child: Builder(
@@ -65,29 +64,27 @@ class AdminPage extends StatelessWidget {
                           Icon(
                             Icons.account_circle,
                             size: 60,
-                            color: MyTheme.Colors.white,
+                            color: Colors.white,
                           ),
                           SizedBox(height: 20),
                           Text(
                             'Administrador',
-                            style: TextStyle(
-                                fontSize: 25, color: MyTheme.Colors.white),
+                            style: TextStyle(fontSize: 25, color: Colors.white),
                           ),
                           Text(
                             user.email,
-                            style: TextStyle(
-                                fontSize: 18, color: MyTheme.Colors.white),
+                            style: TextStyle(fontSize: 18, color: Colors.white),
                           ),
                         ],
                       ),
-                      decoration:
-                          new BoxDecoration(color: MyTheme.Colors.primary),
+                      decoration: new BoxDecoration(
+                          color: Theme.of(context).primaryColor),
                     ),
                     ListTile(
                       title: Text('Clientes'),
                       leading: Icon(
                         Icons.people,
-                        color: MyTheme.Colors.primary,
+                        color: Theme.of(context).primaryColor,
                       ),
                       onTap: () {
                         Navigator.of(context).pop();
@@ -98,7 +95,7 @@ class AdminPage extends StatelessWidget {
                       title: Text('Pedidos'),
                       leading: Icon(
                         Icons.shopping_basket,
-                        color: MyTheme.Colors.primary,
+                        color: Theme.of(context).primaryColor,
                       ),
                       onTap: () {
                         Navigator.of(context).pop();
@@ -109,19 +106,19 @@ class AdminPage extends StatelessWidget {
                       title: Text('Categorias / Productos'),
                       leading: Icon(
                         Icons.list,
-                        color: MyTheme.Colors.primary,
+                        color: Theme.of(context).primaryColor,
                       ),
                       onTap: () {
                         Navigator.of(context).pop();
                         bloc.updateNavigation('Productos');
                       },
                     ),
-                    Divider(color: MyTheme.Colors.darkGrey),
+                    Divider(color: Theme.of(context).dividerColor),
                     ListTile(
                         title: Text('Cerrar Sesion'),
                         leading: Icon(
                           Icons.exit_to_app,
-                          color: MyTheme.Colors.primary,
+                          color: Theme.of(context).primaryColor,
                         ),
                         onTap: () =>
                             Provider.of<UserRepository>(context, listen: false)
@@ -132,7 +129,7 @@ class AdminPage extends StatelessWidget {
             ),
           ),
           body: Container(
-            color: MyTheme.Colors.grey,
+            color: Colors.white,
             child: StreamBuilder(
               stream: bloc.getNavigation,
               initialData: bloc.navigationProvider.currentNavigation,

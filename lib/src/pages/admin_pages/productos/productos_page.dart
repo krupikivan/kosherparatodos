@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/productos/new_producto_page.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/productos/producto_detail_page.dart';
-import 'package:kosherparatodos/style/theme.dart' as MyTheme;
 import 'package:kosherparatodos/src/pages/admin_pages/provider/producto_notifier.dart';
 import 'package:provider/provider.dart';
 
@@ -41,7 +40,7 @@ class ProductosPage extends StatelessWidget {
               itemCount: producto.productoList.length,
               separatorBuilder: (BuildContext context, int index) =>
                   const Divider(
-                color: MyTheme.Colors.accent,
+                color: Colors.grey,
               ),
             ),
           ),
@@ -50,7 +49,7 @@ class ProductosPage extends StatelessWidget {
               child: FloatingActionButton.extended(
                 onPressed: () => _addProducto(context),
                 label: const Text('Agregar producto'),
-                backgroundColor: MyTheme.Colors.accent,
+                backgroundColor: Theme.of(context).accentColor,
               ))
         ],
       ),

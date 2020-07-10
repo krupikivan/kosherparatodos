@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/provider/categoria_notifier.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/provider/producto_notifier.dart';
-import 'package:kosherparatodos/style/theme.dart' as MyTheme;
 
 //Esta clase me muestra las categorias padres que no tienen ancestros
 class CategoriaCardWidget extends StatelessWidget {
@@ -30,7 +29,7 @@ class CategoriaCardWidget extends StatelessWidget {
                     ? TextStyle(
                         fontSize: 18.0,
                         fontWeight: FontWeight.w900,
-                        color: MyTheme.Colors.primary)
+                        color: Theme.of(context).primaryColor)
                     : TextStyle(fontSize: 18.0, fontWeight: FontWeight.w300)),
           ),
           SizedBox(
