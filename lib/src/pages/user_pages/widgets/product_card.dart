@@ -20,7 +20,6 @@ class _ProductoCardState extends State<ProductoCard> {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
     return Card(
       margin: EdgeInsets.symmetric(horizontal: 20),
       clipBehavior: Clip.antiAliasWithSaveLayer,

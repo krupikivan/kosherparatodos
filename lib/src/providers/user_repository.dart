@@ -1,7 +1,6 @@
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:flutter/widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:kosherparatodos/src/models/cliente.dart';
 import 'package:kosherparatodos/src/repository/firestore_provider.dart';
 import 'dart:collection';
 import '../repository/repo.dart';

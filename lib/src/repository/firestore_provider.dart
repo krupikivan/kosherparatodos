@@ -5,7 +5,6 @@ import 'package:kosherparatodos/src/models/cliente.dart';
 import 'package:kosherparatodos/src/models/pedido.dart';
 import 'package:kosherparatodos/src/models/producto.dart';
 import 'package:kosherparatodos/src/repository/repo.dart';
-import 'package:kosherparatodos/src/utils/converter.dart';
 
 class FirestoreProvider implements Repository {
   final Firestore _firestore = Firestore.instance;

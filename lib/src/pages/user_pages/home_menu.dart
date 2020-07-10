@@ -38,7 +38,7 @@ class UserPage extends StatelessWidget {
             iconTheme: IconThemeData(color: Colors.black),
             backgroundColor: Colors.white,
             title: Text(
-              "Kosher para todos",
+              "Kosher en un click",
               style: style,
             ),
             actions: <Widget>[

@@ -164,6 +164,6 @@ String _getTitle(title) {
   } else if (bloc.navigationProvider.currentNavigation == "Productos") {
     return 'Productos';
   } else {
-    return 'Kosher Para Todos';
+    return 'Kosher en un click';
   }
 }

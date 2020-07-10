@@ -18,7 +18,7 @@ class TitleLabel extends StatelessWidget {
         RichText(
           textAlign: TextAlign.left,
           text: TextSpan(
-            text: 'Kosher Para Todos',
+            text: 'Kosher en un click',
             style: TextStyle(
               fontSize: 30,
               fontWeight: FontWeight.w700,
@@ -30,7 +30,7 @@ class TitleLabel extends StatelessWidget {
         RichText(
           textAlign: TextAlign.left,
           text: TextSpan(
-            text: 'Carnes y lacteos kosher al costo',
+            text: 'Todos los productos kosher al mejor precio',
             style: TextStyle(
               fontSize: 15,
               fontWeight: FontWeight.w300,
