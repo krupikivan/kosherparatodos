@@ -50,6 +50,8 @@ abstract class Repository {
 
   Future<void> addNewCategoria(Categoria newCategoria);
 
+  Future<void> addUserAddress(Cliente cliente);
+
   Future<void> deleteProducto(String idProducto);
 
   Future<void> setHabilitado(String idProducto, {bool habilitado});

@@ -6,7 +6,7 @@ mixin Validator {
     r'^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$',
   );
   static final RegExp _number = RegExp(r'^[0-9]+$');
-  static final RegExp _name = RegExp(r'^[A-Za-z ]+$');
+  static final RegExp _name = RegExp(r'^[A-Za-z0-9 ]+$');
 
   static bool isValidEmail(String email) {
     return _email.hasMatch(email);
@@ -37,6 +37,14 @@ mixin Validator {
         break;
       default:
         return false;
+    }
+  }
+
+  static bool validateUserData(bool isNum, String value) {
+    if (!isNum) {
+      return isValidName(value);
+    } else {
+      return isValidPhone(value);
     }
   }
 }

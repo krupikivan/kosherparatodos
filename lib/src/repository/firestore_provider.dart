@@ -332,4 +332,28 @@ class FirestoreProvider implements Repository {
         .where('categorias', arrayContains: idHijo)
         .getDocuments();
   }
+
+  @override
+  Future<void> addUserAddress(Cliente cliente) async {
+    await _firestore.runTransaction((t) async {
+      final Map<String, dynamic> address = {
+        'aclaracion': cliente.direccion.aclaracion,
+        'calle': cliente.direccion.calle,
+        'ciudad': cliente.direccion.ciudad,
+        'piso': cliente.direccion.piso,
+        'codigoPostal': cliente.direccion.codigoPostal,
+        'departamento': cliente.direccion.depto,
+        'provincia': cliente.direccion.provincia,
+        'numero': cliente.direccion.numero,
+      };
+      await _firestore
+          .collection('users')
+          .document(cliente.clienteID)
+          .updateData({
+        'direccion': address,
+      }).then((value) {
+        print('Ok');
+      });
+    }).catchError((onError) => print(onError.toString()));
+  }
 }

@@ -19,6 +19,15 @@ class Cliente {
     clienteID = data['cliente']['clienteID'] as String;
     nombre = Nombre.fromMap(data['cliente']['nombre']);
   }
+
+  Cliente.fromAddressEditing(Cliente cliente, Map<String, dynamic> address) {
+    clienteID = cliente.clienteID;
+    telefono = cliente.telefono;
+    email = cliente.email;
+    estaAutenticado = cliente.estaAutenticado;
+    nombre = Nombre.fromAddressEditing(cliente.nombre);
+    direccion = Direccion.fromAddressEditing(address);
+  }
 }
 
 class Nombre {
@@ -28,6 +37,11 @@ class Nombre {
   Nombre.fromMap(Map<String, dynamic> data) {
     nombre = data['nombre'] as String;
     apellido = data['apellido'] as String;
+  }
+
+  Nombre.fromAddressEditing(Nombre nom) {
+    nombre = nom.nombre;
+    apellido = nom.apellido;
   }
 }
 
@@ -47,6 +61,17 @@ class Direccion {
     ciudad = data['ciudad'] as String;
     codigoPostal = data['codigoPostal'].toInt() as int;
     numero = data['numero'].toInt() as int;
+    piso = data['piso'] as String;
+    depto = data['departamento'] as String;
+    provincia = data['provincia'] as String;
+  }
+
+  Direccion.fromAddressEditing(Map<String, dynamic> data) {
+    aclaracion = data['aclaracion'] as String;
+    calle = data['calle'] as String;
+    ciudad = data['ciudad'] as String;
+    codigoPostal = int.parse(data['codigoPostal']);
+    numero = int.parse(data['numero']);
     piso = data['piso'] as String;
     depto = data['departamento'] as String;
     provincia = data['provincia'] as String;

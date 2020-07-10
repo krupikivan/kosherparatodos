@@ -26,10 +26,9 @@ class InputDataField extends StatelessWidget {
               borderSide: BorderSide.none),
           filled: true,
         ),
-        keyboardType:
-            _isNum == true ? TextInputType.number : TextInputType.text,
+        keyboardType: _isNum ? TextInputType.number : TextInputType.text,
         inputFormatters:
-            _isNum == true ? [WhitelistingTextInputFormatter.digitsOnly] : null,
+            _isNum ? [WhitelistingTextInputFormatter.digitsOnly] : null,
         controller: _controller,
       ),
       subtitle: Text(_description),

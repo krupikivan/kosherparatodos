@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:kosherparatodos/src/models/cliente.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/provider/producto_notifier.dart';
+import 'package:kosherparatodos/src/pages/user_pages/data/user_data_page.dart';
 import 'package:kosherparatodos/src/pages/user_pages/pedido/bloc/categoria_provider.dart';
 import 'package:kosherparatodos/src/pages/user_pages/pedido/pedido.dart';
 import 'package:kosherparatodos/src/pages/user_pages/widgets/export.dart';
@@ -100,6 +101,17 @@ class UserPage extends StatelessWidget {
                                 },
                               ),
                               ListTile(
+                                title: Text('Datos'),
+                                leading: Icon(
+                                  Icons.info_outline,
+                                  color: Theme.of(context).primaryColor,
+                                ),
+                                onTap: () {
+                                  Navigator.of(context).pop();
+                                  blocNav.updateNavigation('Datos');
+                                },
+                              ),
+                              ListTile(
                                 title: Text('Cerrar Sesion'),
                                 leading: Icon(
                                   Icons.exit_to_app,
@@ -122,9 +134,12 @@ class UserPage extends StatelessWidget {
               if (blocNav.navigationProvider.currentNavigation == "Historial") {
                 blocUserData.getPedidos(user.uid);
                 return HistorialList();
-              }
-              if (blocNav.navigationProvider.currentNavigation == "Productos") {
+              } else if (blocNav.navigationProvider.currentNavigation ==
+                  "Productos") {
                 return ProductoGridPage();
+              } else if (blocNav.navigationProvider.currentNavigation ==
+                  "Datos") {
+                return UserDataPage();
               }
               return HistorialList();
             },

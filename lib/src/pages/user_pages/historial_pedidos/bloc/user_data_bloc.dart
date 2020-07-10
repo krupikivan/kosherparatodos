@@ -1,6 +1,7 @@
 import 'package:kosherparatodos/src/models/cliente.dart';
 import 'package:kosherparatodos/src/models/pedido.dart';
 import 'package:kosherparatodos/src/pages/user_pages/pedido/bloc/bloc.dart';
+import 'package:kosherparatodos/src/providers/connectivity.dart';
 import 'package:kosherparatodos/src/repository/firestore_provider.dart';
 import 'package:kosherparatodos/src/repository/repo.dart';
 import 'package:rxdart/rxdart.dart';
@@ -8,6 +9,7 @@ import 'package:rxdart/rxdart.dart';
 class ClienteDataBloc {
   final Repository _repository = FirestoreProvider();
   Cliente _clienteInfo;
+  final _conex = ConnectivityProvider.getInstance();
   List<Pedido> listPedido = [];
   // Pedido pedidoSelected = Pedido();
 
@@ -54,6 +56,16 @@ class ClienteDataBloc {
     _listPe = await getListPedidos.firstWhere((event) => true);
     _listPe.removeWhere((element) => element.pedidoID == pedId);
     addToPedidosList(_listPe);
+  }
+
+  Future userEdit(Cliente cliente) async {
+    if (_conex.hasConnection) {
+      await _repository
+          .addUserAddress(cliente)
+          .then((value) => true, onError: (onError) => _handlingError('Error'));
+    } else {
+      throw 'No hay conexion';
+    }
   }
 
 //  Se comunica con el bloc del pedido vigente y se carga en el carrito
