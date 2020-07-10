@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:kosherparatodos/src/Widget/export.dart';
@@ -48,7 +49,8 @@ class HistorialDetail extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           TitleDetailPage(
-                            title: 'Pedido del ${DateFormat('dd/MM').format(pedidoSelected.fecha.toDate()) }',
+                            title:
+                                'Pedido del ${DateFormat('dd/MM').format(pedidoSelected.fecha.toDate())}',
                           ),
                           HistorialDetailInfoCard(
                             pedido: pedidoSelected,
@@ -69,11 +71,12 @@ class HistorialDetail extends StatelessWidget {
               ),
               floatingActionButton: !snapshot.hasData
                   ? Container()
-                  : pedidoSelected.pagado ||
+                  : _getTimeDiff(pedidoSelected.fecha) ||
+                          pedidoSelected.pagado ||
                           pedidoSelected.estadoEntrega !=
                               EnumEntrega.EnPreparacion
                       ? SizedBox()
-                      : _bntExpanded(
+                      : _btnDelete(
                           context,
                           Pedido.enumEntregaToString(
                               pedidoSelected.estadoEntrega)),
@@ -82,7 +85,7 @@ class HistorialDetail extends StatelessWidget {
         });
   }
 
-  Widget _bntExpanded(BuildContext context, String estado) {
+  Widget _btnDelete(BuildContext context, String estado) {
     return FloatingActionButton.extended(
       onPressed: () => _eliminarPedido(context),
       backgroundColor: Theme.of(context).primaryColor,
@@ -92,6 +95,14 @@ class HistorialDetail extends StatelessWidget {
       ),
       icon: Icon(Icons.clear, size: 36.0, color: Colors.white),
     );
+  }
+
+//Si el pedido tiene mas de 24 horas ya no se puede eliminar
+  bool _getTimeDiff(Timestamp time) {
+    if (time.toDate().difference(Timestamp.now().toDate()).inHours < -24) {
+      return true; //Tiene mas de 24 hs
+    }
+    return false;
   }
 
   void _eliminarPedido(BuildContext context) {

@@ -97,7 +97,7 @@ class PedidoDetailPage extends StatelessWidget {
                 labelStyle: TextStyle(
                   color: pedido.pedidoActual.pagado != true
                       ? Colors.white
-                      : Colors.black,
+                      : Theme.of(context).primaryColor,
                 ),
                 onSelected: (nopagado) => !nopagado ? null : _setPagado(pedido),
               ),
@@ -106,12 +106,12 @@ class PedidoDetailPage extends StatelessWidget {
               ),
               ChoiceChip(
                 selected: pedido.pedidoActual.pagado,
-                selectedColor: Colors.green,
+                selectedColor: Theme.of(context).primaryColor,
                 label: Text('Pagado'),
                 labelStyle: TextStyle(
                   color: pedido.pedidoActual.pagado == true
-                      ? Colors.green
-                      : Colors.black,
+                      ? Colors.white
+                      : Theme.of(context).primaryColor,
                 ),
                 onSelected: (pagado) => !pagado ? null : _setPagado(pedido),
               ),
@@ -144,7 +144,7 @@ class PedidoDetailPage extends StatelessWidget {
                     labelStyle: TextStyle(
                       color: pedido.pedidoActual.estadoEntrega.index == index
                           ? Colors.white
-                          : Colors.black,
+                          : Theme.of(context).primaryColor,
                     ),
                     onSelected: (estado) => !estado
                         ? null
