@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:kosherparatodos/src/providers/connectivity.dart';
 import 'package:kosherparatodos/style/theme.dart';
 import 'app.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,7 +24,6 @@ class MyApp extends StatelessWidget {
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
     ]);
-    final textTheme = Theme.of(context).textTheme;
     return MaterialApp(
       key: navigatorKey,
       debugShowCheckedModeBanner: false,

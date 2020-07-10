@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:kosherparatodos/style/theme.dart' as MyTheme;
 
 class TitleLabel extends StatelessWidget {
   const TitleLabel({Key key}) : super(key: key);
@@ -12,7 +11,7 @@ class TitleLabel extends StatelessWidget {
       children: <Widget>[
         Icon(
           FontAwesomeIcons.truck,
-          color: MyTheme.Colors.white,
+          color: Colors.white,
           size: 35,
         ),
         SizedBox(height: 25),
@@ -23,7 +22,7 @@ class TitleLabel extends StatelessWidget {
             style: TextStyle(
               fontSize: 30,
               fontWeight: FontWeight.w700,
-              color: MyTheme.Colors.white,
+              color: Colors.white,
             ),
           ),
         ),
@@ -35,7 +34,7 @@ class TitleLabel extends StatelessWidget {
             style: TextStyle(
               fontSize: 15,
               fontWeight: FontWeight.w300,
-              color: MyTheme.Colors.white,
+              color: Colors.white,
             ),
           ),
         ),

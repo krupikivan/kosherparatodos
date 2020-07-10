@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:kosherparatodos/style/theme.dart' as MyTheme;
 
 class ClienteCardWidget extends StatelessWidget {
   final String name;
@@ -19,7 +18,7 @@ class ClienteCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: color ?? MyTheme.Colors.white,
+      color: color ?? Colors.white,
       elevation: elevation ?? 10,
       shadowColor: Colors.black38,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -31,15 +30,15 @@ class ClienteCardWidget extends StatelessWidget {
         leading: Icon(
           Icons.account_circle,
           size: 40,
-          color: MyTheme.Colors.black,
+          color: Colors.black,
         ),
         subtitle: Text(
           estado == true ? 'Habilitado' : 'No Habilitado',
           style: TextStyle(
               fontWeight: FontWeight.w700,
               color: estado == true
-                  ? MyTheme.Colors.secondary
-                  : MyTheme.Colors.accent),
+                  ? Theme.of(context).primaryColorLight
+                  : Theme.of(context).accentColor),
         ),
         onTap: action,
       ),

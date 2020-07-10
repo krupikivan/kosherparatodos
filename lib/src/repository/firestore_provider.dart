@@ -112,7 +112,7 @@ class FirestoreProvider implements Repository {
         .document(pedido.pedidoID)
         .updateData({
       'total': pedido.total,
-      'estado': Convert.enumEntregaToString(pedido.estadoEntrega),
+      'estado': Pedido.enumEntregaToString(pedido.estadoEntrega),
       'productos': _addProductosToPedido(pedido.productos),
     });
   }
@@ -217,7 +217,7 @@ class FirestoreProvider implements Repository {
     await _firestore
         .collection('pedidos')
         .document(idPedido)
-        .updateData({'estado': Convert.enumEntregaToString(value)});
+        .updateData({'estado': Pedido.enumEntregaToString(value)});
   }
 
   @override

@@ -8,7 +8,6 @@ import 'package:kosherparatodos/src/pages/admin_pages/productos/new_categoria_pa
 import 'package:kosherparatodos/src/pages/admin_pages/productos/producto_detail_page.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/provider/categoria_notifier.dart';
 import 'package:kosherparatodos/src/repository/firebase_storage.dart';
-import 'package:kosherparatodos/style/theme.dart' as MyTheme;
 import 'package:kosherparatodos/src/pages/admin_pages/provider/producto_notifier.dart';
 import 'package:provider/provider.dart';
 
@@ -111,26 +110,26 @@ class CategoriaPage extends StatelessWidget {
       marginRight: 15,
       marginBottom: 15,
       overlayOpacity: 0.3,
-      overlayColor: MyTheme.Colors.white,
+      overlayColor: Colors.white,
       heroTag: 'bntExpand',
-      backgroundColor: MyTheme.Colors.primary,
+      backgroundColor: Theme.of(context).primaryColor,
       child: Icon(
         Icons.add,
-        color: MyTheme.Colors.white,
+        color: Colors.white,
       ),
       children: [
         SpeedDialChild(
-          child: Icon(FontAwesomeIcons.listUl, color: MyTheme.Colors.white),
-          backgroundColor: MyTheme.Colors.primary,
+          child: Icon(FontAwesomeIcons.listUl, color: Colors.white),
+          backgroundColor: Theme.of(context).primaryColor,
           label: 'Agregar Categoria',
-          labelStyle: TextStyle(color: MyTheme.Colors.primary),
+          labelStyle: TextStyle(color: Theme.of(context).primaryColor),
           onTap: () => _addNewCategoria(context),
         ),
         SpeedDialChild(
-          child: Icon(FontAwesomeIcons.cartPlus, color: MyTheme.Colors.white),
-          backgroundColor: MyTheme.Colors.primary,
+          child: Icon(FontAwesomeIcons.cartPlus, color: Colors.white),
+          backgroundColor: Theme.of(context).primaryColor,
           label: 'Agregar Producto',
-          labelStyle: TextStyle(color: MyTheme.Colors.primary),
+          labelStyle: TextStyle(color: Theme.of(context).primaryColor),
           onTap: () => _addNewProducto(context),
         )
       ],

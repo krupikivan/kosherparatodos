@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:kosherparatodos/src/models/pedido.dart';
 import 'package:kosherparatodos/src/pages/user_pages/pedido/bloc/bloc.dart';
 import 'package:kosherparatodos/src/pages/user_pages/pedido/pedido.dart';
-import 'package:kosherparatodos/style/theme.dart' as MyTheme;
 
 class IconCart extends StatelessWidget {
   final BuildContext context;
@@ -26,7 +25,7 @@ class IconCart extends StatelessWidget {
                   IconButton(
                     icon: Icon(
                       Icons.shopping_cart,
-                      color: MyTheme.Colors.primary,
+                      color: Theme.of(context).primaryColor,
                     ),
                     onPressed: null,
                   ),
@@ -34,7 +33,7 @@ class IconCart extends StatelessWidget {
                       child: Stack(
                     children: <Widget>[
                       Icon(Icons.brightness_1,
-                          size: 20.0, color: MyTheme.Colors.primary),
+                          size: 20.0, color: Theme.of(context).primaryColor),
                       Positioned(
                           top: 3.0,
                           right: 4.0,
@@ -49,7 +48,7 @@ class IconCart extends StatelessWidget {
                                     return Text(
                                       snapshot.data.productos.length.toString(),
                                       style: TextStyle(
-                                          color: MyTheme.Colors.white,
+                                          color: Colors.white,
                                           fontSize: 11.0,
                                           fontWeight: FontWeight.w500),
                                     );

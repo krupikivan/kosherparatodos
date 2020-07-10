@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:kosherparatodos/src/Widget/auth_widgets/label_text.dart';
 import 'package:kosherparatodos/src/Widget/auth_widgets/submit_button.dart';
 import 'package:kosherparatodos/src/Widget/title_widget.dart';
-import 'package:kosherparatodos/style/theme.dart' as MyTheme;
 import 'package:kosherparatodos/src/providers/user_repository.dart';
 import 'package:provider/provider.dart';
 
@@ -18,7 +17,7 @@ class WelcomePage extends StatelessWidget {
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 35),
           height: MediaQuery.of(context).size.height,
-          decoration: new BoxDecoration(color: MyTheme.Colors.primary),
+          decoration: new BoxDecoration(color: Theme.of(context).primaryColor),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -54,7 +53,7 @@ class WelcomePage extends StatelessWidget {
   //     },
   //     child: Text(
   //       'No tenes cuenta? Registrate!',
-  //       style: TextStyle(fontSize: 15, color: MyTheme.Colors.white),
+  //       style: TextStyle(fontSize: 15, color: Colors.white),
   //     ),
   //   );
   // }

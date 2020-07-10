@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:kosherparatodos/src/models/producto.dart';
 import 'package:kosherparatodos/src/pages/user_pages/pedido/bloc/bloc.dart';
-import 'package:kosherparatodos/style/theme.dart' as MyTheme;
 
 import 'export.dart';
 
@@ -51,12 +50,12 @@ class _ProductoCardState extends State<ProductoCard> {
                               },
                               shape: CircleBorder(
                                   side: BorderSide(
-                                      color: MyTheme.Colors.primary)),
+                                      color: Theme.of(context).primaryColor)),
                               child: Icon(Icons.add,
-                                  color: MyTheme.Colors.primary)),
+                                  color: Theme.of(context).primaryColor)),
                           Text(_cantidad.toString(),
                               style: TextStyle(
-                                  color: MyTheme.Colors.primary,
+                                  color: Theme.of(context).primaryColor,
                                   fontWeight: FontWeight.bold)),
                           RawMaterialButton(
                               onPressed: () {
@@ -66,10 +65,10 @@ class _ProductoCardState extends State<ProductoCard> {
                               },
                               shape: CircleBorder(
                                   side: BorderSide(
-                                      color: MyTheme.Colors.primary)),
+                                      color: Theme.of(context).primaryColor)),
                               child: Icon(
                                 Icons.remove,
-                                color: MyTheme.Colors.primary,
+                                color: Theme.of(context).primaryColor,
                               )),
                         ],
                       ),
@@ -88,7 +87,7 @@ class _ProductoCardState extends State<ProductoCard> {
                         child: Text(
                           'Agregar',
                           style: TextStyle(
-                              color: MyTheme.Colors.primary,
+                              color: Theme.of(context).primaryColor,
                               fontSize: 16,
                               fontWeight: FontWeight.w600),
                         ),
@@ -110,7 +109,7 @@ class _ProductoCardState extends State<ProductoCard> {
                                 widget.producto.descripcion,
                                 maxLines: 3,
                                 style: TextStyle(
-                                    color: MyTheme.Colors.primary,
+                                    color: Theme.of(context).primaryColor,
                                     fontWeight: FontWeight.bold,
                                     fontSize: 18),
                               ),
@@ -121,7 +120,7 @@ class _ProductoCardState extends State<ProductoCard> {
                             Text(
                               '\$${widget.producto.precio.truncate()}',
                               style: TextStyle(
-                                  color: MyTheme.Colors.primary,
+                                  color: Theme.of(context).primaryColor,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 18),
                             ),
@@ -158,11 +157,11 @@ class _ProductoCardState extends State<ProductoCard> {
     return RawMaterialButton(
       onPressed: toggleProductAdder,
       shape: CircleBorder(),
-      fillColor: MyTheme.Colors.primary,
+      fillColor: Theme.of(context).primaryColor,
       child: Icon(
         _isPressed ? Icons.remove : Icons.add,
         size: 20,
-        color: MyTheme.Colors.white,
+        color: Colors.white,
       ),
     );
   }

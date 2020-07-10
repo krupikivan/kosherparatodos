@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:kosherparatodos/src/Widget/title_text.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/provider/categoria_notifier.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/provider/producto_notifier.dart';
-import 'package:kosherparatodos/style/theme.dart' as MyTheme;
 import 'package:provider/provider.dart';
 
 // ignore: must_be_immutable
@@ -24,7 +23,7 @@ class CategoriaCheckboxWidget extends StatelessWidget {
                   esProducto: esProducto,
                 ));
       },
-      textColor: MyTheme.Colors.primary,
+      textColor: Theme.of(context).primaryColor,
       child: Text('Seleccionar Categorias'),
     );
   }
@@ -101,7 +100,7 @@ class _CategoriaDialogState extends State<CategoriaDialog> {
         FlatButton(
           child: Text(
             "Volver",
-            style: TextStyle(color: MyTheme.Colors.primary),
+            style: TextStyle(color: Theme.of(context).primaryColor),
           ),
           onPressed: () => Navigator.pop(context),
         ),

@@ -3,8 +3,6 @@ import 'package:kosherparatodos/src/Widget/export.dart';
 import 'package:kosherparatodos/src/models/pedido.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/pedidos/pedido_detail_page.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/provider/pedido_notifier.dart';
-import 'package:kosherparatodos/src/utils/converter.dart';
-import 'package:kosherparatodos/style/theme.dart' as MyTheme;
 import 'package:provider/provider.dart';
 
 class PedidosListPage extends StatelessWidget {
@@ -26,7 +24,7 @@ class PedidosListPage extends StatelessWidget {
         Expanded(
             child: FloatingActionButton(
           onPressed: () => _filterList(context),
-          backgroundColor: MyTheme.Colors.primary,
+          backgroundColor: Theme.of(context).primaryColor,
           child: Icon(Icons.filter_list),
         ))
       ],
@@ -36,7 +34,7 @@ class PedidosListPage extends StatelessWidget {
   Widget _showList(List<Pedido> list, PedidoNotifier not) {
     return ListView.builder(
       itemBuilder: (BuildContext context, int index) => PedidoCardWidget(
-        estado: Convert.enumEntregaToString(list[index].estadoEntrega),
+        estado: Pedido.enumEntregaToString(list[index].estadoEntrega),
         action: () {
           not.pedidoActual = list[index];
           _goToDetails(context);
@@ -52,7 +50,7 @@ class PedidosListPage extends StatelessWidget {
 
   _filterList(context1) {
     final TextStyle style =
-        TextStyle(color: MyTheme.Colors.primary, fontSize: 16);
+        TextStyle(color: Theme.of(context1).primaryColor, fontSize: 16);
     return showDialog(
       context: context1,
       builder: (context) => AlertDialog(

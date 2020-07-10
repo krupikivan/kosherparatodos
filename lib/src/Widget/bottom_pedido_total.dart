@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:kosherparatodos/src/Widget/export.dart';
-import 'package:kosherparatodos/style/theme.dart' as MyTheme;
 
 class BottomPedidoTotal extends StatelessWidget {
   const BottomPedidoTotal({Key key, this.total}) : super(key: key);
@@ -10,9 +9,9 @@ class BottomPedidoTotal extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-          color: MyTheme.Colors.primary,
+          color: Theme.of(context).primaryColor,
           border: new Border.all(
-              color: MyTheme.Colors.primary,
+              color: Theme.of(context).primaryColor,
               width: 2.0,
               style: BorderStyle.solid),
           borderRadius: BorderRadius.all(Radius.circular(25))),
@@ -22,11 +21,11 @@ class BottomPedidoTotal extends StatelessWidget {
         children: <Widget>[
           TitleText(
             text: 'Total',
-            color: MyTheme.Colors.white,
+            color: Colors.white,
             fontWeight: FontWeight.w500,
           ),
           TitleText(
-            color: MyTheme.Colors.white,
+            color: Colors.white,
             text: '\$${total.truncate()}',
             fontWeight: FontWeight.w500,
           ),

@@ -4,7 +4,6 @@ import 'package:kosherparatodos/src/Widget/title_text.dart';
 import 'package:kosherparatodos/src/models/producto.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/provider/categoria_notifier.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/provider/producto_notifier.dart';
-import 'package:kosherparatodos/style/theme.dart' as MyTheme;
 import 'package:provider/provider.dart';
 
 class NewProducto extends StatefulWidget {
@@ -48,7 +47,7 @@ class _NewProductoState extends State<NewProducto> {
             Padding(
               padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
               child: TitleText(
-                color: MyTheme.Colors.black,
+                color: Colors.black,
                 text: 'Agregar nuevo Producto',
                 fontSize: 20,
                 fontWeight: FontWeight.w700,
@@ -94,7 +93,7 @@ class _NewProductoState extends State<NewProducto> {
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => _addProduct(context),
         label: const Text('Agregar'),
-        backgroundColor: MyTheme.Colors.primary,
+        backgroundColor: Theme.of(context).primaryColor,
       ),
     );
   }

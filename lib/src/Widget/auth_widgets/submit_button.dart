@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:kosherparatodos/style/theme.dart' as MyTheme;
 
 class SubmitButton extends StatelessWidget {
   SubmitButton({Key key, this.text, this.action}) : super(key: key);
@@ -10,10 +9,10 @@ class SubmitButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialButton(
       onPressed: action,
-      color: MyTheme.Colors.white,
+      color: Colors.white,
       child: Text(
         text,
-        style: TextStyle(fontSize: 20, color: MyTheme.Colors.primary),
+        style: TextStyle(fontSize: 20, color: Theme.of(context).primaryColor),
       ),
       minWidth: MediaQuery.of(context).size.width,
       height: 50,

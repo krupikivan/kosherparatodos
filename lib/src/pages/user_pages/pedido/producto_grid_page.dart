@@ -1,19 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:kosherparatodos/src/Widget/export.dart';
 import 'package:kosherparatodos/src/Widget/product_card.dart';
-import 'package:kosherparatodos/src/models/categoria.dart';
-import 'package:kosherparatodos/src/models/producto.dart';
-import 'package:kosherparatodos/src/pages/admin_pages/provider/categoria_notifier.dart';
-import 'package:kosherparatodos/src/pages/admin_pages/provider/producto_notifier.dart';
 import 'package:kosherparatodos/src/pages/user_pages/pedido/bloc/categoria_provider.dart';
 import 'package:kosherparatodos/src/pages/user_pages/pedido/widgets/categoria_card_hijo.dart';
 import 'package:kosherparatodos/src/pages/user_pages/pedido/widgets/categoria_card_padre.dart';
 import 'package:kosherparatodos/src/pages/user_pages/pedido/widgets/search.dart';
 import 'package:kosherparatodos/src/repository/firebase_storage.dart';
-import 'package:kosherparatodos/style/theme.dart' as MyTheme;
 import 'package:provider/provider.dart';
-import 'bloc/bloc.dart';
 
 class ProductoGridPage extends StatefulWidget {
   @override

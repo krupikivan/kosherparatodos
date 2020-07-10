@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:kosherparatodos/style/theme.dart' as MyTheme;
 
 class CategoriaCardPadre extends StatelessWidget {
   const CategoriaCardPadre(
@@ -15,9 +14,9 @@ class CategoriaCardPadre extends StatelessWidget {
       child: Card(
         elevation: 0,
         shape: RoundedRectangleBorder(
-            side: BorderSide(color: MyTheme.Colors.primary),
+            side: BorderSide(color: Theme.of(context).primaryColor),
             borderRadius: BorderRadius.circular(16)),
-        color: selected ? MyTheme.Colors.primary : MyTheme.Colors.white,
+        color: selected ? Theme.of(context).primaryColor : Colors.white,
         child: Padding(
           padding: const EdgeInsets.fromLTRB(16, 4, 16, 4),
           child: Center(
@@ -25,7 +24,7 @@ class CategoriaCardPadre extends StatelessWidget {
               categoria,
               style: TextStyle(
                   color:
-                      selected ? MyTheme.Colors.white : MyTheme.Colors.primary,
+                      selected ? Colors.white : Theme.of(context).primaryColor,
                   fontWeight: FontWeight.bold,
                   fontSize: 18),
             ),

@@ -4,30 +4,29 @@ import 'package:kosherparatodos/src/Widget/title_text.dart';
 import 'package:kosherparatodos/src/models/pedido.dart';
 import 'package:kosherparatodos/src/pages/user_pages/pedido/bloc/bloc.dart';
 import 'package:kosherparatodos/src/utils/show_messages.dart';
-import 'package:kosherparatodos/style/theme.dart' as MyTheme;
 
 class DetallePedidoListPage extends StatelessWidget {
-  Widget _addHeader() {
+  Widget _addHeader(context) {
     return Expanded(
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 10),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
-            _getRowText('Producto'),
-            _getRowText('Precio Unitario')
+            _getRowText('Producto', context),
+            _getRowText('Precio Unitario', context)
           ],
         ),
       ),
     );
   }
 
-  Widget _getRowText(String text) {
+  Widget _getRowText(String text, context) {
     return Text(text,
         style: TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.w500,
-            color: MyTheme.Colors.primary));
+            color: Theme.of(context).primaryColor));
   }
 
   Widget _productItems() {
@@ -73,7 +72,7 @@ class DetallePedidoListPage extends StatelessWidget {
                       TitleText(
                         text:
                             'Total del pedido: \$${snapshot.data.total.truncate().toString()}',
-                        color: MyTheme.Colors.primary,
+                        color: Theme.of(context).primaryColor,
                         fontWeight: FontWeight.w500,
                       ),
                     ],
@@ -111,7 +110,7 @@ class DetallePedidoListPage extends StatelessWidget {
                           },
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(15)),
-                          color: MyTheme.Colors.primary,
+                          color: Theme.of(context).primaryColor,
                           child: Container(
                             alignment: Alignment.center,
                             padding: EdgeInsets.symmetric(vertical: 12),
@@ -119,20 +118,20 @@ class DetallePedidoListPage extends StatelessWidget {
                               snapshot.data.pedidoID == null
                                   ? 'Realizar pedido'
                                   : 'Modificar pedido',
-                              style: TextStyle(color: MyTheme.Colors.white),
+                              style: TextStyle(color: Colors.white),
                             ),
                           )),
                       FlatButton(
                           onPressed: () => blocPedidoVigente.clearPedido(),
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(15)),
-                          color: MyTheme.Colors.primary,
+                          color: Theme.of(context).primaryColor,
                           child: Container(
                             alignment: Alignment.center,
                             padding: EdgeInsets.symmetric(vertical: 12),
                             child: Text(
                               'Cancelar',
-                              style: TextStyle(color: MyTheme.Colors.white),
+                              style: TextStyle(color: Colors.white),
                             ),
                           )),
                     ],
@@ -145,16 +144,16 @@ class DetallePedidoListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        iconTheme: IconThemeData(color: MyTheme.Colors.black),
+        iconTheme: IconThemeData(color: Colors.black),
         elevation: 0,
-        backgroundColor: MyTheme.Colors.white,
+        backgroundColor: Colors.white,
       ),
       body: Container(
-        color: MyTheme.Colors.white,
+        color: Colors.white,
         padding: EdgeInsets.all(10),
         child: Column(
           children: <Widget>[
-            _addHeader(),
+            _addHeader(context),
             _productItems(),
             Divider(
               thickness: 1,

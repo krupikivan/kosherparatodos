@@ -3,7 +3,6 @@ import 'package:kosherparatodos/src/Widget/export.dart';
 import 'package:kosherparatodos/src/Widget/title_text.dart';
 import 'package:kosherparatodos/src/models/categoria.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/provider/categoria_notifier.dart';
-import 'package:kosherparatodos/style/theme.dart' as MyTheme;
 import 'package:provider/provider.dart';
 
 class NewCategoria extends StatefulWidget {
@@ -39,7 +38,7 @@ class _NewCategoriaState extends State<NewCategoria> {
             Padding(
               padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
               child: TitleText(
-                color: MyTheme.Colors.black,
+                color: Colors.black,
                 text: 'Agregar nueva categoria',
                 fontSize: 20,
                 fontWeight: FontWeight.w700,
@@ -61,7 +60,7 @@ class _NewCategoriaState extends State<NewCategoria> {
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => _addCategoria(context),
         label: const Text('Agregar'),
-        backgroundColor: MyTheme.Colors.primary,
+        backgroundColor: Theme.of(context).primaryColor,
       ),
     );
   }

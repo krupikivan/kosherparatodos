@@ -5,7 +5,6 @@ import 'package:kosherparatodos/src/Widget/auth_widgets/submit_button.dart';
 import 'package:kosherparatodos/src/Widget/show_toast.dart';
 import 'package:kosherparatodos/src/providers/user_repository.dart';
 import 'package:provider/provider.dart';
-import 'package:kosherparatodos/style/theme.dart' as MyTheme;
 
 class SignUpPage extends StatefulWidget {
   SignUpPage({Key key, this.title}) : super(key: key);
@@ -36,7 +35,7 @@ class _SignUpPageState extends State<SignUpPage> {
   //       "REGISTRARSE",
   //       style: TextStyle(fontSize: 20),
   //     ),
-  //     color: MyTheme.Colors.secondary,
+  //     color: Theme.of(context).primaryColorLight,
   //     onPressed: () async {
   //       if (_formKey.currentState.validate()) {
   //         await user
@@ -69,7 +68,7 @@ class _SignUpPageState extends State<SignUpPage> {
         Container(
           padding: EdgeInsets.symmetric(horizontal: 20),
           height: MediaQuery.of(context).size.height,
-          decoration: new BoxDecoration(color: MyTheme.Colors.primary),
+          decoration: new BoxDecoration(color: Theme.of(context).primaryColor),
         ),
         Scaffold(
           backgroundColor: Colors.transparent,
@@ -78,7 +77,7 @@ class _SignUpPageState extends State<SignUpPage> {
             elevation: 0,
             title: const Text('Registrarse'),
             leading: BackButton(
-              color: MyTheme.Colors.white,
+              color: Colors.white,
               onPressed: () {
                 Provider.of<UserRepository>(context, listen: false).goWelcome();
               },
@@ -90,8 +89,8 @@ class _SignUpPageState extends State<SignUpPage> {
             child: user.status == Status.Authenticating
                 ? Center(
                     child: CircularProgressIndicator(
-                      valueColor: new AlwaysStoppedAnimation<Color>(
-                          MyTheme.Colors.white),
+                      valueColor:
+                          new AlwaysStoppedAnimation<Color>(Colors.white),
                     ),
                   )
                 : Center(

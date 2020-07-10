@@ -3,7 +3,6 @@ import 'package:kosherparatodos/src/Widget/export.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/provider/cliente_notifier.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/provider/pedido_notifier.dart';
 import 'package:provider/provider.dart';
-import 'package:kosherparatodos/style/theme.dart' as MyTheme;
 
 class ClienteDetailPage extends StatelessWidget {
   @override
@@ -13,13 +12,13 @@ class ClienteDetailPage extends StatelessWidget {
     cliente.getPedidosCliente(Provider.of<PedidoNotifier>(context));
     return Scaffold(
         appBar: AppBar(
-          iconTheme: IconThemeData(color: MyTheme.Colors.black),
+          iconTheme: IconThemeData(color: Colors.black),
           elevation: 0,
-          backgroundColor: MyTheme.Colors.white,
+          backgroundColor: Colors.white,
         ),
         body: Container(
           padding: const EdgeInsets.symmetric(horizontal: 10),
-          color: MyTheme.Colors.white,
+          color: Colors.white,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
@@ -43,13 +42,13 @@ class ClienteDetailPage extends StatelessWidget {
                       '${cliente.clienteActual.direccion.calle} ${cliente.clienteActual.direccion.numero} ${cliente.clienteActual.direccion.piso} ${cliente.clienteActual.direccion.depto}',
                   dato2:
                       '${cliente.clienteActual.direccion.codigoPostal}, ${cliente.clienteActual.direccion.ciudad}, ${cliente.clienteActual.direccion.provincia}, ${cliente.clienteActual.direccion.aclaracion}'),
-              _getAutenticado(cliente),
+              _getAutenticado(cliente, context),
             ],
           ),
         ));
   }
 
-  Widget _getAutenticado(ClienteNotifier cliente) {
+  Widget _getAutenticado(ClienteNotifier cliente, context) {
     final bool auth = cliente.clienteActual.estaAutenticado;
     return Padding(
       padding: const EdgeInsets.only(left: 16),
@@ -61,22 +60,20 @@ class ClienteDetailPage extends StatelessWidget {
             auth == true ? 'Usuario Habilitado' : 'Usuario No Habilitado',
             style: TextStyle(
                 color: auth != true
-                    ? MyTheme.Colors.accent
-                    : MyTheme.Colors.secondary,
+                    ? Theme.of(context).accentColor
+                    : Theme.of(context).primaryColorLight,
                 fontWeight: FontWeight.w700),
           ),
           const SizedBox(width: 20),
           auth != true
               ? ActionChip(
                   backgroundColor: auth != true
-                      ? MyTheme.Colors.accent
-                      : MyTheme.Colors.secondary,
+                      ? Theme.of(context).accentColor
+                      : Theme.of(context).primaryColorLight,
                   label: Text(
                     'Habilitar',
                     style: TextStyle(
-                        color: auth == true
-                            ? MyTheme.Colors.white
-                            : MyTheme.Colors.black),
+                        color: auth == true ? Colors.white : Colors.black),
                   ),
                   onPressed: () => cliente.setAutenticado(),
                 )

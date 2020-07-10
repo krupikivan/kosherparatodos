@@ -5,7 +5,6 @@ import 'package:kosherparatodos/src/Widget/auth_widgets/submit_button.dart';
 import 'package:kosherparatodos/src/Widget/show_toast.dart';
 import 'package:kosherparatodos/src/providers/user_repository.dart';
 import 'package:provider/provider.dart';
-import 'package:kosherparatodos/style/theme.dart' as MyTheme;
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key key, this.title}) : super(key: key);
@@ -36,7 +35,7 @@ class _LoginPageState extends State<LoginPage> {
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           height: MediaQuery.of(context).size.height,
-          decoration: BoxDecoration(color: MyTheme.Colors.primary),
+          decoration: BoxDecoration(color: Theme.of(context).primaryColor),
         ),
         Scaffold(
           backgroundColor: Colors.transparent,
@@ -45,7 +44,7 @@ class _LoginPageState extends State<LoginPage> {
             elevation: 0,
             title: const Text('Inicio de sesion'),
             leading: BackButton(
-              color: MyTheme.Colors.white,
+              color: Colors.white,
               onPressed: () {
                 Provider.of<UserRepository>(context, listen: false).goWelcome();
               },
@@ -57,8 +56,7 @@ class _LoginPageState extends State<LoginPage> {
             child: user.status == Status.Authenticating
                 ? Center(
                     child: CircularProgressIndicator(
-                    valueColor:
-                        new AlwaysStoppedAnimation<Color>(MyTheme.Colors.white),
+                    valueColor: new AlwaysStoppedAnimation<Color>(Colors.white),
                   ))
                 : Center(
                     child: Form(
@@ -118,7 +116,7 @@ class _LoginPageState extends State<LoginPage> {
                             alignment: Alignment.center,
                             child: Text('Has olvidado la contraseña?',
                                 style: TextStyle(
-                                    color: MyTheme.Colors.white,
+                                    color: Colors.white,
                                     fontSize: 14,
                                     fontWeight: FontWeight.w300)),
                           ),

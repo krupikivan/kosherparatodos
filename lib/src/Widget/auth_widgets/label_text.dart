@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:kosherparatodos/style/theme.dart' as MyTheme;
 
 class Labeltext extends StatelessWidget {
   const Labeltext({Key key, this.label, this.action}) : super(key: key);
@@ -15,7 +14,7 @@ class Labeltext extends StatelessWidget {
         alignment: Alignment.center,
         child: Text(
           label,
-          style: TextStyle(fontSize: 15, color: MyTheme.Colors.white),
+          style: TextStyle(fontSize: 15, color: Colors.white),
         ),
       ),
     );

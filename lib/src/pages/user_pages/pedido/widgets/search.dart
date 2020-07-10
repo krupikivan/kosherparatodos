@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:kosherparatodos/style/theme.dart' as MyTheme;
 
 class Search extends StatelessWidget {
   const Search({Key key}) : super(key: key);
@@ -10,26 +9,27 @@ class Search extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(24, 16, 24, 10),
       child: TextField(
         onChanged: (text) {},
-        style: TextStyle(color: MyTheme.Colors.primary, fontSize: 18),
-        cursorColor: MyTheme.Colors.primary,
+        style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 18),
+        cursorColor: Theme.of(context).primaryColor,
         decoration: InputDecoration(
-          fillColor: MyTheme.Colors.white,
+          fillColor: Colors.white,
           border: OutlineInputBorder(
-            borderSide: BorderSide(color: MyTheme.Colors.primary),
+            borderSide: BorderSide(color: Theme.of(context).primaryColor),
             borderRadius: BorderRadius.circular(18),
           ),
           focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: MyTheme.Colors.primary),
+            borderSide: BorderSide(color: Theme.of(context).primaryColor),
             borderRadius: BorderRadius.circular(18),
           ),
           enabledBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: MyTheme.Colors.primary),
+            borderSide: BorderSide(color: Theme.of(context).primaryColor),
             borderRadius: BorderRadius.circular(18),
           ),
           hintText: "Search",
-          hintStyle: TextStyle(color: MyTheme.Colors.primary, fontSize: 18),
-          prefixIcon:
-              Icon(Icons.search, color: MyTheme.Colors.primary, size: 24),
+          hintStyle:
+              TextStyle(color: Theme.of(context).primaryColor, fontSize: 18),
+          prefixIcon: Icon(Icons.search,
+              color: Theme.of(context).primaryColor, size: 24),
         ),
       ),
     );

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:kosherparatodos/style/theme.dart' as MyTheme;
 
 class TitleDetailPage extends StatelessWidget {
   const TitleDetailPage({Key key, this.title, this.subtitle}) : super(key: key);
@@ -11,7 +10,7 @@ class TitleDetailPage extends StatelessWidget {
       title: Text(
         title,
         style: TextStyle(
-            color: MyTheme.Colors.primary,
+            color: Theme.of(context).primaryColor,
             fontWeight: FontWeight.w500,
             fontSize: 25),
       ),
@@ -21,7 +20,7 @@ class TitleDetailPage extends StatelessWidget {
               subtitle,
               style: TextStyle(
                   fontSize: 15,
-                  color: MyTheme.Colors.black,
+                  color: Colors.black,
                   fontWeight: FontWeight.w100),
             ),
     );

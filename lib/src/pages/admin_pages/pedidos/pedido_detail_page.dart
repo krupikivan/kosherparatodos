@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:kosherparatodos/src/Widget/export.dart';
+import 'package:kosherparatodos/src/models/pedido.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/provider/pedido_notifier.dart';
 import 'package:kosherparatodos/src/utils/converter.dart';
 import 'package:provider/provider.dart';
-import 'package:kosherparatodos/style/theme.dart' as MyTheme;
 
 class PedidoDetailPage extends StatelessWidget {
   @override
@@ -11,8 +11,8 @@ class PedidoDetailPage extends StatelessWidget {
     final PedidoNotifier pedido = Provider.of<PedidoNotifier>(context);
     return Scaffold(
       appBar: AppBar(
-        actionsIconTheme: IconThemeData(color: MyTheme.Colors.black),
-        iconTheme: IconThemeData(color: MyTheme.Colors.black),
+        actionsIconTheme: IconThemeData(color: Colors.black),
+        iconTheme: IconThemeData(color: Colors.black),
       ),
       body: Container(
         color: Colors.grey.shade50,
@@ -63,7 +63,7 @@ class PedidoDetailPage extends StatelessWidget {
                   physics: NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
                   children: <Widget>[
-                    _getEstadoPago(pedido),
+                    _getEstadoPago(pedido, context),
                     _getEstadoEntregado(pedido),
                   ],
                 ),
@@ -78,7 +78,7 @@ class PedidoDetailPage extends StatelessWidget {
     );
   }
 
-  Widget _getEstadoPago(PedidoNotifier pedido) {
+  Widget _getEstadoPago(PedidoNotifier pedido, context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -92,12 +92,12 @@ class PedidoDetailPage extends StatelessWidget {
             children: [
               ChoiceChip(
                 selected: !pedido.pedidoActual.pagado,
-                selectedColor: MyTheme.lighten(MyTheme.Colors.warning, 0.6),
+                selectedColor: Theme.of(context).errorColor,
                 label: Text('No Pagado'),
                 labelStyle: TextStyle(
                   color: pedido.pedidoActual.pagado != true
-                      ? MyTheme.darken(MyTheme.Colors.warning, 0.3)
-                      : MyTheme.Colors.black,
+                      ? Theme.of(context).errorColor
+                      : Colors.black,
                 ),
                 onSelected: (nopagado) => !nopagado ? null : _setPagado(pedido),
               ),
@@ -106,12 +106,12 @@ class PedidoDetailPage extends StatelessWidget {
               ),
               ChoiceChip(
                 selected: pedido.pedidoActual.pagado,
-                selectedColor: MyTheme.lighten(MyTheme.Colors.green, 0.5),
+                selectedColor: Colors.green,
                 label: Text('Pagado'),
                 labelStyle: TextStyle(
                   color: pedido.pedidoActual.pagado == true
-                      ? MyTheme.darken(MyTheme.Colors.green, 0.3)
-                      : MyTheme.Colors.black,
+                      ? Colors.green
+                      : Colors.black,
                 ),
                 onSelected: (pagado) => !pagado ? null : _setPagado(pedido),
               ),
@@ -132,30 +132,19 @@ class PedidoDetailPage extends StatelessWidget {
           padding: EdgeInsets.all(5),
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
-            // pedido.getEstadoEntrega
-            //     .map((value) =>
-            //         DropdownMenuItem(child: Text(value), value: value))
-            //     .toList(),
-            // onChanged: (value) {
-            // pedido.setEstadoEntrega(value);
-            // },
-            // isExpanded: false,
-            //Mostramos el valor del estado del pedido comparandolo con el vector cargado en firebase
-            // value: pedido.getEstadoEntrega
-            // .firstWhere((element) => element == pedido.pedidoActual.estadoEntrega),
             itemCount: pedido.getEstadoEntrega.length,
             itemBuilder: (BuildContext context, int index) {
               return Row(
                 children: <Widget>[
                   ChoiceChip(
                     selected: pedido.pedidoActual.estadoEntrega.index == index,
-                    selectedColor: MyTheme.Colors.primary,
-                    label: Text(Convert.enumEntregaToString(
+                    selectedColor: Theme.of(context).primaryColor,
+                    label: Text(Pedido.enumEntregaToString(
                         pedido.getEstadoEntrega[index])),
                     labelStyle: TextStyle(
                       color: pedido.pedidoActual.estadoEntrega.index == index
-                          ? MyTheme.Colors.white
-                          : MyTheme.Colors.black,
+                          ? Colors.white
+                          : Colors.black,
                     ),
                     onSelected: (estado) => !estado
                         ? null

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:kosherparatodos/src/Widget/export.dart';
+import 'package:kosherparatodos/src/Widget/pedido_detail_info_card.dart';
 import 'package:kosherparatodos/src/models/pedido.dart';
 import 'package:kosherparatodos/src/utils/converter.dart';
 import 'package:kosherparatodos/src/utils/show_messages.dart';
-import 'package:kosherparatodos/style/theme.dart' as MyTheme;
 import 'bloc/bloc.dart';
 
-class UserPedidoDetailPage extends StatelessWidget {
-  UserPedidoDetailPage({Key key, this.pedidoID, this.pedidoSelected})
+class HistorialDetail extends StatelessWidget {
+  HistorialDetail({Key key, this.pedidoID, this.pedidoSelected})
       : super(key: key);
   final String pedidoID;
   Pedido pedidoSelected;
@@ -27,26 +27,29 @@ class UserPedidoDetailPage extends StatelessWidget {
                 .firstWhere((element) => element.pedidoID == pedidoID);
             return Scaffold(
               appBar: AppBar(
-                iconTheme: IconThemeData(color: MyTheme.Colors.black),
+                iconTheme: IconThemeData(color: Colors.black),
                 elevation: 0,
-                backgroundColor: MyTheme.Colors.white,
+                backgroundColor: Colors.white,
               ),
               body: Container(
                 margin: EdgeInsets.only(
                     bottom: MediaQuery.of(context).size.height / 8),
                 padding: const EdgeInsets.symmetric(horizontal: 10),
-                color: MyTheme.Colors.white,
+                color: Colors.white,
                 child: !snapshot.hasData
                     ? Center(
                         child: CircularProgressIndicator(
                         valueColor: new AlwaysStoppedAnimation<Color>(
-                            MyTheme.Colors.accent),
+                            Theme.of(context).accentColor),
                       ))
                     : Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           TitleDetailPage(
                             title: 'Detalle del pedido',
+                          ),
+                          PedidoDetailInfoCard(
+                            pedido: pedidoSelected,
                           ),
                           Expanded(
                             flex: 3,
@@ -70,7 +73,7 @@ class UserPedidoDetailPage extends StatelessWidget {
                       ? SizedBox()
                       : _bntExpanded(
                           context,
-                          Convert.enumEntregaToString(
+                          Pedido.enumEntregaToString(
                               pedidoSelected.estadoEntrega)),
             );
           }
@@ -80,9 +83,9 @@ class UserPedidoDetailPage extends StatelessWidget {
   Widget _bntExpanded(BuildContext context, String estado) {
     return FloatingActionButton.extended(
       onPressed: () => _eliminarPedido(context),
-      backgroundColor: MyTheme.Colors.primary,
+      backgroundColor: Theme.of(context).primaryColor,
       label: Text('Eliminar'),
-      icon: Icon(Icons.clear, size: 36.0, color: MyTheme.Colors.white),
+      icon: Icon(Icons.clear, size: 36.0, color: Colors.white),
     );
   }
 
