@@ -25,7 +25,7 @@ class Search extends StatelessWidget {
             borderSide: BorderSide(color: Theme.of(context).primaryColor),
             borderRadius: BorderRadius.circular(18),
           ),
-          hintText: "Search",
+          hintText: "Buscar",
           hintStyle:
               TextStyle(color: Theme.of(context).primaryColor, fontSize: 18),
           prefixIcon: Icon(Icons.search,
