@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:kosherparatodos/src/Widget/pedido_card_widget.dart';
 import 'package:kosherparatodos/src/models/pedido.dart';
 import 'package:kosherparatodos/src/pages/user_pages/historial_pedidos/export.dart';
-import 'package:kosherparatodos/src/utils/converter.dart';
 import 'bloc/bloc.dart';
 
 class HistorialList extends StatelessWidget {
@@ -28,7 +28,7 @@ class HistorialList extends StatelessWidget {
                       _goToDetails(context, snapshot.data[index].pedidoID),
                   pagado: snapshot.data[index].pagado,
                   title:
-                      '${snapshot.data[index].cliente.nombre.nombre} ${snapshot.data[index].cliente.nombre.apellido}',
+                      'Pedido del ${DateFormat('dd/MM').format(snapshot.data[index].fecha.toDate())}',
                   subtitle: 'Total: \$${snapshot.data[index].total.truncate()}',
                 );
               },

@@ -14,7 +14,7 @@ class BottomPedidoTotal extends StatelessWidget {
               color: Theme.of(context).primaryColor,
               width: 2.0,
               style: BorderStyle.solid),
-          borderRadius: BorderRadius.all(Radius.circular(25))),
+          borderRadius: BorderRadius.all(Radius.circular(15))),
       padding: EdgeInsets.all(20),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

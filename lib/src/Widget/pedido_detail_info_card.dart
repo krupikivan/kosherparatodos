@@ -21,14 +21,14 @@ class PedidoDetailInfoCard extends StatelessWidget {
                       Pedido.enumEntregaToString(pedido.estadoEntrega)),
                 ),
                 title: Text(
-                    'Estado de entrega: ${Pedido.enumEntregaToString(pedido.estadoEntrega)}')),
+                    'Estado: ${Pedido.enumEntregaToString(pedido.estadoEntrega)}')),
             ListTile(
                 leading: Icon(
                   Icons.payment,
                   color: Pedido.getPagadoColor(pedido.pagado),
                 ),
                 title: Text(
-                    'El pedido se encuentra ${Pedido.getPagado(pedido.pagado)}')),
+                    Pedido.getPagado(pedido.pagado))),
           ],
         ),
       ),

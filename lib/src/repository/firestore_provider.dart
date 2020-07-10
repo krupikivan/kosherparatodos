@@ -52,6 +52,7 @@ class FirestoreProvider implements Repository {
     return _firestore
         .collection('pedidos')
         .where('cliente.clienteID', isEqualTo: clienteID)
+        .orderBy('fecha', descending: true)
         .getDocuments();
   }
 

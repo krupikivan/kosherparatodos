@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:kosherparatodos/src/Widget/export.dart';
 import 'package:kosherparatodos/src/Widget/pedido_detail_info_card.dart';
 import 'package:kosherparatodos/src/models/pedido.dart';
@@ -46,7 +47,7 @@ class HistorialDetail extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           TitleDetailPage(
-                            title: 'Detalle del pedido',
+                            title: 'Pedido del ${DateFormat('dd/MM').format(pedidoSelected.fecha.toDate()) }',
                           ),
                           PedidoDetailInfoCard(
                             pedido: pedidoSelected,
