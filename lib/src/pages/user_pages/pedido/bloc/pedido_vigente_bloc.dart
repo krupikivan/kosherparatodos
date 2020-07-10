@@ -14,6 +14,11 @@ class PedidoVigenteBloc {
   Observable<Pedido> get getPedido => _pedidoVigente.stream;
   Function(Pedido) get addPedido => _pedidoVigente.sink.add;
 
+//Este es el stream que maneja el loading
+  final _isLoading = BehaviorSubject<bool>.seeded(false);
+  Observable<bool> get getLoading => _isLoading.stream;
+  Function(bool) get addLoading => _isLoading.sink.add;
+
 //  Actualizando el carrito de compra
   void updateCarrito(Producto producto, int cantidad, int stockActual) {
     final Detalle detalle =
@@ -68,9 +73,13 @@ class PedidoVigenteBloc {
 
 //  Realiza el pedido y lo guarda en Firebase
   Future realizarPedido() async {
-    await _repo.addNewPedido(pedido, blocUserData.getClienteLogeado()).then(
-        (value) => true,
-        onError: (onError) => _handlingError('No hay stock disponible'));
+    addLoading(true);
+    await _repo
+        .addNewPedido(pedido, blocUserData.getClienteLogeado())
+        .then((value) => addLoading(false), onError: (onError) {
+      addLoading(false);
+      _handlingError('No hay stock disponible');
+    });
   }
 
   _handlingError(String msg) {

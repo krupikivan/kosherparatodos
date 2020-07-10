@@ -3,6 +3,7 @@ import 'package:kosherparatodos/src/Widget/export.dart';
 import 'package:kosherparatodos/src/models/pedido.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/pedidos/pedido_detail_page.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/provider/pedido_notifier.dart';
+import 'package:kosherparatodos/src/pages/admin_pages/widgets/export.dart';
 import 'package:provider/provider.dart';
 
 class PedidosListPage extends StatelessWidget {

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kosherparatodos/src/Widget/export.dart';
+import 'package:kosherparatodos/src/Widget/title_text.dart';
 
 class BottomPedidoTotal extends StatelessWidget {
   const BottomPedidoTotal({Key key, this.total}) : super(key: key);

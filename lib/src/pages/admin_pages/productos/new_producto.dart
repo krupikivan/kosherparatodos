@@ -4,6 +4,7 @@ import 'package:kosherparatodos/src/Widget/title_text.dart';
 import 'package:kosherparatodos/src/models/producto.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/provider/categoria_notifier.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/provider/producto_notifier.dart';
+import 'package:kosherparatodos/src/pages/admin_pages/widgets/export.dart';
 import 'package:provider/provider.dart';
 
 class NewProducto extends StatefulWidget {
@@ -35,8 +36,9 @@ class _NewProductoState extends State<NewProducto> {
   Widget build(BuildContext context) {
     final CategoriaNotifier cateNot =
         Provider.of<CategoriaNotifier>(context, listen: false);
-    cateNot.getAllCategorias();
+    cateNot.getAllCategoriasHijos();
     return Scaffold(
+      backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(),
       body: Container(
         padding: const EdgeInsets.all(20),
@@ -90,12 +92,28 @@ class _NewProductoState extends State<NewProducto> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => _addProduct(context),
-        label: const Text('Agregar'),
-        backgroundColor: Theme.of(context).primaryColor,
+      floatingActionButton: Consumer<CategoriaNotifier>(
+        builder: (context, cate, _) => FloatingActionButton.extended(
+          onPressed: () =>
+              _validateInputData() && cate.categoriaString.isNotEmpty
+                  ? _addProduct(context)
+                  : ShowToast().show('Faltan datos', 5),
+          label: const Text('Agregar'),
+          backgroundColor: Theme.of(context).primaryColor,
+        ),
       ),
     );
+  }
+
+  bool _validateInputData() {
+    if (_codigoController.text != "" &&
+        _descripcionController.text != "" &&
+        _precioController.text != "" &&
+        _stockController.text != "" &&
+        _unidadMedidaController.text != "") {
+      return true;
+    }
+    return false;
   }
 
   _setProductData() {
@@ -113,17 +131,6 @@ class _NewProductoState extends State<NewProducto> {
     );
     producto.creatingProducto(nuevo);
   }
-
-  // Widget _getHabilitado() {
-  //   return Row(
-  //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //     children: <Widget>[
-  //       const CategoriaCheckboxWidget(
-  //         esProducto: true,
-  //       ),
-  //     ],
-  //   );
-  // }
 
   void _changeBool() {
     if (_habilitado == true) {

@@ -60,6 +60,8 @@ abstract class Repository {
 
   Future<QuerySnapshot> getAllCategorias();
 
+  Future<QuerySnapshot> getAllCategoriasHijos();
+
   Future<QuerySnapshot> getCategoriasHijos(String idPadre);
 
   Future<QuerySnapshot> getProductosFromHijoSelected(String idHijo);

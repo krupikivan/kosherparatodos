@@ -8,7 +8,6 @@ class ClienteDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ClienteNotifier cliente = Provider.of<ClienteNotifier>(context);
-    // PedidoNotifier pedido = Provider.of<PedidoNotifier>(context);
     cliente.getPedidosCliente(Provider.of<PedidoNotifier>(context));
     return Scaffold(
         appBar: AppBar(

@@ -1,10 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:kosherparatodos/src/Widget/export.dart';
 import 'package:kosherparatodos/src/models/cliente.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/provider/producto_notifier.dart';
 import 'package:kosherparatodos/src/pages/user_pages/pedido/bloc/categoria_provider.dart';
 import 'package:kosherparatodos/src/pages/user_pages/pedido/pedido.dart';
+import 'package:kosherparatodos/src/pages/user_pages/widgets/export.dart';
 import 'package:kosherparatodos/style/theme.dart';
 import 'package:provider/provider.dart';
 import '../../providers/user_repository.dart';
@@ -31,6 +31,7 @@ class UserPage extends StatelessWidget {
         theme: themeData(),
         debugShowCheckedModeBanner: false,
         home: Scaffold(
+          backgroundColor: Theme.of(context).backgroundColor,
           appBar: AppBar(
             elevation: 0,
             iconTheme: IconThemeData(color: Colors.black),

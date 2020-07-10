@@ -3,6 +3,7 @@ import 'package:kosherparatodos/src/Widget/export.dart';
 import 'package:kosherparatodos/src/Widget/show_toast.dart';
 import 'package:kosherparatodos/src/Widget/title_text.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/provider/producto_notifier.dart';
+import 'package:kosherparatodos/src/pages/admin_pages/widgets/export.dart';
 import 'package:provider/provider.dart';
 
 class ProductoDetailPage extends StatelessWidget {
@@ -20,6 +21,7 @@ class ProductoDetailPage extends StatelessWidget {
     final ProductoNotifier producto = Provider.of<ProductoNotifier>(context);
     _fillControllerData(producto);
     return Scaffold(
+      backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(),
       body: ListView(
         scrollDirection: Axis.vertical,

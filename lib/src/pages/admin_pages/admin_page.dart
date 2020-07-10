@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/navigation_bloc.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/pedidos/export.dart';
-import 'package:kosherparatodos/src/pages/admin_pages/productos/categoria_page.dart';
+import 'package:kosherparatodos/src/pages/admin_pages/productos/producto_list_page.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/provider/categoria_notifier.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/provider/cliente_notifier.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/provider/pedido_notifier.dart';
@@ -47,7 +47,7 @@ class AdminPage extends StatelessWidget {
                   );
                 }),
           ),
-          drawerScrimColor: Theme.of(context).primaryColor,
+          drawerScrimColor: Theme.of(context).hoverColor,
           drawer: SizedBox(
             width: MediaQuery.of(context).size.width / 1.5,
             child: Builder(
@@ -129,7 +129,10 @@ class AdminPage extends StatelessWidget {
             ),
           ),
           body: Container(
-            color: Colors.white,
+            padding: EdgeInsets.symmetric(horizontal: 10),
+            decoration: BoxDecoration(
+              color: Theme.of(context).backgroundColor,
+            ),
             child: StreamBuilder(
               stream: bloc.getNavigation,
               initialData: bloc.navigationProvider.currentNavigation,
@@ -141,7 +144,7 @@ class AdminPage extends StatelessWidget {
                   return PedidosListPage();
                 }
                 if (bloc.navigationProvider.currentNavigation == "Productos") {
-                  return CategoriaPage();
+                  return ProductoListPage();
                 }
                 return ClienteListPage();
               },

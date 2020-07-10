@@ -3,6 +3,7 @@ import 'package:kosherparatodos/src/Widget/export.dart';
 import 'package:kosherparatodos/src/Widget/title_text.dart';
 import 'package:kosherparatodos/src/models/categoria.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/provider/categoria_notifier.dart';
+import 'package:kosherparatodos/src/pages/admin_pages/widgets/export.dart';
 import 'package:provider/provider.dart';
 
 class NewCategoria extends StatefulWidget {
@@ -26,8 +27,9 @@ class _NewCategoriaState extends State<NewCategoria> {
   Widget build(BuildContext context) {
     final CategoriaNotifier cateNot =
         Provider.of<CategoriaNotifier>(context, listen: false);
-    cateNot.getAllCategorias();
+    cateNot.getAllCategoriasHijos();
     return Scaffold(
+      backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(),
       body: Container(
         padding: const EdgeInsets.all(20),
@@ -57,10 +59,15 @@ class _NewCategoriaState extends State<NewCategoria> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => _addCategoria(context),
-        label: const Text('Agregar'),
-        backgroundColor: Theme.of(context).primaryColor,
+      floatingActionButton: Consumer<CategoriaNotifier>(
+        builder: (context, cate, _) => FloatingActionButton.extended(
+          onPressed: () =>
+              _validateInputData() && cate.categoriaString.isNotEmpty
+                  ? _addCategoria(context)
+                  : ShowToast().show('Faltan datos', 5),
+          label: const Text('Agregar'),
+          backgroundColor: Theme.of(context).primaryColor,
+        ),
       ),
     );
   }
@@ -71,6 +78,13 @@ class _NewCategoriaState extends State<NewCategoria> {
     nuevo.nombre = _nombreController.text;
     nuevo.esPadre = _esPadre;
     categoria.creatingCategoria(nuevo);
+  }
+
+  bool _validateInputData() {
+    if (_nombreController.text != "") {
+      return true;
+    }
+    return false;
   }
 
   Widget _getHabilitado() {

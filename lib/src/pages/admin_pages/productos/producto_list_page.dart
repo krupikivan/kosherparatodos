@@ -3,18 +3,20 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:kosherparatodos/src/Widget/export.dart';
 import 'package:kosherparatodos/src/Widget/shimmer_list_loading.dart';
-import 'package:kosherparatodos/src/pages/admin_pages/productos/new_producto_page.dart';
-import 'package:kosherparatodos/src/pages/admin_pages/productos/new_categoria_page.dart';
+import 'package:kosherparatodos/src/pages/admin_pages/productos/new_producto.dart';
+import 'package:kosherparatodos/src/pages/admin_pages/productos/new_categoria.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/productos/producto_detail_page.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/provider/categoria_notifier.dart';
+import 'package:kosherparatodos/src/pages/admin_pages/widgets/export.dart';
 import 'package:kosherparatodos/src/repository/firebase_storage.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/provider/producto_notifier.dart';
 import 'package:provider/provider.dart';
 
-class CategoriaPage extends StatelessWidget {
+class ProductoListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).backgroundColor,
       body: Consumer<CategoriaNotifier>(
         builder: (context, categoria, _) => categoria.categoriaPadreList.isEmpty
             ? Center(child: CircularProgressIndicator())
@@ -75,7 +77,7 @@ class CategoriaPage extends StatelessWidget {
           future: storage.getImage(producto.productoList[index].imagen),
           builder: (context, snapshot) => !snapshot.hasData
               ? ShimmerListLoadingEffect()
-              : ProductCardWidget(
+              : ProductoCardWidget(
                   descripcion: producto.productoList[index].descripcion,
                   img: snapshot.data,
                   action: () {
