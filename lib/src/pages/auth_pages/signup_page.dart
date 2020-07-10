@@ -25,10 +25,10 @@ class _SignUpPageState extends State<SignUpPage> {
   @override
   void initState() {
     super.initState();
-    _name = TextEditingController(text: "dani");
-    _lastName = TextEditingController(text: "apellido");
-    _email = TextEditingController(text: "dan@gmail.com");
-    _password = TextEditingController(text: "Dani1234");
+    _name = TextEditingController(text: "");
+    _lastName = TextEditingController(text: "");
+    _email = TextEditingController(text: "");
+    _password = TextEditingController(text: "");
   }
 
   // Widget _submitButton(UserRepository user) {

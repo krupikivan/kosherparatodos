@@ -161,6 +161,8 @@ class UserRepository with ChangeNotifier {
         throw 'No hay conexion a internet';
       }
     } catch (e) {
+      _status = Status.Unauthenticated;
+      notifyListeners();
       throw e.toString();
     }
   }

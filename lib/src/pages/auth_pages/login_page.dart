@@ -89,6 +89,7 @@ class _LoginPageState extends State<LoginPage> {
                           InputText(
                             controller: _email,
                             isPass: false,
+                            type: 'email',
                             error: "Ingresa un email",
                             label: "Email",
                           ),
@@ -96,6 +97,7 @@ class _LoginPageState extends State<LoginPage> {
                           InputText(
                             controller: _password,
                             isPass: true,
+                            type: 'pass',
                             error: "Ingresa una contraseña",
                             label: "Contraseña",
                           ),
