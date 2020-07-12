@@ -76,31 +76,35 @@ class ProductoNotifier with ChangeNotifier {
     }
   }
 
-  void setData(String tipo, String name) {
-    switch (tipo) {
-      case 'C':
-        _productoActual.codigo = name;
-        notifyListeners();
-        break;
-      case 'D':
-        _productoActual.descripcion = name;
-        notifyListeners();
-        break;
-      case 'UM':
-        _productoActual.unidadMedida = name;
-        notifyListeners();
-        break;
-      case 'S':
-        _productoActual.stock = int.parse(name.toString());
-        notifyListeners();
-        break;
-      case 'P':
-        _productoActual.precio = double.parse(name.toString());
+  // void setData(String tipo, String name) {
+  //   switch (tipo) {
+  //     case 'C':
+  //       _productoActual.codigo = name;
+  //       notifyListeners();
+  //       break;
+  //     case 'D':
+  //       _productoActual.descripcion = name;
+  //       notifyListeners();
+  //       break;
+  //     case 'M':
+  //       _productoActual.marca = name;
+  //       notifyListeners();
+  //       break;
+  //     case 'UM':
+  //       _productoActual.unidadMedida = name;
+  //       notifyListeners();
+  //       break;
+  //     case 'S':
+  //       _productoActual.stock = int.parse(name.toString());
+  //       notifyListeners();
+  //       break;
+  //     case 'P':
+  //       _productoActual.precio = double.parse(name.toString());
 
-        notifyListeners();
-        break;
-    }
-  }
+  //       notifyListeners();
+  //       break;
+  //   }
+  // }
 
   void creatingProducto(Producto nuevo) {
     _productoNuevo = nuevo;

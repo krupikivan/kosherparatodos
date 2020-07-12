@@ -80,6 +80,7 @@ class ProductoListPage extends StatelessWidget {
               : ProductoCardWidget(
                   descripcion: producto.productoList[index].descripcion,
                   img: snapshot.data,
+                  marca: producto.productoList[index].marca,
                   action: () {
                     producto.productoActual = producto.productoList[index];
                     _detalleProducto(context, snapshot.data);

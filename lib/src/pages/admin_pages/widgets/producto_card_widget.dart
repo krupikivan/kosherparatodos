@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class ProductoCardWidget extends StatelessWidget {
   final String descripcion;
+  final String marca;
   final String img;
   final double elevation;
   final Color color;
@@ -9,6 +10,7 @@ class ProductoCardWidget extends StatelessWidget {
   const ProductoCardWidget(
       {Key key,
       this.descripcion,
+      this.marca,
       this.action,
       this.img,
       this.elevation,
@@ -28,6 +30,10 @@ class ProductoCardWidget extends StatelessWidget {
           title: Text(
             descripcion,
             style: TextStyle(fontSize: 15),
+          ),
+          subtitle: Text(
+            marca,
+            style: TextStyle(fontSize: 12),
           ),
           leading: Image.network(img),
           onTap: action,

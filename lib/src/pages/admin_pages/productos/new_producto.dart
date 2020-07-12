@@ -15,6 +15,7 @@ class NewProducto extends StatefulWidget {
 class _NewProductoState extends State<NewProducto> {
   TextEditingController _codigoController;
   TextEditingController _descripcionController;
+  TextEditingController _marcaController;
   TextEditingController _precioController;
   TextEditingController _stockController;
   TextEditingController _unidadMedidaController;
@@ -25,6 +26,7 @@ class _NewProductoState extends State<NewProducto> {
   void initState() {
     _codigoController = TextEditingController();
     _descripcionController = TextEditingController();
+    _marcaController = TextEditingController();
     _precioController = TextEditingController();
     _stockController = TextEditingController();
     _unidadMedidaController = TextEditingController();
@@ -63,6 +65,10 @@ class _NewProductoState extends State<NewProducto> {
                 controller: _descripcionController,
                 isNum: false,
                 description: 'Descripcion'),
+            InputDataField(
+                controller: _marcaController,
+                isNum: false,
+                description: 'Marca'),
             InputDataField(
                 controller: _precioController,
                 isNum: true,
@@ -108,6 +114,7 @@ class _NewProductoState extends State<NewProducto> {
   bool _validateInputData() {
     if (_codigoController.text != "" &&
         _descripcionController.text != "" &&
+        _marcaController.text != "" &&
         _precioController.text != "" &&
         _stockController.text != "" &&
         _unidadMedidaController.text != "") {
@@ -122,6 +129,7 @@ class _NewProductoState extends State<NewProducto> {
     final Producto nuevo = Producto.fromTextEditingController(
       codigo: _codigoController.text,
       descripcion: _descripcionController.text,
+      marca: _marcaController.text,
       precio: _precioController.text != ""
           ? double.parse(_precioController.text)
           : 0,

@@ -132,11 +132,13 @@ class Detalle {
   String descripcion;
   String productoID;
   double precio;
+  String marca;
   int stockActual;
 
   Detalle({
     this.cantidad,
     this.descripcion,
+    this.marca,
     this.productoID,
     this.precio,
     this.stockActual,
@@ -145,6 +147,7 @@ class Detalle {
   Detalle.fromGetPedidos(Map<String, dynamic> data) {
     cantidad = data['cantidad'] as int;
     descripcion = data['descripcion'] as String;
+    marca = data['marca'] as String;
     productoID = data['productoID'] as String;
     precio = data['precio'].toDouble() as double;
   }
@@ -152,6 +155,7 @@ class Detalle {
   Detalle.fromUpdateCarrito(
       Producto producto, this.cantidad, this.stockActual) {
     descripcion = producto.descripcion;
+    marca = producto.marca;
     precio = producto.precio;
     productoID = producto.productoID;
   }
@@ -159,6 +163,7 @@ class Detalle {
   Map<String, dynamic> toFirebase() => {
         'cantidad': cantidad,
         'descripcion': descripcion,
+        'marca': marca,
         'productoID': productoID,
         'precio': precio
       };

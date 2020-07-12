@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 class ProductoDetailPage extends StatelessWidget {
   TextEditingController _codigoController;
   TextEditingController _descripcionController;
+  TextEditingController _marcaController;
   TextEditingController _stockController;
   TextEditingController _precioController;
   TextEditingController _umController;
@@ -58,6 +59,8 @@ class ProductoDetailPage extends StatelessWidget {
               controller: _descripcionController,
               isNum: false,
               description: "Descripcion"),
+          InputDataField(
+              controller: _marcaController, isNum: false, description: "Marca"),
           InputDataField(
             controller: _codigoController,
             isNum: false,
@@ -128,6 +131,8 @@ class ProductoDetailPage extends StatelessWidget {
         TextEditingController(text: producto.productoActual.codigo);
     _descripcionController =
         TextEditingController(text: producto.productoActual.descripcion);
+    _marcaController =
+        TextEditingController(text: producto.productoActual.marca);
     _umController =
         TextEditingController(text: producto.productoActual.unidadMedida);
     _stockController =

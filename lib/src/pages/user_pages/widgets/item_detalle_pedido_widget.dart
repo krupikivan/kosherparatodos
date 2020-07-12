@@ -15,8 +15,15 @@ class ItemDetallePedidoWidget extends StatelessWidget {
             icon: Icon(Icons.remove),
             onPressed: () => blocPedidoVigente.removeOnPedido(item),
           ),
-          title: Text(item.descripcion),
+          title: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(item.descripcion),
+              Text(item.marca),
+            ],
+          ),
           subtitle: Text('${item.cantidad} unid.'),
+          isThreeLine: true,
           trailing: Container(
             width: 70,
             height: 70,

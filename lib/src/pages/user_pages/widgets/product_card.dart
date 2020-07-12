@@ -85,11 +85,15 @@ class _ProductoCardState extends State<ProductoCard> {
                       fillColor: Theme.of(context).primaryColorLight,
                       elevation: 0,
                       onPressed: () {
-                        blocPedidoVigente.updateCarrito(
-                            widget.producto, _cantidad, widget.producto.stock);
-                        _showMessage('Agregado al carrito');
-                        _isPressed = false;
-                        setState(() {});
+                        if (_cantidad != 0) {
+                          blocPedidoVigente.updateCarrito(widget.producto,
+                              _cantidad, widget.producto.stock);
+                          _showMessage('Agregado al carrito');
+                          _isPressed = false;
+                          setState(() {});
+                        } else {
+                          _showMessage('Seleccione cantidad');
+                        }
                       },
                       child: Text(
                         'Agregar',
@@ -138,6 +142,17 @@ class _ProductoCardState extends State<ProductoCard> {
                                     color: Theme.of(context).primaryColor,
                                     fontWeight: FontWeight.bold,
                                     fontSize: 18),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            FittedBox(
+                              child: Text(
+                                widget.producto.marca,
+                                style: TextStyle(
+                                    color: Theme.of(context).primaryColor,
+                                    fontSize: 14),
                               ),
                             ),
                             SizedBox(

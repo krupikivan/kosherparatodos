@@ -24,6 +24,7 @@ class PedidoDetailItem extends StatelessWidget {
         ),
       ),
       title: Text(detalle.descripcion),
+      subtitle: Text(detalle.marca),
       trailing: Text('\$${detalle.precio.truncate()}'),
     );
   }

@@ -68,56 +68,57 @@ class _DetallePedidoListPageState extends State<DetallePedidoListPage> {
           } else {
             return snapshot.data.total == null
                 ? SizedBox()
-                : Column(
-                    children: [
-                      StreamBuilder<bool>(
-                        stream: blocPedidoVigente.getLoading,
-                        initialData: false,
-                        builder: (context, load) => !load.data
-                            ? FlatButton(
-                                onPressed: () {
-                                  if (snapshot.data.total != 0.0) {
-                                    blocPedidoVigente.realizarPedido().then(
-                                        (value) {
-                                      Show('Realizando pedido');
-                                      Show('Pedido realizado!');
-                                    },
-                                        onError: (onError) => Show(
-                                            'No hay stock disponible')).whenComplete(
-                                        () {
-                                      blocPedidoVigente.clearPedido();
-                                    });
-                                  } else {
-                                    Show('El pedido esta vacio');
-                                  }
-                                },
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(15)),
-                                color: Theme.of(context).primaryColor,
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  padding: EdgeInsets.symmetric(vertical: 12),
-                                  child: Text(
-                                    'Realizar pedido',
-                                    style: TextStyle(color: Colors.white),
-                                  ),
-                                ))
-                            : CircularProgressIndicator(),
-                      ),
-                      FlatButton(
-                          onPressed: () => blocPedidoVigente.clearPedido(),
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15)),
-                          color: Theme.of(context).primaryColor,
-                          child: Container(
-                            alignment: Alignment.center,
-                            padding: EdgeInsets.symmetric(vertical: 12),
-                            child: Text(
-                              'Cancelar',
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          )),
-                    ],
+                : StreamBuilder<bool>(
+                    stream: blocPedidoVigente.getLoading,
+                    initialData: false,
+                    builder: (context, load) => !load.data
+                        ? Column(
+                            children: <Widget>[
+                              FlatButton(
+                                  onPressed: () {
+                                    if (snapshot.data.total != 0.0) {
+                                      blocPedidoVigente.realizarPedido().then(
+                                          (value) {
+                                        Show('Realizando pedido');
+                                        Show('Pedido realizado!');
+                                      },
+                                          onError: (onError) => Show(
+                                              'No hay stock disponible')).whenComplete(
+                                          () {
+                                        blocPedidoVigente.clearPedido();
+                                      });
+                                    } else {
+                                      Show('El pedido esta vacio');
+                                    }
+                                  },
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(15)),
+                                  color: Theme.of(context).primaryColor,
+                                  child: Container(
+                                    alignment: Alignment.center,
+                                    padding: EdgeInsets.symmetric(vertical: 12),
+                                    child: Text(
+                                      'Realizar pedido',
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                  )),
+                              FlatButton(
+                                  onPressed: () =>
+                                      blocPedidoVigente.clearPedido(),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(15)),
+                                  color: Theme.of(context).primaryColor,
+                                  child: Container(
+                                    alignment: Alignment.center,
+                                    padding: EdgeInsets.symmetric(vertical: 12),
+                                    child: Text(
+                                      'Cancelar',
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                  )),
+                            ],
+                          )
+                        : CircularProgressIndicator(),
                   );
           }
         });
