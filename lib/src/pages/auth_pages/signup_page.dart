@@ -105,6 +105,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           InputText(
                             controller: _name,
                             type: 'txt',
+                            icon: Icons.person_pin,
                             label: "Nombre",
                             isPass: false,
                             error: "Ingrese nombre",
@@ -112,6 +113,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           SizedBox(height: 25),
                           InputText(
                             controller: _lastName,
+                            icon: Icons.person_pin,
                             type: 'txt',
                             label: "Apellido",
                             isPass: false,
@@ -123,6 +125,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           InputText(
                             controller: _email,
                             type: 'email',
+                            icon: Icons.email,
                             label: "Email",
                             isPass: false,
                             error: "Ingrese email",
@@ -133,6 +136,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           InputText(
                             controller: _password,
                             type: 'pass',
+                            icon: Icons.personal_video,
                             label: "Contraseña",
                             isPass: true,
                             error:
@@ -167,6 +171,7 @@ class _SignUpPageState extends State<SignUpPage> {
             _name.text, _lastName.text, _email.text, _password.text);
         await user.signOutOnRegister();
         ShowToast().show('Usuario creado', 5);
+        Provider.of<UserRepository>(context, listen: false).goLogin();
       } catch (e) {
         await user.signOutOnRegister();
         ShowToast().show('El usuario ya existe', 5);

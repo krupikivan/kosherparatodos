@@ -8,13 +8,15 @@ class InputText extends StatelessWidget {
       this.error,
       this.label,
       this.isPass,
-      this.type})
+      this.type,
+      this.icon})
       : super(key: key);
   TextStyle style = TextStyle(color: Colors.white, fontSize: 20.0);
 
   final TextEditingController controller;
   final String error;
   final String label;
+  final IconData icon;
   final bool isPass;
   final String type;
 
@@ -31,7 +33,7 @@ class InputText extends StatelessWidget {
       cursorColor: Colors.white,
       decoration: InputDecoration(
           prefixIcon: Icon(
-            Icons.email,
+            icon,
             color: Colors.white,
           ),
           labelText: label,
