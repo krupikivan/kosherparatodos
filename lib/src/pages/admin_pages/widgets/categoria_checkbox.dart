@@ -40,11 +40,6 @@ class CategoriaDialog extends StatefulWidget {
 }
 
 class _CategoriaDialogState extends State<CategoriaDialog> {
-  // final CategoriaNotifier categoria;
-  // final ProductoNotifier producto;
-  // final bool esProducto;
-
-  // _CategoriaDialogState(this.categoria, this.producto, {this.esProducto});
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -62,27 +57,38 @@ class _CategoriaDialogState extends State<CategoriaDialog> {
               child: ListView.builder(
                 scrollDirection: Axis.vertical,
                 shrinkWrap: true,
-                itemCount: widget.categoria.categoriaList.length,
+                itemCount: widget.categoria.categoriaPadreList.length,
                 itemBuilder: (BuildContext context, int index) =>
                     CheckboxListTile(
-                  value: widget.categoria.categoriaList[index].selected,
+                  value: widget.categoria.categoriaPadreList[index].selected ??
+                      false,
                   onChanged: (bool val) {
-                    widget.esProducto == true
-                        ? val == true
+                    widget.esProducto
+                        ? val
                             ? widget.producto.categoriaString.add(widget
-                                .categoria.categoriaList[index].categoriaID)
+                                .categoria
+                                .categoriaPadreList[index]
+                                .categoriaID)
                             : widget.producto.categoriaString.remove(widget
-                                .categoria.categoriaList[index].categoriaID)
-                        : val == true
+                                .categoria
+                                .categoriaPadreList[index]
+                                .categoriaID)
+                        : val
                             ? widget.categoria.categoriaString.add(widget
-                                .categoria.categoriaList[index].categoriaID)
+                                .categoria
+                                .categoriaPadreList[index]
+                                .categoriaID)
                             : widget.categoria.categoriaString.remove(widget
-                                .categoria.categoriaList[index].categoriaID);
+                                .categoria
+                                .categoriaPadreList[index]
+                                .categoriaID);
                     widget.categoria.changeSelected(
-                        widget.categoria.categoriaList[index].categoriaID, val);
+                        widget.categoria.categoriaPadreList[index].categoriaID,
+                        val);
                     setState(() {});
                   },
-                  title: Text(widget.categoria.categoriaList[index].nombre),
+                  title:
+                      Text(widget.categoria.categoriaPadreList[index].nombre),
                 ),
               ),
             ),

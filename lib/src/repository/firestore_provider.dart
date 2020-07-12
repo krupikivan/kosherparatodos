@@ -279,7 +279,7 @@ class FirestoreProvider implements Repository {
 
     await _firestore.runTransaction((t) async {
       await _firestore.collection('categorias').add({
-        'ancestro': newCategoria.ancestro,
+        'ancestro': newCategoria.esPadre ? [] : newCategoria.ancestro,
         'nombre': newCategoria.nombre,
         'esPadre': newCategoria.esPadre,
       }).then((value) {
@@ -287,9 +287,11 @@ class FirestoreProvider implements Repository {
           'id': value.documentID,
           'nombre': newCategoria.nombre
         };
-        docRef.updateData({
-          'categorias': FieldValue.arrayUnion([body])
-        });
+        if (newCategoria.esPadre) {
+          docRef.updateData({
+            'categorias': FieldValue.arrayUnion([body])
+          });
+        }
       });
     }).catchError((onError) => print(onError.toString()));
   }

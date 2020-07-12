@@ -3,6 +3,7 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:kosherparatodos/src/Widget/export.dart';
 import 'package:kosherparatodos/src/Widget/shimmer_list_loading.dart';
+import 'package:kosherparatodos/src/models/producto.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/productos/new_producto.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/productos/new_categoria.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/productos/producto_detail_page.dart';
@@ -83,7 +84,8 @@ class ProductoListPage extends StatelessWidget {
                   marca: producto.productoList[index].marca,
                   action: () {
                     producto.productoActual = producto.productoList[index];
-                    _detalleProducto(context, snapshot.data);
+                    _detalleProducto(
+                        context, snapshot.data, producto.productoActual);
                   },
                 ),
         ),
@@ -91,11 +93,14 @@ class ProductoListPage extends StatelessWidget {
     );
   }
 
-  void _detalleProducto(BuildContext context, image) {
+  void _detalleProducto(BuildContext context, image, Producto prod) {
     Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) => ProductoDetailPage(image: image)));
+            builder: (context) => ProductoDetailPage(
+                  image: image,
+                  producto: prod,
+                )));
   }
 
   void _addNewProducto(BuildContext context) {

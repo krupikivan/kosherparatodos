@@ -22,6 +22,8 @@ class Categoria {
     esPadre = data['esPadre'] as bool;
   }
 
+  Categoria.fromNew(this.nombre, this.esPadre, this.selected);
+
   Categoria.fromDatabase(DocumentSnapshot doc) {
     categoriaID = doc.documentID;
     nombre = doc.data['nombre'] as String;

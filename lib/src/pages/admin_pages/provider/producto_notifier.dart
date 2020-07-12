@@ -1,18 +1,20 @@
 import 'dart:collection';
 import 'package:flutter/cupertino.dart';
 import 'package:kosherparatodos/src/models/producto.dart';
+import 'package:kosherparatodos/src/providers/connectivity.dart';
 import 'package:kosherparatodos/src/repository/firestore_provider.dart';
 import 'package:kosherparatodos/src/repository/repo.dart';
 
 class ProductoNotifier with ChangeNotifier {
   final Repository _repository = FirestoreProvider();
-
-  // ProductoNotifier.init() {
-  //   getProductos();
-  // }
+  final _conex = ConnectivityProvider.getInstance();
 
   void updateAllData() {
-    _repository.updateAllData(_productoActual);
+    if (_conex.hasConnection) {
+      _repository.updateAllData(_productoActual);
+    } else {
+      throw 'No hay conexion';
+    }
   }
 
   int getProductosLength() {
@@ -76,35 +78,34 @@ class ProductoNotifier with ChangeNotifier {
     }
   }
 
-  // void setData(String tipo, String name) {
-  //   switch (tipo) {
-  //     case 'C':
-  //       _productoActual.codigo = name;
-  //       notifyListeners();
-  //       break;
-  //     case 'D':
-  //       _productoActual.descripcion = name;
-  //       notifyListeners();
-  //       break;
-  //     case 'M':
-  //       _productoActual.marca = name;
-  //       notifyListeners();
-  //       break;
-  //     case 'UM':
-  //       _productoActual.unidadMedida = name;
-  //       notifyListeners();
-  //       break;
-  //     case 'S':
-  //       _productoActual.stock = int.parse(name.toString());
-  //       notifyListeners();
-  //       break;
-  //     case 'P':
-  //       _productoActual.precio = double.parse(name.toString());
-
-  //       notifyListeners();
-  //       break;
-  //   }
-  // }
+  void setData(String tipo, String name) {
+    switch (tipo) {
+      case 'C':
+        _productoActual.codigo = name;
+        notifyListeners();
+        break;
+      case 'D':
+        _productoActual.descripcion = name;
+        notifyListeners();
+        break;
+      case 'M':
+        _productoActual.marca = name;
+        notifyListeners();
+        break;
+      case 'UM':
+        _productoActual.unidadMedida = name;
+        notifyListeners();
+        break;
+      case 'S':
+        _productoActual.stock = int.parse(name.toString());
+        notifyListeners();
+        break;
+      case 'P':
+        _productoActual.precio = double.parse(name.toString());
+        notifyListeners();
+        break;
+    }
+  }
 
   void creatingProducto(Producto nuevo) {
     _productoNuevo = nuevo;

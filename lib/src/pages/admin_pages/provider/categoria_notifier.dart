@@ -2,11 +2,13 @@ import 'dart:collection';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:kosherparatodos/src/models/categoria.dart';
+import 'package:kosherparatodos/src/providers/connectivity.dart';
 import 'package:kosherparatodos/src/repository/firestore_provider.dart';
 import 'package:kosherparatodos/src/repository/repo.dart';
 
 class CategoriaNotifier with ChangeNotifier {
   final Repository _repository = FirestoreProvider();
+  final _conex = ConnectivityProvider.getInstance();
 
   CategoriaNotifier.init() {
     getCategoriasPrincipales();
@@ -56,30 +58,19 @@ class CategoriaNotifier with ChangeNotifier {
     });
   }
 
-  // getCategorias() {
-  //   List<Categoria> _list = [];
-  //   _repository.getCategorias().onData((listCate) {
-  //     listCate.documents.forEach((categoria) {
-  //         Categoria _categoria =
-  //             Categoria.fromFirebase(categoria.data, categoria.documentID);
-  //         _list.add(_categoria);
-  //         _categoriaList = _list;
-  //         notifyListeners();
-  //     });
-  //   });
-  // }
-
-  void creatingCategoria(Categoria nuevo) {
-    _categoriaNueva = nuevo;
-    _categoriaNueva.ancestro = nuevo.esPadre == false ? _categoriaString : [];
-    // notifyListeners();
-  }
-
-  void addNewCategoria() {
-    _repository.addNewCategoria(_categoriaNueva).whenComplete(() {
-      getCategoriasPrincipales();
-      _clearCategoriaNueva();
-    });
+  void addNewCategoria(Categoria nueva) {
+    if (_conex.hasConnection) {
+      _repository
+          .addNewCategoria(nueva)
+          .then((value) => true)
+          .catchError((onError) => throw 'Error')
+          .whenComplete(() {
+        getCategoriasPrincipales();
+        _clearCategoriaNueva();
+      }).catchError((error) => throw 'Error');
+    } else {
+      throw 'No hay conexion';
+    }
   }
 
   void _clearCategoriaNueva() {
@@ -89,7 +80,7 @@ class CategoriaNotifier with ChangeNotifier {
 
   void changeSelected(String id, bool val) {
     final Categoria cat =
-        _categoriaList.firstWhere((element) => element.categoriaID == id);
+        _categoriaPadreList.firstWhere((element) => element.categoriaID == id);
     cat.selected = val;
     notifyListeners();
   }

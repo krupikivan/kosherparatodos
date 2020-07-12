@@ -61,23 +61,18 @@ class _NewCategoriaState extends State<NewCategoria> {
       ),
       floatingActionButton: Consumer<CategoriaNotifier>(
         builder: (context, cate, _) => FloatingActionButton.extended(
-          onPressed: () =>
-              _validateInputData() && cate.categoriaString.isNotEmpty
-                  ? _addCategoria(context)
+          onPressed: () => !_esPadre
+              ? _validateInputData() && cate.categoriaString.isNotEmpty
+                  ? _addCategoria()
+                  : ShowToast().show('Faltan datos', 5)
+              : _validateInputData()
+                  ? _addCategoria()
                   : ShowToast().show('Faltan datos', 5),
           label: const Text('Agregar'),
           backgroundColor: Theme.of(context).primaryColor,
         ),
       ),
     );
-  }
-
-  _setCategoriaData() {
-    final categoria = Provider.of<CategoriaNotifier>(context, listen: false);
-    final Categoria nuevo = Categoria();
-    nuevo.nombre = _nombreController.text;
-    nuevo.esPadre = _esPadre;
-    categoria.creatingCategoria(nuevo);
   }
 
   bool _validateInputData() {
@@ -117,9 +112,16 @@ class _NewCategoriaState extends State<NewCategoria> {
     }
   }
 
-  void _addCategoria(BuildContext context) {
-    _setCategoriaData();
-    Provider.of<CategoriaNotifier>(context, listen: false).addNewCategoria();
-    Navigator.pop(context);
+  void _addCategoria() {
+    try {
+      final categoria = Provider.of<CategoriaNotifier>(context, listen: false);
+      final Categoria nuevo =
+          Categoria.fromNew(_nombreController.text, _esPadre, false);
+      categoria.addNewCategoria(nuevo);
+      Navigator.pop(context);
+      ShowToast().show('Categoria agregada', 5);
+    } catch (e) {
+      ShowToast().show(e, 5);
+    }
   }
 }
