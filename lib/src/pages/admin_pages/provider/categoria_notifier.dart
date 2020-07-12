@@ -60,6 +60,7 @@ class CategoriaNotifier with ChangeNotifier {
 
   void addNewCategoria(Categoria nueva) {
     if (_conex.hasConnection) {
+      nueva.ancestro = _categoriaString;
       _repository
           .addNewCategoria(nueva)
           .then((value) => true)
@@ -74,8 +75,10 @@ class CategoriaNotifier with ChangeNotifier {
   }
 
   void _clearCategoriaNueva() {
+    _categoriaPadreList.forEach((element) => element.selected = false);
     _categoriaString.clear();
-    _categoriaNueva = null;
+    notifyListeners();
+    // _categoriaNueva = null;
   }
 
   void changeSelected(String id, bool val) {
@@ -134,12 +137,12 @@ class CategoriaNotifier with ChangeNotifier {
   }
 
   //---------------------------Categoria que estoy creando
-  Categoria _categoriaNueva;
-  Categoria get categoriaNueva => _categoriaNueva;
-  set categoriaNueva(Categoria categoriaNueva) {
-    _categoriaNueva = categoriaNueva;
-    notifyListeners();
-  }
+  // Categoria _categoriaNueva;
+  // Categoria get categoriaNueva => _categoriaNueva;
+  // set categoriaNueva(Categoria categoriaNueva) {
+  //   _categoriaNueva = categoriaNueva;
+  //   notifyListeners();
+  // }
 
   //---------------------------Categorias ancestros para la nueva categoria
   List<String> _categoriaString = [];
