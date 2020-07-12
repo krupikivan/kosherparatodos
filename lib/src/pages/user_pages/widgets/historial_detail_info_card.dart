@@ -17,7 +17,7 @@ class HistorialDetailInfoCard extends StatelessWidget {
           children: <Widget>[
             ListTile(
                 leading: Icon(
-                  FontAwesomeIcons.truck,
+                  Icons.watch_later,
                   color: Pedido.getEstadoColor(
                       Pedido.enumEntregaToString(pedido.estadoEntrega)),
                 ),
@@ -28,8 +28,15 @@ class HistorialDetailInfoCard extends StatelessWidget {
                   Icons.payment,
                   color: Pedido.getPagadoColor(pedido.pagado),
                 ),
-                title: Text(
-                    Pedido.getPagado(pedido.pagado))),
+                title: Text(Pedido.getPagado(pedido.pagado))),
+            ListTile(
+                leading: Icon(
+                  Icons.local_shipping,
+                  color: pedido.envio ? Colors.green : Colors.red,
+                ),
+                title: Text(pedido.envio
+                    ? 'Su pedido tiene envio: \$${pedido.costoEnvio}'
+                    : 'Su pedido no tiene envio')),
           ],
         ),
       ),

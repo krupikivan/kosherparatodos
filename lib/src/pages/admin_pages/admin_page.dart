@@ -8,6 +8,7 @@ import 'package:kosherparatodos/src/pages/admin_pages/provider/categoria_notifie
 import 'package:kosherparatodos/src/pages/admin_pages/provider/cliente_notifier.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/provider/pedido_notifier.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/provider/producto_notifier.dart';
+import 'package:kosherparatodos/src/providers/data_provider.dart';
 import 'package:kosherparatodos/src/providers/user_repository.dart';
 import 'package:kosherparatodos/style/theme.dart';
 import 'package:provider/provider.dart';
@@ -31,6 +32,7 @@ class AdminPage extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => PedidoNotifier.init()),
         ChangeNotifierProvider(create: (context) => ProductoNotifier()),
         ChangeNotifierProvider(create: (context) => CategoriaNotifier.init()),
+        ChangeNotifierProvider(create: (context) => DataProvider.init()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

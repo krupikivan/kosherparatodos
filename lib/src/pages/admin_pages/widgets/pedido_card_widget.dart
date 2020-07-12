@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:kosherparatodos/src/models/pedido.dart';
 
 class PedidoCardWidget extends StatelessWidget {
   final String title;
   final String subtitle;
   final String estado;
+  final bool envio;
   final bool pagado;
   final double elevation;
   final Color color;
@@ -18,7 +18,8 @@ class PedidoCardWidget extends StatelessWidget {
       this.title,
       this.subtitle,
       this.estado,
-      this.pagado})
+      this.pagado,
+      this.envio})
       : super(key: key);
 // convert.getFechaFromTimestamp(fecha)
   @override
@@ -41,7 +42,15 @@ class PedidoCardWidget extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               Icon(
-                FontAwesomeIcons.truck,
+                Icons.local_shipping,
+                size: 20,
+                color: envio ? Colors.green : Colors.red,
+              ),
+              SizedBox(
+                width: 20,
+              ),
+              Icon(
+                Icons.watch_later,
                 size: 20,
                 color: Pedido.getEstadoColor(estado),
               ),

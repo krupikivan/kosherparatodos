@@ -65,26 +65,6 @@ class _LoginPageState extends State<LoginPage> {
                         physics: NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
                         children: <Widget>[
-                          // Row(
-                          //   children: <Widget>[
-                          //     IconButton(
-                          //       color: Colors.white,
-                          //       icon: Icon(Icons.account_circle),
-                          //       onPressed: () => setState(() {
-                          //         _email.text = 'admin@admin.com';
-                          //         _password.text = 'admin123';
-                          //       }),
-                          //     ),
-                          //     IconButton(
-                          //       color: Colors.white,
-                          //       icon: Icon(Icons.account_circle),
-                          //       onPressed: () => setState(() {
-                          //         _email.text = 'ivan@ivan.com';
-                          //         _password.text = 'ivan123';
-                          //       }),
-                          //     ),
-                          //   ],
-                          // ),
                           InputText(
                             controller: _email,
                             isPass: false,

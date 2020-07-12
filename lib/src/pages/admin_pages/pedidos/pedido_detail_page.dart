@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:kosherparatodos/src/Widget/export.dart';
 import 'package:kosherparatodos/src/models/pedido.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/provider/pedido_notifier.dart';
+import 'package:kosherparatodos/src/providers/data_provider.dart';
 import 'package:kosherparatodos/src/utils/converter.dart';
 import 'package:provider/provider.dart';
 
@@ -19,11 +20,47 @@ class PedidoDetailPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            TitleDetailPage(
-              title:
-                  'Cliente: ${pedido.pedidoActual.cliente.nombre.nombre} ${pedido.pedidoActual.cliente.nombre.apellido}',
-              subtitle:
-                  'Fecha: ${convert.getFechaFromTimestamp(pedido.pedidoActual.fecha)}',
+            Row(
+              children: <Widget>[
+                Expanded(
+                  flex: 2,
+                  child: TitleDetailPage(
+                    title:
+                        'Cliente: ${pedido.pedidoActual.cliente.nombre.nombre} ${pedido.pedidoActual.cliente.nombre.apellido}',
+                    subtitle:
+                        'Fecha: ${convert.getFechaFromTimestamp(pedido.pedidoActual.fecha)}',
+                  ),
+                ),
+                Expanded(
+                  child: Card(
+                    color: Colors.white,
+                    elevation: 2,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          Icon(
+                            Icons.local_shipping,
+                            color: pedido.pedidoActual.envio
+                                ? Colors.green
+                                : Colors.red,
+                          ),
+                          Text(
+                            pedido.pedidoActual.envio ? 'Enviar' : 'No enviar',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: pedido.pedidoActual.envio
+                                    ? Colors.green
+                                    : Colors.red),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                )
+              ],
             ),
             Expanded(
               flex: 5,
@@ -64,7 +101,7 @@ class PedidoDetailPage extends StatelessWidget {
                   shrinkWrap: true,
                   children: <Widget>[
                     _getEstadoPago(pedido, context),
-                    _getEstadoEntregado(pedido),
+                    _getEstadoEntregado(pedido, context),
                   ],
                 ),
               ),
@@ -122,7 +159,8 @@ class PedidoDetailPage extends StatelessWidget {
     );
   }
 
-  Widget _getEstadoEntregado(PedidoNotifier pedido) {
+  Widget _getEstadoEntregado(PedidoNotifier pedido, context) {
+    final data = Provider.of<DataProvider>(context, listen: false);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -132,25 +170,29 @@ class PedidoDetailPage extends StatelessWidget {
           padding: EdgeInsets.all(5),
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
-            itemCount: pedido.getEstadoEntrega.length,
+            itemCount: data.getEstadoEntrega.length,
             itemBuilder: (BuildContext context, int index) {
               return Row(
                 children: <Widget>[
-                  ChoiceChip(
-                    selected: pedido.pedidoActual.estadoEntrega.index == index,
-                    selectedColor: Theme.of(context).primaryColor,
-                    label: Text(Pedido.enumEntregaToString(
-                        pedido.getEstadoEntrega[index])),
-                    labelStyle: TextStyle(
-                      color: pedido.pedidoActual.estadoEntrega.index == index
-                          ? Colors.white
-                          : Theme.of(context).primaryColor,
-                    ),
-                    onSelected: (estado) => !estado
-                        ? null
-                        : pedido
-                            .setEstadoEntrega(pedido.getEstadoEntrega[index]),
-                  ),
+                  data == null
+                      ? SizedBox()
+                      : ChoiceChip(
+                          selected:
+                              pedido.pedidoActual.estadoEntrega.index == index,
+                          selectedColor: Theme.of(context).primaryColor,
+                          label: Text(Pedido.enumEntregaToString(
+                              data.getEstadoEntrega[index])),
+                          labelStyle: TextStyle(
+                            color:
+                                pedido.pedidoActual.estadoEntrega.index == index
+                                    ? Colors.white
+                                    : Theme.of(context).primaryColor,
+                          ),
+                          onSelected: (estado) => !estado
+                              ? null
+                              : pedido.setEstadoEntrega(
+                                  data.getEstadoEntrega[index]),
+                        ),
                   SizedBox(
                     width: 10,
                   ),

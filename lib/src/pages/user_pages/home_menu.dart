@@ -6,6 +6,7 @@ import 'package:kosherparatodos/src/pages/user_pages/data/user_data_page.dart';
 import 'package:kosherparatodos/src/pages/user_pages/pedido/bloc/categoria_provider.dart';
 import 'package:kosherparatodos/src/pages/user_pages/pedido/pedido.dart';
 import 'package:kosherparatodos/src/pages/user_pages/widgets/export.dart';
+import 'package:kosherparatodos/src/providers/data_provider.dart';
 import 'package:kosherparatodos/style/theme.dart';
 import 'package:provider/provider.dart';
 import '../../providers/user_repository.dart';
@@ -26,6 +27,7 @@ class UserPage extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => ProductoNotifier()),
+        ChangeNotifierProvider(create: (context) => DataProvider.init()),
         ChangeNotifierProvider(create: (context) => CategoriaProvider.init()),
       ],
       child: MaterialApp(
@@ -90,7 +92,7 @@ class UserPage extends StatelessWidget {
                                 },
                               ),
                               ListTile(
-                                title: Text('Productos'),
+                                title: Text('Nuevo Pedido'),
                                 leading: Icon(
                                   Icons.fastfood,
                                   color: Theme.of(context).primaryColor,

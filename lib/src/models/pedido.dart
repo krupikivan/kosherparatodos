@@ -7,6 +7,8 @@ enum EnumEntrega { EnPreparacion, Entregado, Cancelado }
 
 class Pedido {
   String pedidoID;
+  bool envio;
+  int costoEnvio;
   Cliente cliente;
   EnumEntrega estadoEntrega;
   Timestamp fecha;
@@ -16,6 +18,8 @@ class Pedido {
 
   Pedido({
     this.pedidoID,
+    this.envio,
+    this.costoEnvio,
     this.cliente,
     this.estadoEntrega,
     this.fecha,
@@ -26,6 +30,8 @@ class Pedido {
 
   Pedido.fromFirebase(Map<String, dynamic> data, this.pedidoID) {
     cliente = Cliente.fromPedidos(data);
+    envio = data['envio'] as bool;
+    costoEnvio = data['costoEnvio'] as int;
     estadoEntrega = stringToEnumEntrega(data['estado']);
     fecha = data['fecha'] as Timestamp;
     pagado = data['pagado'] as bool;
@@ -34,6 +40,8 @@ class Pedido {
   }
   Pedido.fromPedidos(Map<String, dynamic> data, this.pedidoID) {
     cliente = Cliente.fromPedidos(data);
+    envio = data['envio'] as bool;
+    costoEnvio = data['costoEnvio'] as int;
     estadoEntrega = stringToEnumEntrega(data['estado']);
     fecha = data['fecha'] as Timestamp;
     pagado = data['pagado'] as bool;

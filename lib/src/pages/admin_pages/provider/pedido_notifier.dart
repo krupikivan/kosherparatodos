@@ -7,8 +7,6 @@ import 'package:kosherparatodos/src/repository/repo.dart';
 class PedidoNotifier with ChangeNotifier {
   final Repository _repository = FirestoreProvider();
 
-  List _estadoEntrega = [];
-
   List<Pedido> _pedidoList = [];
   Pedido _pedidoActual;
   UnmodifiableListView<Pedido> get pedidoList =>
@@ -20,7 +18,6 @@ class PedidoNotifier with ChangeNotifier {
 
   PedidoNotifier.init() {
     getPedidos();
-    _getEstadosEntrega();
   }
 
   bool filtrar({String char}) {
@@ -72,16 +69,9 @@ class PedidoNotifier with ChangeNotifier {
     });
   }
 
-  void _getEstadosEntrega() async {
-    await _repository.getEstadoEntrega().then((data) {
-      final EstadoEntrega _ee = EstadoEntrega.fromMap(data['estado'] as List);
-      _estadoEntrega = _ee.entrega;
-      notifyListeners();
-    });
-  }
-
   void setPagado() {
     final bool pagado = _pedidoActual.pagado == false ? true : false;
+    // final bool pagado = !_pedidoActual.pagado;
     try {
       _repository.setPagado(_pedidoActual.pedidoID, pagado: pagado);
       _pedidoActual.pagado = pagado;
@@ -117,7 +107,4 @@ class PedidoNotifier with ChangeNotifier {
     _pedidoActual = pedidoActual;
     notifyListeners();
   }
-
-  UnmodifiableListView get getEstadoEntrega =>
-      UnmodifiableListView(_estadoEntrega);
 }

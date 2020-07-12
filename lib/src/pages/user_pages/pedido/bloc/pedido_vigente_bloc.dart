@@ -40,6 +40,14 @@ class PedidoVigenteBloc {
     getPedidoTotal();
   }
 
+  void updateEnvioPedido(bool envio, int amount) {
+    _pedidoVigente.listen((ped) {
+      ped.envio = envio;
+      ped.costoEnvio = amount;
+      ped.total = ped.envio ? ped.total + amount : ped.total - amount;
+    });
+  }
+
 //  Seteamos el pedido vigente a un pedido vacio
   clearPedido() {
     pedido = Pedido();
@@ -53,10 +61,10 @@ class PedidoVigenteBloc {
   }
 
 //  Cuando editamos pedido lo cargamos en el carrito
-  void agregarPedidoParaEditar(Pedido pedidoEdit) {
-    pedido = pedidoEdit;
-    addPedido(pedido);
-  }
+  // void agregarPedidoParaEditar(Pedido pedidoEdit) {
+  //   pedido = pedidoEdit;
+  //   addPedido(pedido);
+  // }
 
 //  Actualiza el total del pedido vigente
   void getPedidoTotal() {
@@ -74,6 +82,10 @@ class PedidoVigenteBloc {
 //  Realiza el pedido y lo guarda en Firebase
   Future realizarPedido() async {
     addLoading(true);
+    if (pedido.envio == null) {
+      pedido.envio = false;
+      pedido.costoEnvio = 0;
+    }
     await _repo
         .addNewPedido(pedido, blocUserData.getClienteLogeado())
         .then((value) => addLoading(false), onError: (onError) {

@@ -97,6 +97,8 @@ class FirestoreProvider implements Repository {
           'cliente': clienteMap,
           'fecha': Timestamp.now(),
           'pagado': false,
+          'envio': pedido.envio,
+          'costoEnvio': pedido.costoEnvio,
           'estado': 'En Preparacion',
           'total': pedido.total,
           'productos': _addProductosToPedido(pedido.productos),
@@ -179,8 +181,8 @@ class FirestoreProvider implements Repository {
   }
 
   @override
-  Future<DocumentSnapshot> getEstadoEntrega() {
-    return _firestore.collection('estado').document('entrega').get();
+  Future<DocumentSnapshot> getDatosUtiles() {
+    return _firestore.collection('utiles').document('datos').get();
   }
 
   @override

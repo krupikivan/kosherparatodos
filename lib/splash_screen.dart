@@ -5,7 +5,7 @@ class Splash extends StatelessWidget {
   Widget build(BuildContext context) {
     return Material(
       child: Center(
-        child: Text("Splash Screen"),
+        child: Center(child: CircularProgressIndicator()),
       ),
     );
   }

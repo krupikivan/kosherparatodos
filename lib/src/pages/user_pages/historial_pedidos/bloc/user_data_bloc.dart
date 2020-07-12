@@ -68,10 +68,18 @@ class ClienteDataBloc {
     }
   }
 
-//  Se comunica con el bloc del pedido vigente y se carga en el carrito
-  void editarPedido(Pedido pedidoSelected) {
-    blocPedidoVigente.agregarPedidoParaEditar(pedidoSelected);
+  void updateEnvio(String id, bool envio) {
+    _pedidosList.listen((element) => element.forEach((ped) {
+          if (ped.pedidoID == id) {
+            ped.envio = envio;
+          }
+        }));
   }
+
+//  Se comunica con el bloc del pedido vigente y se carga en el carrito
+  // void editarPedido(Pedido pedidoSelected) {
+  //   blocPedidoVigente.agregarPedidoParaEditar(pedidoSelected);
+  // }
 
 // Eliminamos el pedido desde el detalle del historial
   Future eliminarPedido(Pedido pedidoSelected) async {

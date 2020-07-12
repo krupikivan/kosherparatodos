@@ -40,6 +40,7 @@ class PedidosListPage extends StatelessWidget {
           not.pedidoActual = list[index];
           _goToDetails(context);
         },
+        envio: list[index].envio,
         pagado: list[index].pagado,
         title:
             '${list[index].cliente.nombre.nombre} ${list[index].cliente.nombre.apellido}',

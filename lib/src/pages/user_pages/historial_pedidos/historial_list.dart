@@ -22,6 +22,7 @@ class HistorialList extends StatelessWidget {
               itemCount: snapshot.data.length,
               itemBuilder: (BuildContext context, int index) {
                 return PedidoCardWidget(
+                  envio: snapshot.data[index].envio,
                   estado: Pedido.enumEntregaToString(
                       snapshot.data[index].estadoEntrega),
                   action: () =>

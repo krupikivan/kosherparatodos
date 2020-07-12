@@ -27,9 +27,6 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       key: navigatorKey,
       debugShowCheckedModeBanner: false,
-      // theme: ThemeData(
-      //     textTheme: GoogleFonts.openSansTextTheme(textTheme),
-      //     fontFamily: 'OpenSans'),
       theme: themeData(),
       home: App(),
     );

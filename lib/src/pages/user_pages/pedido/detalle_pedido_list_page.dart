@@ -1,11 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:kosherparatodos/src/pages/user_pages/pedido/widgets/export.dart';
 import 'package:kosherparatodos/src/pages/user_pages/widgets/item_detalle_pedido_widget.dart';
 import 'package:kosherparatodos/src/Widget/title_text.dart';
 import 'package:kosherparatodos/src/models/pedido.dart';
 import 'package:kosherparatodos/src/pages/user_pages/pedido/bloc/bloc.dart';
+import 'package:kosherparatodos/src/providers/data_provider.dart';
 import 'package:kosherparatodos/src/utils/show_messages.dart';
+import 'package:provider/provider.dart';
 
-class DetallePedidoListPage extends StatelessWidget {
+class DetallePedidoListPage extends StatefulWidget {
+  @override
+  _DetallePedidoListPageState createState() => _DetallePedidoListPageState();
+}
+
+class _DetallePedidoListPageState extends State<DetallePedidoListPage> {
+  bool _envio;
+
+  @override
+  void initState() {
+    super.initState();
+    _envio = false;
+  }
+
   Widget _addHeader(context) {
     return Expanded(
       child: Padding(
@@ -13,20 +29,12 @@ class DetallePedidoListPage extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
-            _getRowText('Producto', context),
-            _getRowText('Precio Unitario', context)
+            TitlePedidoDetail(text: 'Producto', context: context),
+            TitlePedidoDetail(text: 'Precio Unitario', context: context),
           ],
         ),
       ),
     );
-  }
-
-  Widget _getRowText(String text, context) {
-    return Text(text,
-        style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.w500,
-            color: Theme.of(context).primaryColor));
   }
 
   Widget _productItems() {
@@ -54,29 +62,6 @@ class DetallePedidoListPage extends StatelessWidget {
     return const Center(child: Text('Vacio', style: TextStyle(fontSize: 20)));
   }
 
-  Widget _getTotal() {
-    return Expanded(
-      flex: 2,
-      child: StreamBuilder<Pedido>(
-        stream: blocPedidoVigente.getPedido,
-        builder: (context, snapshot) =>
-            !snapshot.hasData || snapshot.data.total == null
-                ? SizedBox()
-                : Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      TitleText(
-                        text:
-                            'Total del pedido: \$${snapshot.data.total.truncate().toString()}',
-                        color: Theme.of(context).primaryColor,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ],
-                  ),
-      ),
-    );
-  }
-
   Widget _realizarPedido(BuildContext context) {
     return StreamBuilder<Pedido>(
         stream: blocPedidoVigente.getPedido,
@@ -90,6 +75,7 @@ class DetallePedidoListPage extends StatelessWidget {
                     children: [
                       StreamBuilder<bool>(
                         stream: blocPedidoVigente.getLoading,
+                        initialData: false,
                         builder: (context, load) => !load.data
                             ? FlatButton(
                                 onPressed: () {
@@ -159,12 +145,55 @@ class DetallePedidoListPage extends StatelessWidget {
               thickness: 1,
               height: 70,
             ),
-            _getTotal(),
+            StreamBuilder<Pedido>(
+              stream: blocPedidoVigente.getPedido,
+              builder: (context, snapshot) => !snapshot.hasData ||
+                      snapshot.data.total == null
+                  ? SizedBox()
+                  : Consumer<DataProvider>(
+                      builder: (context, data, _) => data == null
+                          ? SizedBox()
+                          : Row(
+                              children: <Widget>[
+                                TotalPedido(total: snapshot.data.total),
+                                Column(
+                                  children: <Widget>[
+                                    ChoiceChip(
+                                      selected: _envio,
+                                      selectedColor:
+                                          Theme.of(context).primaryColor,
+                                      label:
+                                          Text('Envio: \$${data.costoEnvio}'),
+                                      labelStyle: TextStyle(
+                                        color: _envio
+                                            ? Colors.white
+                                            : Theme.of(context).primaryColor,
+                                      ),
+                                      onSelected: (nopagado) =>
+                                          _changeBool(data.costoEnvio),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                    ),
+            ),
             SizedBox(height: 30),
             _realizarPedido(context),
           ],
         ),
       ),
     );
+  }
+
+  void _changeBool(int costo) {
+    if (_envio) {
+      _envio = false;
+      setState(() {});
+    } else {
+      _envio = true;
+      setState(() {});
+    }
+    blocPedidoVigente.updateEnvioPedido(_envio, costo);
   }
 }
