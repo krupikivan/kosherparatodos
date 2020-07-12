@@ -30,6 +30,49 @@
             {
               "client_id": "422527605227-8uckqqfu7bkc4krpcaqfr34v39775e2m.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "422527605227-pfsg8bcvhqgr1qd9eiho7j5ke8g67v62.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.kosherparatodos"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:422527605227:android:e6e5835c8754d9e868e1ae",
+        "android_client_info": {
+          "package_name": "com.kpt.kosherparatodos"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "422527605227-8uckqqfu7bkc4krpcaqfr34v39775e2m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCRcwC2C4AMW7it4Q09qk95OJZrNL-gER4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "422527605227-8uckqqfu7bkc4krpcaqfr34v39775e2m.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "422527605227-pfsg8bcvhqgr1qd9eiho7j5ke8g67v62.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.kosherparatodos"
+              }
             }
           ]
         }

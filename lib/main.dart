@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kosherparatodos/src/providers/connectivity.dart';
+import 'package:kosherparatodos/src/providers/preferences.dart';
 import 'package:kosherparatodos/style/theme.dart';
 import 'app.dart';
 
@@ -8,6 +9,8 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final ConnectivityProvider connection = ConnectivityProvider.getInstance();
   connection.initialize();
+  final prefs = new Preferences();
+  await prefs.initPrefs();
   runApp(MyApp());
 }
 

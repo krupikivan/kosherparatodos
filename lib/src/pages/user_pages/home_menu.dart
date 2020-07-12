@@ -7,21 +7,42 @@ import 'package:kosherparatodos/src/pages/user_pages/pedido/bloc/categoria_provi
 import 'package:kosherparatodos/src/pages/user_pages/pedido/pedido.dart';
 import 'package:kosherparatodos/src/pages/user_pages/widgets/export.dart';
 import 'package:kosherparatodos/src/providers/data_provider.dart';
+import 'package:kosherparatodos/src/providers/notification_service.dart';
+import 'package:kosherparatodos/src/providers/preferences.dart';
 import 'package:kosherparatodos/style/theme.dart';
 import 'package:provider/provider.dart';
 import '../../providers/user_repository.dart';
 import 'historial_pedidos/bloc/bloc.dart';
 import 'historial_pedidos/export.dart';
 
-class UserPage extends StatelessWidget {
+class UserPage extends StatefulWidget {
   final FirebaseUser user;
-  TextStyle style;
 
   UserPage({Key key, this.user}) : super(key: key);
 
   @override
+  _UserPageState createState() => _UserPageState();
+}
+
+class _UserPageState extends State<UserPage> {
+  static final Preferences _prefs = Preferences();
+
+  TextStyle style;
+  @override
+  void initState() {
+    super.initState();
+    notificationService
+        .setListenerForLowerVersions(onNotificationInLowerVersions);
+    notificationService.setOnNotificationClick(onNotificationClick);
+    if (_prefs.needData) {
+      notificationService.showNotification(
+          'Importante', 'Hay datos que necesitamos que complete', '');
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    blocUserData.getUserDataFromFirebase(user.uid);
+    blocUserData.getUserDataFromFirebase(widget.user.uid);
     style = TextStyle(color: Colors.black);
     final size = MediaQuery.of(context).size;
     return MultiProvider(
@@ -50,83 +71,89 @@ class UserPage extends StatelessWidget {
           drawer: Builder(
             builder: (context) => StreamBuilder<Cliente>(
               stream: blocUserData.getCliente,
-              builder: (context, snapshot) => !snapshot.hasData
-                  ? SizedBox()
-                  : SafeArea(
-                      child: Drawer(
-                        child: ListView(
-                            padding: EdgeInsets.zero,
-                            children: <Widget>[
-                              Container(
-                                height: size.height * 0.25,
-                                padding: EdgeInsets.only(
-                                    left: 30, top: size.height * 0.05),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Icon(
-                                      Icons.account_circle,
-                                      size: 60,
-                                      color: Colors.white,
-                                    ),
-                                    SizedBox(height: 20),
-                                    Text(
-                                      'Hola ${snapshot.data.nombre.nombre}',
-                                      style: TextStyle(
-                                          fontSize: 25, color: Colors.white),
-                                    ),
-                                  ],
-                                ),
-                                decoration: new BoxDecoration(
-                                    color: Theme.of(context).primaryColor),
-                              ),
-                              ListTile(
-                                title: Text('Historial de pedidos'),
-                                leading: Icon(
-                                  Icons.history,
-                                  color: Theme.of(context).primaryColor,
-                                ),
-                                onTap: () {
-                                  Navigator.of(context).pop();
-                                  blocNav.updateNavigation('Historial');
-                                },
-                              ),
-                              ListTile(
-                                title: Text('Nuevo Pedido'),
-                                leading: Icon(
-                                  Icons.fastfood,
-                                  color: Theme.of(context).primaryColor,
-                                ),
-                                onTap: () {
-                                  Navigator.of(context).pop();
-                                  blocNav.updateNavigation('Productos');
-                                },
-                              ),
-                              ListTile(
-                                title: Text('Datos'),
-                                leading: Icon(
-                                  Icons.info_outline,
-                                  color: Theme.of(context).primaryColor,
-                                ),
-                                onTap: () {
-                                  Navigator.of(context).pop();
-                                  blocNav.updateNavigation('Datos');
-                                },
-                              ),
-                              ListTile(
-                                title: Text('Cerrar Sesion'),
-                                leading: Icon(
-                                  Icons.exit_to_app,
-                                  color: Theme.of(context).primaryColor,
-                                ),
-                                onTap: () => Provider.of<UserRepository>(
-                                        context,
-                                        listen: false)
-                                    .signOut(),
-                              ),
-                            ]),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return SizedBox();
+                } else {
+                  if (snapshot.data.direccion.calle == '' ||
+                      snapshot.data.direccion.ciudad == '') {
+                    _prefs.needData = true;
+                  } else {
+                    _prefs.needData = false;
+                  }
+                  return Drawer(
+                    child:
+                        ListView(padding: EdgeInsets.zero, children: <Widget>[
+                      Container(
+                        height: size.height * 0.25,
+                        padding:
+                            EdgeInsets.only(left: 30, top: size.height * 0.05),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Icon(
+                              Icons.account_circle,
+                              size: 60,
+                              color: Colors.white,
+                            ),
+                            SizedBox(height: 20),
+                            Text(
+                              'Hola ${snapshot.data.nombre.nombre}',
+                              style:
+                                  TextStyle(fontSize: 25, color: Colors.white),
+                            ),
+                          ],
+                        ),
+                        decoration: new BoxDecoration(
+                            color: Theme.of(context).primaryColor),
                       ),
-                    ),
+                      ListTile(
+                        title: Text('Historial de pedidos'),
+                        leading: Icon(
+                          Icons.history,
+                          color: Theme.of(context).primaryColor,
+                        ),
+                        onTap: () {
+                          Navigator.of(context).pop();
+                          blocNav.updateNavigation('Historial');
+                        },
+                      ),
+                      ListTile(
+                        title: Text('Nuevo Pedido'),
+                        leading: Icon(
+                          Icons.fastfood,
+                          color: Theme.of(context).primaryColor,
+                        ),
+                        onTap: () {
+                          Navigator.of(context).pop();
+                          blocNav.updateNavigation('Productos');
+                        },
+                      ),
+                      ListTile(
+                        title: Text('Datos'),
+                        leading: Icon(
+                          Icons.info_outline,
+                          color: Theme.of(context).primaryColor,
+                        ),
+                        onTap: () {
+                          Navigator.of(context).pop();
+                          blocNav.updateNavigation('Datos');
+                        },
+                      ),
+                      ListTile(
+                        title: Text('Cerrar Sesion'),
+                        leading: Icon(
+                          Icons.exit_to_app,
+                          color: Theme.of(context).primaryColor,
+                        ),
+                        onTap: () =>
+                            Provider.of<UserRepository>(context, listen: false)
+                                .signOut(),
+                      ),
+                    ]),
+                  );
+                }
+              },
             ),
           ),
           body: StreamBuilder(
@@ -134,7 +161,7 @@ class UserPage extends StatelessWidget {
             initialData: blocNav.navigationProvider.currentNavigation,
             builder: (context, snapshot) {
               if (blocNav.navigationProvider.currentNavigation == "Historial") {
-                blocUserData.getPedidos(user.uid);
+                blocUserData.getPedidos(widget.user.uid);
                 return HistorialList();
               } else if (blocNav.navigationProvider.currentNavigation ==
                   "Productos") {
@@ -147,6 +174,40 @@ class UserPage extends StatelessWidget {
             },
           ),
         ),
+      ),
+    );
+  }
+
+  void onNotificationInLowerVersions(
+      ReceivedNotification receivedNotification) {}
+
+  onNotificationClick(String payload) {
+    return showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
+        title: Text("Importante"),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Hay datos que necesitamos que complete',
+            ),
+          ],
+        ),
+        actions: <Widget>[
+          FlatButton(
+            child: Text(
+              "Completar",
+              style: TextStyle(color: Theme.of(context).primaryColor),
+            ),
+            onPressed: () {
+              Navigator.of(context).pop();
+              blocNav.updateNavigation('Datos');
+            },
+          ),
+        ],
       ),
     );
   }

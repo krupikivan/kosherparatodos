@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kosherparatodos/src/Widget/export.dart';
 import 'package:kosherparatodos/src/pages/user_pages/pedido/widgets/export.dart';
 import 'package:kosherparatodos/src/pages/user_pages/widgets/item_detalle_pedido_widget.dart';
 import 'package:kosherparatodos/src/Widget/title_text.dart';
@@ -44,7 +45,7 @@ class _DetallePedidoListPageState extends State<DetallePedidoListPage> {
           stream: blocPedidoVigente.getPedido,
           builder: (context, snapshot) {
             if (!snapshot.hasData || snapshot.data.productos == null)
-              return _cleanCart();
+              return EmptyData(text: 'Vacio');
             else
               return ListView.builder(
                 itemCount: snapshot.data.productos.length,
@@ -56,10 +57,6 @@ class _DetallePedidoListPageState extends State<DetallePedidoListPage> {
               );
           }),
     );
-  }
-
-  Widget _cleanCart() {
-    return const Center(child: Text('Vacio', style: TextStyle(fontSize: 20)));
   }
 
   Widget _realizarPedido(BuildContext context) {

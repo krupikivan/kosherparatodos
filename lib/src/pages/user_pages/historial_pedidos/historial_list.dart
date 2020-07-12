@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:kosherparatodos/src/Widget/export.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/widgets/pedido_card_widget.dart';
 import 'package:kosherparatodos/src/models/pedido.dart';
 import 'package:kosherparatodos/src/pages/user_pages/historial_pedidos/export.dart';
@@ -18,22 +19,27 @@ class HistorialList extends StatelessWidget {
                   Theme.of(context).primaryColor),
             ));
           else
-            return ListView.builder(
-              itemCount: snapshot.data.length,
-              itemBuilder: (BuildContext context, int index) {
-                return PedidoCardWidget(
-                  envio: snapshot.data[index].envio,
-                  estado: Pedido.enumEntregaToString(
-                      snapshot.data[index].estadoEntrega),
-                  action: () =>
-                      _goToDetails(context, snapshot.data[index].pedidoID),
-                  pagado: snapshot.data[index].pagado,
-                  title:
-                      'Pedido del ${DateFormat('dd/MM').format(snapshot.data[index].fecha.toDate())}',
-                  subtitle: 'Total: \$${snapshot.data[index].total.truncate()}',
-                );
-              },
-            );
+            return snapshot.data.isEmpty
+                ? EmptyData(
+                    text: 'No hay pedidos',
+                  )
+                : ListView.builder(
+                    itemCount: snapshot.data.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return PedidoCardWidget(
+                        envio: snapshot.data[index].envio,
+                        estado: Pedido.enumEntregaToString(
+                            snapshot.data[index].estadoEntrega),
+                        action: () => _goToDetails(
+                            context, snapshot.data[index].pedidoID),
+                        pagado: snapshot.data[index].pagado,
+                        title:
+                            'Pedido del ${DateFormat('dd/MM').format(snapshot.data[index].fecha.toDate())}',
+                        subtitle:
+                            'Total: \$${snapshot.data[index].total.truncate()}',
+                      );
+                    },
+                  );
         });
   }
 

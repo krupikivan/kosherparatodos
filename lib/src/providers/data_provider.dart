@@ -1,5 +1,4 @@
 import 'dart:collection';
-
 import 'package:flutter/cupertino.dart';
 import 'package:kosherparatodos/src/models/pedido.dart';
 import 'package:kosherparatodos/src/repository/firestore_provider.dart';
