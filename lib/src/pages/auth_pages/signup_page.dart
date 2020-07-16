@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:kosherparatodos/src/pages/auth_pages/widgets/input_text.dart';
 import 'package:kosherparatodos/src/pages/auth_pages/widgets/label_text.dart';
 import 'package:kosherparatodos/src/pages/auth_pages/widgets/submit_button.dart';
@@ -136,7 +137,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           InputText(
                             controller: _password,
                             type: 'pass',
-                            icon: Icons.personal_video,
+                            icon: Icons.lock,
                             label: "Contraseña",
                             isPass: true,
                             error:

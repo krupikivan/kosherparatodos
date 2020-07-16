@@ -77,7 +77,8 @@ class _LoginPageState extends State<LoginPage> {
                             controller: _password,
                             isPass: true,
                             type: 'pass',
-                            error: "Ingresa una contraseña",
+                            error:
+                                "Contraseña debe tener 8 caracteres 1 mayuscula y numeros",
                             label: "Contraseña",
                           ),
                           SizedBox(height: 25),
