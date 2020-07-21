@@ -3,19 +3,19 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:kosherparatodos/src/Widget/export.dart';
 import 'package:kosherparatodos/src/Widget/shimmer_list_loading.dart';
-import 'package:kosherparatodos/src/models/producto.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/productos/new_producto.dart';
-import 'package:kosherparatodos/src/pages/admin_pages/productos/new_categoria.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/productos/producto_detail_page.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/provider/categoria_notifier.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/widgets/export.dart';
 import 'package:kosherparatodos/src/repository/firebase_storage.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/provider/producto_notifier.dart';
 import 'package:provider/provider.dart';
+import '../provider/categoria_notifier.dart';
 
 class ProductoListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final prod = Provider.of<ProductoNotifier>(context);
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
       body: Consumer<CategoriaNotifier>(
@@ -32,7 +32,7 @@ class ProductoListPage extends StatelessWidget {
                       itemCount: categoria.categoriaPadreList.length,
                       itemBuilder: (context, int index) {
                         return CategoriaCardWidget(
-                          producto: Provider.of<ProductoNotifier>(context),
+                          producto: prod,
                           categoria: categoria,
                           index: index,
                         );
@@ -68,49 +68,58 @@ class ProductoListPage extends StatelessWidget {
   }
 
   Widget _fillProductos(BuildContext context) {
-    final producto = Provider.of<ProductoNotifier>(context);
+    final producto = Provider.of<ProductoNotifier>(context, listen: false);
     final storage = Provider.of<FireStorageService>(context, listen: false);
     return Expanded(
       flex: 2,
       child: ListView.builder(
         itemCount: producto.productoList.length,
-        itemBuilder: (BuildContext context, int index) => FutureBuilder(
-          future: storage.getImage(producto.productoList[index].imagen),
-          builder: (context, snapshot) => !snapshot.hasData
-              ? ShimmerListLoadingEffect()
-              : ProductoCardWidget(
-                  descripcion: producto.productoList[index].descripcion,
-                  img: snapshot.data,
-                  marca: producto.productoList[index].marca,
-                  action: () {
-                    producto.productoActual = producto.productoList[index];
-                    _detalleProducto(
-                        context, snapshot.data, producto.productoActual);
-                  },
-                ),
-        ),
+        itemBuilder: (BuildContext context, int index) => producto
+                    .productoList[index].imagen ==
+                null
+            ? FutureBuilder(
+                //TODO: Faltaria poder editar la url de la imagen y asginarla en memoria
+                future: storage.getImage(producto.productoList[index].codigo),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) {
+                    return ShimmerListLoadingEffect();
+                  } else {
+                    return ProductoCardWidget(
+                      descripcion: producto.productoList[index].descripcion,
+                      img: snapshot.data,
+                      marca: producto.productoList[index].marca,
+                      action: () {
+                        producto.productoActual = producto.productoList[index];
+                        producto.productoActual.imagen =
+                            snapshot.data.toString();
+                        _detalleProducto(context);
+                      },
+                    );
+                  }
+                })
+            //! Si esta guardada en memoria entonces no consume el Firestore
+            : ProductoCardWidget(
+                descripcion: producto.productoList[index].descripcion,
+                img: producto.productoList[index].imagen,
+                marca: producto.productoList[index].marca,
+                action: () {
+                  producto.productoActual = producto.productoList[index];
+                  _detalleProducto(context);
+                },
+              ),
       ),
     );
   }
 
-  void _detalleProducto(BuildContext context, image, Producto prod) {
+  void _detalleProducto(BuildContext context) {
     Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => ProductoDetailPage(
-                  image: image,
-                  producto: prod,
-                )));
+        context, MaterialPageRoute(builder: (context) => ProductoDetailPage()));
   }
 
   void _addNewProducto(BuildContext context) {
+    Provider.of<CategoriaNotifier>(context, listen: false).clearListString();
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => NewProducto()));
-  }
-
-  void _addNewCategoria(BuildContext context) {
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => NewCategoria()));
   }
 
   Widget _bntExpanded(BuildContext context) {
@@ -126,13 +135,6 @@ class ProductoListPage extends StatelessWidget {
         color: Colors.white,
       ),
       children: [
-        SpeedDialChild(
-          child: Icon(FontAwesomeIcons.listUl, color: Colors.white),
-          backgroundColor: Theme.of(context).primaryColor,
-          label: 'Agregar Categoria',
-          labelStyle: TextStyle(color: Theme.of(context).primaryColor),
-          onTap: () => _addNewCategoria(context),
-        ),
         SpeedDialChild(
           child: Icon(FontAwesomeIcons.cartPlus, color: Colors.white),
           backgroundColor: Theme.of(context).primaryColor,

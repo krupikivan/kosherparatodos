@@ -41,7 +41,6 @@ class Producto {
     marca = data['marca'] as String;
     descripcion = data['descripcion'] as String;
     habilitado = data['habilitado'] as bool;
-    imagen = data['imagen'] as String;
     precio = data['precio'].toDouble() as double;
     stock = data['stock'].toInt() as int;
     unidadMedida = data['unidadMedida'] as String;

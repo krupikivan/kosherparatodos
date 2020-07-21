@@ -8,6 +8,7 @@ import 'package:kosherparatodos/src/pages/admin_pages/provider/categoria_notifie
 import 'package:kosherparatodos/src/pages/admin_pages/provider/cliente_notifier.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/provider/pedido_notifier.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/provider/producto_notifier.dart';
+import 'package:kosherparatodos/src/pages/admin_pages/categorias/categoria_page.dart';
 import 'package:kosherparatodos/src/providers/data_provider.dart';
 import 'package:kosherparatodos/src/providers/user_repository.dart';
 import 'package:kosherparatodos/style/theme.dart';
@@ -105,14 +106,25 @@ class AdminPage extends StatelessWidget {
                       },
                     ),
                     ListTile(
-                      title: Text('Categorias / Productos'),
+                      title: Text('Productos'),
+                      leading: Icon(
+                        Icons.image,
+                        color: Theme.of(context).primaryColor,
+                      ),
+                      onTap: () {
+                        Navigator.of(context).pop();
+                        bloc.updateNavigation('Productos');
+                      },
+                    ),
+                    ListTile(
+                      title: Text('Categorias'),
                       leading: Icon(
                         Icons.list,
                         color: Theme.of(context).primaryColor,
                       ),
                       onTap: () {
                         Navigator.of(context).pop();
-                        bloc.updateNavigation('Productos');
+                        bloc.updateNavigation('Categorias');
                       },
                     ),
                     Divider(color: Theme.of(context).dividerColor),
@@ -148,6 +160,9 @@ class AdminPage extends StatelessWidget {
                 if (bloc.navigationProvider.currentNavigation == "Productos") {
                   return ProductoListPage();
                 }
+                if (bloc.navigationProvider.currentNavigation == "Categorias") {
+                  return CategoriaPage();
+                }
                 return ClienteListPage();
               },
             ),
@@ -165,6 +180,8 @@ String _getTitle(title) {
     return 'Pedidos';
   } else if (bloc.navigationProvider.currentNavigation == "Productos") {
     return 'Productos';
+  } else if (bloc.navigationProvider.currentNavigation == "Categorias") {
+    return 'Categorias';
   } else {
     return 'Kosher en un click';
   }

@@ -12,9 +12,9 @@ class CustomDataList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      isThreeLine: multiLines,
+      isThreeLine: multiLines ?? false,
       title: Text(dato1),
-      subtitle: dato2 != ""
+      subtitle: dato2 != null && dato2 != ""
           ? Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[

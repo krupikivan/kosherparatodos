@@ -16,7 +16,7 @@ class CategoriaCardWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        categoria.setPadreSelected(categoria.categoriaPadreList[index]);
+        categoria.getHijos(index: index);
         producto.clearProductoList();
       },
       child: Row(

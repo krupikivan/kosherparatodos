@@ -15,6 +15,9 @@ class CategoriaCheckboxWidget extends StatelessWidget {
     final ProductoNotifier producto = Provider.of<ProductoNotifier>(context);
     return OutlineButton(
       onPressed: () {
+        if (esProducto) {
+          categoria.getHijos();
+        }
         showDialog(
             context: context,
             builder: (BuildContext context) => CategoriaDialog(
@@ -57,22 +60,23 @@ class _CategoriaDialogState extends State<CategoriaDialog> {
               child: ListView.builder(
                 scrollDirection: Axis.vertical,
                 shrinkWrap: true,
-                itemCount: widget.categoria.categoriaPadreList.length,
+                itemCount: widget.esProducto
+                    ? widget.categoria.categoriaHijoList.length
+                    : widget.categoria.categoriaPadreList.length,
                 itemBuilder: (BuildContext context, int index) =>
                     CheckboxListTile(
-                  value: widget.categoria.categoriaPadreList[index].selected ??
+                  value: (widget.esProducto
+                          ? widget.categoria.categoriaHijoList[index].selected
+                          : widget
+                              .categoria.categoriaPadreList[index].selected) ??
                       false,
                   onChanged: (bool val) {
                     widget.esProducto
                         ? val
                             ? widget.producto.categoriaString.add(widget
-                                .categoria
-                                .categoriaPadreList[index]
-                                .categoriaID)
+                                .categoria.categoriaHijoList[index].categoriaID)
                             : widget.producto.categoriaString.remove(widget
-                                .categoria
-                                .categoriaPadreList[index]
-                                .categoriaID)
+                                .categoria.categoriaHijoList[index].categoriaID)
                         : val
                             ? widget.categoria.categoriaString.add(widget
                                 .categoria
@@ -83,12 +87,18 @@ class _CategoriaDialogState extends State<CategoriaDialog> {
                                 .categoriaPadreList[index]
                                 .categoriaID);
                     widget.categoria.changeSelected(
-                        widget.categoria.categoriaPadreList[index].categoriaID,
-                        val);
+                        widget.esProducto
+                            ? widget
+                                .categoria.categoriaHijoList[index].categoriaID
+                            : widget.categoria.categoriaPadreList[index]
+                                .categoriaID,
+                        val,
+                        widget.esProducto);
                     setState(() {});
                   },
-                  title:
-                      Text(widget.categoria.categoriaPadreList[index].nombre),
+                  title: Text(widget.esProducto
+                      ? widget.categoria.categoriaHijoList[index].nombre
+                      : widget.categoria.categoriaPadreList[index].nombre),
                 ),
               ),
             ),

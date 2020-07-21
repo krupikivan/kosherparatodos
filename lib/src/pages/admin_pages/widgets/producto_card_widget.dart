@@ -35,7 +35,15 @@ class ProductoCardWidget extends StatelessWidget {
             marca,
             style: TextStyle(fontSize: 12),
           ),
-          leading: Image.network(img),
+          leading: CircleAvatar(
+            child: Container(
+              decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.white,
+                  image: DecorationImage(
+                      fit: BoxFit.cover, image: NetworkImage(img))),
+            ),
+          ),
           onTap: action,
         ),
       ),

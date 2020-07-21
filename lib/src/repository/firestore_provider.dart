@@ -6,6 +6,8 @@ import 'package:kosherparatodos/src/models/pedido.dart';
 import 'package:kosherparatodos/src/models/producto.dart';
 import 'package:kosherparatodos/src/repository/repo.dart';
 
+import '../models/categoria.dart';
+
 class FirestoreProvider implements Repository {
   final Firestore _firestore = Firestore.instance;
 
@@ -239,6 +241,26 @@ class FirestoreProvider implements Repository {
   }
 
   @override
+  Future<void> changeImageUrl(Producto producto) async {
+    await _firestore
+        .collection('productos')
+        .document(producto.productoID)
+        .updateData({
+      'imagen': producto.codigo,
+    });
+  }
+
+  @override
+  Future<void> changeCategoryName(Categoria categoria, String name) async {
+    await _firestore
+        .collection('categorias')
+        .document(categoria.categoriaID)
+        .updateData({
+      'nombre': name,
+    });
+  }
+
+  @override
   Future<void> updateAllData(Producto producto) async {
     await _firestore
         .collection('productos')
@@ -273,9 +295,9 @@ class FirestoreProvider implements Repository {
 
   @override
   Future<void> addNewCategoria(Categoria newCategoria) async {
-    final DocumentReference docRef = _firestore
-        .collection('categoriasMostradas')
-        .document('Zx7PmrGsLt4dGfUumgE0');
+    // final DocumentReference docRef = _firestore
+    //     .collection('categoriasMostradas')
+    //     .document('Zx7PmrGsLt4dGfUumgE0');
 
     await _firestore.runTransaction((t) async {
       await _firestore.collection('categorias').add({
@@ -283,15 +305,15 @@ class FirestoreProvider implements Repository {
         'nombre': newCategoria.nombre,
         'esPadre': newCategoria.esPadre,
       }).then((value) {
-        final Map<String, String> body = {
-          'id': value.documentID,
-          'nombre': newCategoria.nombre
-        };
-        if (newCategoria.esPadre) {
-          docRef.updateData({
-            'categorias': FieldValue.arrayUnion([body])
-          });
-        }
+        // final Map<String, String> body = {
+        //   'id': value.documentID,
+        //   'nombre': newCategoria.nombre
+        // };
+        // if (newCategoria.esPadre) {
+        //   docRef.updateData({
+        //     'categorias': FieldValue.arrayUnion([body])
+        //   });
+        // }
       });
     }).catchError((onError) => print(onError.toString()));
   }
@@ -302,11 +324,11 @@ class FirestoreProvider implements Repository {
   }
 
   @override
-  Future<DocumentSnapshot> getCategoriasPrincipal() async {
+  Future<QuerySnapshot> getCategoriasPrincipal() async {
     return _firestore
-        .collection('categoriasMostradas')
-        .document('Zx7PmrGsLt4dGfUumgE0')
-        .get();
+        .collection('categorias')
+        .where('esPadre', isEqualTo: true)
+        .getDocuments();
   }
 
   @override

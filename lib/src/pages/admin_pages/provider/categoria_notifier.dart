@@ -11,51 +11,35 @@ class CategoriaNotifier with ChangeNotifier {
   final _conex = ConnectivityProvider.getInstance();
 
   CategoriaNotifier.init() {
-    getCategoriasPrincipales();
+    getAllCategorias();
   }
 
-  Future getCategoriasPrincipales() async {
+//Traemos una sola vez todas las categorias y en la app dividimos padres e hijos
+  Future getAllCategorias() async {
     final List<Categoria> _list = [];
-    await _repository.getCategoriasPrincipal().then((DocumentSnapshot value) {
-      final List _listPrincipal = value.data['categorias'] as List;
-      _listPrincipal.forEach((element) {
-        final Categoria _categoria = Categoria.fromPrincipal(element);
+    await _repository.getAllCategorias().then((value) {
+      value.documents.forEach((data) {
+        final Categoria _categoria = Categoria.fromDatabase(data);
         _list.add(_categoria);
       });
-      _categoriaPadreList = _list;
+      _categoriaList = _list; //Este listado contiene todas las categorias
+      //Decidimos quien es Padre
+      _categoriaPadreList = _list.where((element) => element.esPadre).toList();
       notifyListeners();
     });
   }
 
-  void getAllCategoriasHijos() {
-    if (_categoriaList.isEmpty) {
-      final List<Categoria> _list = [];
-      _repository.getAllCategoriasHijos().then((value) {
-        final List _listAllCategorias = value.documents;
-        _listAllCategorias.forEach((element) {
-          final Categoria _categoria = Categoria.fromShowOnNewProduct(element);
-          _list.add(_categoria);
-        });
-        _categoriaList = _list;
-        notifyListeners();
-      });
-    }
+  void clearHijos() {
+    _categoriaHijoList.clear();
+    notifyListeners();
   }
 
-  void getCategoriasHijos() {
-    _categoriaHijoSelected = null;
-    final List<Categoria> _list = [];
-    _repository
-        .getCategoriasHijos(_categoriaPadreSelected.categoriaID)
-        .then((value) {
-      final List _listHijos = value.documents;
-      _listHijos.forEach((element) {
-        final Categoria _categoria = Categoria.fromHijo(element);
-        _list.add(_categoria);
-      });
-      _categoriaHijoList = _list;
-      notifyListeners();
-    });
+  void changeCategoria(Categoria categoria, String name) {
+    _categoriaPadreList
+        .firstWhere((element) => element.categoriaID == categoria.categoriaID)
+        .nombre = name;
+    notifyListeners();
+    _repository.changeCategoryName(categoria, name);
   }
 
   void addNewCategoria(Categoria nueva) {
@@ -66,24 +50,47 @@ class CategoriaNotifier with ChangeNotifier {
           .then((value) => true)
           .catchError((onError) => throw 'Error')
           .whenComplete(() {
-        getCategoriasPrincipales();
-        _clearCategoriaNueva();
+        getAllCategorias();
+        clearListString();
       }).catchError((error) => throw 'Error');
     } else {
       throw 'No hay conexion';
     }
   }
 
-  void _clearCategoriaNueva() {
-    _categoriaPadreList.forEach((element) => element.selected = false);
-    _categoriaString.clear();
+  void getHijos({int index}) {
+    String padreId = '';
+    if (index != null) {
+      _categoriaPadreSelected = _categoriaPadreList[index];
+      padreId = _categoriaPadreSelected.categoriaID;
+      _categoriaHijoList = _categoriaList
+          .where((element) => element.ancestro.contains(padreId))
+          .toList();
+    } else {
+      _categoriaHijoList =
+          _categoriaList.where((element) => !element.esPadre).toList();
+    }
     notifyListeners();
-    // _categoriaNueva = null;
   }
 
-  void changeSelected(String id, bool val) {
-    final Categoria cat =
-        _categoriaPadreList.firstWhere((element) => element.categoriaID == id);
+  void clearListString() {
+    _categoriaPadreList.forEach((element) => element.selected = false);
+    if (_categoriaHijoList.isNotEmpty) {
+      _categoriaHijoList.forEach((element) => element.selected = false);
+    }
+    _categoriaString.clear();
+    notifyListeners();
+  }
+
+  void changeSelected(String id, bool val, bool esProducto) {
+    Categoria cat;
+    if (!esProducto) {
+      cat = _categoriaPadreList
+          .firstWhere((element) => element.categoriaID == id);
+    } else {
+      cat =
+          _categoriaHijoList.firstWhere((element) => element.categoriaID == id);
+    }
     cat.selected = val;
     notifyListeners();
   }
@@ -105,11 +112,6 @@ class CategoriaNotifier with ChangeNotifier {
     notifyListeners();
   }
 
-  void setPadreSelected(Categoria cate) {
-    _categoriaPadreSelected = cate;
-    getCategoriasHijos();
-  }
-
 //---------------------------Categoria hijo seleccionada
   Categoria _categoriaHijoSelected;
   Categoria get categoriaHijoSelected => _categoriaHijoSelected;
@@ -127,7 +129,7 @@ class CategoriaNotifier with ChangeNotifier {
     notifyListeners();
   }
 
-//---------------------------Categoria hijos todos
+//---------------------------Todas las Categorias
   List<Categoria> _categoriaList = [];
   UnmodifiableListView<Categoria> get categoriaList =>
       UnmodifiableListView(_categoriaList);
@@ -135,14 +137,6 @@ class CategoriaNotifier with ChangeNotifier {
     _categoriaList = categoriaList;
     notifyListeners();
   }
-
-  //---------------------------Categoria que estoy creando
-  // Categoria _categoriaNueva;
-  // Categoria get categoriaNueva => _categoriaNueva;
-  // set categoriaNueva(Categoria categoriaNueva) {
-  //   _categoriaNueva = categoriaNueva;
-  //   notifyListeners();
-  // }
 
   //---------------------------Categorias ancestros para la nueva categoria
   List<String> _categoriaString = [];

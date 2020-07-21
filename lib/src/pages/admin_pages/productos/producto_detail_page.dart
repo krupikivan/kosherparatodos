@@ -5,19 +5,11 @@ import 'package:kosherparatodos/src/Widget/title_text.dart';
 import 'package:kosherparatodos/src/models/producto.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/provider/producto_notifier.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/widgets/export.dart';
+import 'package:kosherparatodos/src/repository/firebase_storage.dart';
 import 'package:provider/provider.dart';
+import 'package:image_picker/image_picker.dart';
 
-class ProductoDetailPage extends StatefulWidget {
-  final String image;
-  final Producto producto;
-
-  ProductoDetailPage({Key key, this.image, this.producto}) : super(key: key);
-
-  @override
-  _ProductoDetailPageState createState() => _ProductoDetailPageState();
-}
-
-class _ProductoDetailPageState extends State<ProductoDetailPage> {
+class ProductoDetailPage extends StatelessWidget {
   TextEditingController _codigoController;
   TextEditingController _descripcionController;
   TextEditingController _marcaController;
@@ -26,13 +18,9 @@ class _ProductoDetailPageState extends State<ProductoDetailPage> {
   TextEditingController _umController;
 
   @override
-  void initState() {
-    super.initState();
-    _fillControllerData(widget.producto);
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final prod = Provider.of<ProductoNotifier>(context);
+    _fillControllerData(prod.productoActual);
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(),
@@ -56,10 +44,12 @@ class _ProductoDetailPageState extends State<ProductoDetailPage> {
                   children: [
                     GestureDetector(
                       child: CircleAvatar(
-                        backgroundImage: NetworkImage(widget.image),
+                        backgroundImage: prod.productoActual.imagen == null
+                            ? AssetImage('assets/images/logo.png')
+                            : NetworkImage(prod.productoActual.imagen),
                         radius: 40,
                       ),
-                      onTap: () => null,
+                      onTap: () => getImage(ImageSource.gallery, prod),
                     ),
                     Text("Imagen")
                   ],
@@ -109,6 +99,18 @@ class _ProductoDetailPageState extends State<ProductoDetailPage> {
         backgroundColor: Theme.of(context).primaryColor,
       ),
     );
+  }
+
+  Future getImage(ImageSource source, ProductoNotifier prod) async {
+    final FireStorageService storage = FireStorageService.instance();
+    ImagePicker.platform.pickImage(source: source).then((image) async {
+      if (image != null) {
+        await storage.uploadImage(image, prod.productoActual.codigo);
+        await prod.changeImageName();
+      }
+    }).catchError((error) {
+      print(error);
+    });
   }
 
   void _updateAllData(BuildContext context) {

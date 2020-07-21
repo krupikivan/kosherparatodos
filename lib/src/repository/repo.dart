@@ -4,6 +4,8 @@ import 'package:kosherparatodos/src/models/categoria.dart';
 import 'package:kosherparatodos/src/models/cliente.dart';
 import 'package:kosherparatodos/src/models/pedido.dart';
 import 'package:kosherparatodos/src/models/producto.dart';
+
+import '../models/categoria.dart';
 // import 'package:kosherparatodos/src/repository/firestore_provider.dart';
 
 abstract class Repository {
@@ -20,6 +22,8 @@ abstract class Repository {
 
   Future<void> addNewPedido(Pedido pedido, Cliente cliente);
 
+  Future<void> changeCategoryName(Categoria categoria, String name);
+
   Future<bool> getUserAdmin(String id);
 
   Future<void> eliminarPedido(Pedido pedidoSelected);
@@ -29,6 +33,8 @@ abstract class Repository {
 //----------------------------------------------------------
 
   Future<QuerySnapshot> getClientes();
+
+  Future<QuerySnapshot> getAllCategorias();
 
   StreamSubscription<QuerySnapshot> getAllPedidos();
 
@@ -41,6 +47,8 @@ abstract class Repository {
   Stream<DocumentSnapshot> getUsersAdmin();
 
   Future<void> setPagado(String idPedido, {bool pagado});
+
+  Future<void> changeImageUrl(Producto producto);
 
   Future<void> setEstadoEntrega(String idPedido, EnumEntrega value);
 
@@ -58,9 +66,7 @@ abstract class Repository {
 
   Future<void> updateAllData(Producto producto);
 
-  Future<DocumentSnapshot> getCategoriasPrincipal();
-
-  Future<QuerySnapshot> getAllCategorias();
+  Future<QuerySnapshot> getCategoriasPrincipal();
 
   Future<QuerySnapshot> getAllCategoriasHijos();
 

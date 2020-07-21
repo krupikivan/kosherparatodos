@@ -52,6 +52,18 @@ class ProductoNotifier with ChangeNotifier {
     });
   }
 
+  void addImage(int index, String data) {
+    print('Se agrego');
+    _productoList[index].imagen = data;
+    // notifyListeners();
+  }
+
+  Future changeImageName() async {
+    await _repository.changeImageUrl(_productoActual);
+    _productoActual.imagen = _productoActual.codigo;
+    notifyListeners();
+  }
+
   // getProductosFromHijoSelected(String idHijo) {
   //   List<Producto> _list = [];
   //   _repository.getProductosFromHijoSelected(idHijo).then((listProd) {

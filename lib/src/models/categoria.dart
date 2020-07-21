@@ -24,6 +24,7 @@ class Categoria {
 
   Categoria.fromNew(this.nombre, this.esPadre, this.selected);
 
+//Usamos esto para traer la primera vez desde Firebase -ADMIN
   Categoria.fromDatabase(DocumentSnapshot doc) {
     categoriaID = doc.documentID;
     nombre = doc.data['nombre'] as String;
@@ -32,6 +33,7 @@ class Categoria {
     esPadre = doc.data['esPadre'] as bool;
   }
 
+//Cargamos todas las categorias 1 sola vez de Firebase
   Categoria.fromPrincipal(data) {
     nombre = data['nombre'] as String;
     categoriaID = data['id'] as String;
