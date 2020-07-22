@@ -27,9 +27,9 @@ class CategoriaCardWidget extends StatelessWidget {
                 style: categoria.categoriaPadreSelected ==
                         categoria.categoriaPadreList[index]
                     ? TextStyle(
-                        fontSize: 18.0,
+                        fontSize: 22.0,
                         fontWeight: FontWeight.w900,
-                        color: Theme.of(context).primaryColor)
+                        color: Theme.of(context).primaryColorLight)
                     : TextStyle(fontSize: 18.0, fontWeight: FontWeight.w300)),
           ),
           SizedBox(

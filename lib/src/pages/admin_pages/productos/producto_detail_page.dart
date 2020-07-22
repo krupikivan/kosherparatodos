@@ -49,7 +49,7 @@ class ProductoDetailPage extends StatelessWidget {
                             : NetworkImage(prod.productoActual.imagen),
                         radius: 40,
                       ),
-                      onTap: () => getImage(ImageSource.gallery, prod),
+                      onTap: () => getImage(ImageSource.camera, prod),
                     ),
                     Text("Imagen")
                   ],
@@ -89,11 +89,12 @@ class ProductoDetailPage extends StatelessWidget {
               tipo: 'P',
               controller: _precioController,
               isNum: true,
-              description: 'Precio unitario,'),
+              description: 'Precio unitario'),
           EstadoHabilitado(),
         ],
       ),
       floatingActionButton: FloatingActionButton.extended(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
         onPressed: () => _updateAllData(context),
         label: const Text('Guardar'),
         backgroundColor: Theme.of(context).primaryColor,
@@ -102,11 +103,13 @@ class ProductoDetailPage extends StatelessWidget {
   }
 
   Future getImage(ImageSource source, ProductoNotifier prod) async {
+
     final FireStorageService storage = FireStorageService.instance();
     ImagePicker.platform.pickImage(source: source).then((image) async {
       if (image != null) {
         await storage.uploadImage(image, prod.productoActual.codigo);
-        await prod.changeImageName();
+        var img = await storage.getImage(prod.productoActual.codigo);
+        await prod.changeImageName(img);
       }
     }).catchError((error) {
       print(error);

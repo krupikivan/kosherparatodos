@@ -29,6 +29,7 @@ class SubcategoriaCardWidget extends StatelessWidget {
                         categoria.categoriaHijoList[index]
                     ? TextStyle(
                         fontWeight: FontWeight.w900,
+                        fontSize: 17,
                         color: Theme.of(context).primaryColor)
                     : TextStyle(fontWeight: FontWeight.w300)),
           ),

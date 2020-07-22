@@ -58,9 +58,16 @@ class ProductoNotifier with ChangeNotifier {
     // notifyListeners();
   }
 
-  Future changeImageName() async {
+  Future changeImageName(String data) async {
     await _repository.changeImageUrl(_productoActual);
-    _productoActual.imagen = _productoActual.codigo;
+    // _productoList.firstWhere((element) => element.productoID == _productoActual.productoID).imagen = data;
+    _productoList.forEach((element) {
+      if(element.productoID == _productoActual.productoID) {
+        element.imagen = data;
+        return;
+      }
+    });
+    // _productoActual.imagen = _productoActual.codigo;
     notifyListeners();
   }
 

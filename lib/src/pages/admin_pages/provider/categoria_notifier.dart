@@ -72,7 +72,7 @@ class CategoriaNotifier with ChangeNotifier {
       _categoriaHijoList =
           _categoriaList.where((element) => !element.esPadre).toList();
     }
-    notifyListeners();
+    // notifyListeners();
   }
 
   void clearListString() {
