@@ -20,6 +20,7 @@ class _ProductoCardState extends State<ProductoCard> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Card(
       margin: EdgeInsets.symmetric(horizontal: 20),
       clipBehavior: Clip.antiAliasWithSaveLayer,
@@ -106,72 +107,175 @@ class _ProductoCardState extends State<ProductoCard> {
                     Align(alignment: Alignment.centerRight, child: _getIcon()),
                   ],
                 )
-              : Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(2, 2, 10, 2),
-                        child: ConstrainedBox(
-                          constraints: BoxConstraints(
-                            maxHeight: 78,
-                            minHeight: 78,
-                          ),
-                          child: Hero(
-                            tag: widget.producto.descripcion,
-                            child: Image(
-                              image: NetworkImage(widget.imagen),
-                              fit: BoxFit.contain,
-                            ),
-                          ),
+              // : Row(
+              //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              //     children: <Widget>[
+              //       Expanded(
+              //         child: Padding(
+              //           padding: const EdgeInsets.fromLTRB(2, 2, 10, 2),
+              //           child: ConstrainedBox(
+              //             constraints: BoxConstraints(
+              //               maxHeight: 78,
+              //               minHeight: 78,
+              //             ),
+              //             child: CircleAvatar(
+              //               child: Container(
+              //                 decoration: BoxDecoration(
+              //                     shape: BoxShape.circle,
+              //                     color: Colors.white,
+              //                     image: DecorationImage(
+              //                         fit: BoxFit.cover,
+              //                         image: NetworkImage(widget.imagen))),
+              //               ),
+              //             ),
+              //           ),
+              //         ),
+              //       ),
+              //       Expanded(
+              //         flex: 3,
+              //         child: Padding(
+              //           padding: const EdgeInsets.only(left: 0),
+              //           child: Column(
+              //             crossAxisAlignment: CrossAxisAlignment.start,
+              //             children: <Widget>[
+              //               FittedBox(
+              //                 child: Text(
+              //                   widget.producto.descripcion,
+              //                   maxLines: 3,
+              //                   style: TextStyle(
+              //                       color: Theme.of(context).primaryColor,
+              //                       fontWeight: FontWeight.bold,
+              //                       fontSize: 18),
+              //                 ),
+              //               ),
+              //               SizedBox(
+              //                 height: 10,
+              //               ),
+              //               FittedBox(
+              //                 child: Text(
+              //                   widget.producto.marca,
+              //                   style: TextStyle(
+              //                       color: Theme.of(context).primaryColor,
+              //                       fontSize: 14),
+              //                 ),
+              //               ),
+              //               SizedBox(
+              //                 height: 10,
+              //               ),
+              //               Text(
+              //                 '\$${widget.producto.precio.truncate()}',
+              //                 style: TextStyle(
+              //                     color: Theme.of(context).primaryColor,
+              //                     fontWeight: FontWeight.bold,
+              //                     fontSize: 18),
+              //               ),
+              //             ],
+              //           ),
+              //         ),
+              //       ),
+              //       Align(alignment: Alignment.center, child: _getIcon()),
+              //     ],
+              //   ),
+              : Stack(alignment: Alignment.bottomCenter, children: <Widget>[
+                  // Those are our background
+                  Container(
+                    height: 120,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(22),
+                      color: Theme.of(context).primaryColor,
+                    ),
+                    child: Container(
+                      margin: EdgeInsets.only(right: 10),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(22),
+                      ),
+                    ),
+                  ),
+                  Positioned(bottom: 10, child: _getIcon()),
+                  // our product image
+                  Positioned(
+                    top: 0,
+                    right: 0,
+                    child: Hero(
+                      tag: '123',
+                      child: Container(
+                        padding: EdgeInsets.symmetric(horizontal: 16),
+                        height: 120,
+                        width: 160,
+                        child: CircleAvatar(
+                          backgroundImage: NetworkImage(widget.imagen),
                         ),
                       ),
                     ),
-                    Expanded(
-                      flex: 3,
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 0),
+                  ),
+                  // Product title and price
+                  Positioned(
+                      bottom: 0,
+                      left: 0,
+                      child: SizedBox(
+                        height: 136,
+                        // our image take 200 width, thats why we set out total width - 200
+                        width: size.width - 200,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            FittedBox(
-                              child: Text(
-                                widget.producto.descripcion,
-                                maxLines: 3,
-                                style: TextStyle(
-                                    color: Theme.of(context).primaryColor,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 18),
+                            Spacer(),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 16),
+                              child: FittedBox(
+                                child: Text(
+                                  widget.producto.descripcion,
+                                  maxLines: 3,
+                                  style: TextStyle(
+                                      color: Theme.of(context).primaryColor,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18),
+                                ),
                               ),
                             ),
                             SizedBox(
                               height: 10,
                             ),
-                            FittedBox(
-                              child: Text(
-                                widget.producto.marca,
-                                style: TextStyle(
-                                    color: Theme.of(context).primaryColor,
-                                    fontSize: 14),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 16),
+                              child: FittedBox(
+                                child: Text(
+                                  widget.producto.marca,
+                                  style: TextStyle(
+                                      color: Theme.of(context).primaryColor,
+                                      fontSize: 14),
+                                ),
                               ),
                             ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Text(
-                              '\$${widget.producto.precio.truncate()}',
-                              style: TextStyle(
-                                  color: Theme.of(context).primaryColor,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 18),
+                            // it use the available space
+                            Spacer(),
+                            Container(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 16 * 1.5, // 30 padding
+                                vertical: 16 / 4, // 5 top and bottom
+                              ),
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).primaryColor,
+                                borderRadius: BorderRadius.only(
+                                  bottomLeft: Radius.circular(22),
+                                  topRight: Radius.circular(22),
+                                ),
+                              ),
+                              child: Text(
+                                "\$${widget.producto.precio.truncate()}",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .button
+                                    .copyWith(color: Colors.white),
+                              ),
                             ),
                           ],
                         ),
-                      ),
-                    ),
-                    Align(alignment: Alignment.center, child: _getIcon()),
-                  ],
-                ),
+                      ))
+                ])
         ],
       ),
     );

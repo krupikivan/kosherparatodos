@@ -73,7 +73,6 @@ class _ProductoGridPageState extends State<ProductoGridPage> {
           cate.productoList.isNotEmpty &&
                   cate.categoriaHijoList.any((element) => element.selected)
               ? Expanded(
-                  // child: StaggeredGridView.countBuilder(
                   child: Padding(
                     padding: const EdgeInsets.only(top: 15),
                     child: ListView.separated(
@@ -86,7 +85,7 @@ class _ProductoGridPageState extends State<ProductoGridPage> {
                                 .sortProd(cate.productoList.elementAt(index))
                             ? FutureBuilder<Object>(
                                 future: storage
-                                    .getImage(cate.productoList[index].imagen),
+                                    .getImage(cate.productoList[index].codigo),
                                 builder: (context, snapshot) => snapshot.hasData
                                     ? ProductoCard(
                                         imagen: snapshot.data,
