@@ -59,6 +59,8 @@ class CategoriaNotifier with ChangeNotifier {
   }
 
   void getHijos({int index}) {
+    _categoriaPadreSelected = null;
+    _categoriaHijoSelected = null;
     String padreId = '';
     if (index != null) {
       _categoriaPadreSelected = _categoriaPadreList[index];

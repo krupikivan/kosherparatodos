@@ -39,7 +39,8 @@ class ProductoListPage extends StatelessWidget {
                       },
                     ),
                   ),
-                  categoria.categoriaHijoList.isEmpty
+                  categoria.categoriaHijoList.isEmpty ||
+                          categoria.categoriaPadreSelected == null
                       ? SizedBox()
                       //Maneja solo las categorias hijos que tienen ancestros
                       : Container(
@@ -59,7 +60,9 @@ class ProductoListPage extends StatelessWidget {
                           ),
                         ),
                   //Muestra productos si se selecciono una categoria
-                  _fillProductos(context),
+                  categoria.categoriaHijoSelected == null
+                      ? SizedBox()
+                      : _fillProductos(context),
                 ],
               ),
       ),
