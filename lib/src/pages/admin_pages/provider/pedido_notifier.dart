@@ -57,7 +57,7 @@ class PedidoNotifier with ChangeNotifier {
 
   void getPedidos() {
     final List<Pedido> _list = [];
-    _repository.getAllPedidos().onData((listPed) {
+    _repository.getAllPedidos().then((listPed) {
       _pedidoList.clear();
       listPed.documents.forEach((pedido) {
         final Pedido _pedido =

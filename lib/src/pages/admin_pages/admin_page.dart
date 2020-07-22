@@ -183,6 +183,6 @@ String _getTitle(title) {
   } else if (bloc.navigationProvider.currentNavigation == "Categorias") {
     return 'Categorias';
   } else {
-    return 'Kosher en un click';
+    return 'Kosher Cordoba';
   }
 }

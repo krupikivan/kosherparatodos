@@ -1,7 +1,10 @@
 import 'dart:collection';
 import 'package:flutter/cupertino.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:kosherparatodos/src/models/categoria.dart';
 import 'package:kosherparatodos/src/models/producto.dart';
 import 'package:kosherparatodos/src/providers/connectivity.dart';
+import 'package:kosherparatodos/src/repository/firebase_storage.dart';
 import 'package:kosherparatodos/src/repository/firestore_provider.dart';
 import 'package:kosherparatodos/src/repository/repo.dart';
 
@@ -25,10 +28,18 @@ class ProductoNotifier with ChangeNotifier {
     return cantidad * precio;
   }
 
-  void addNewProducto() {
-    _repository
-        .addNewProducto(_productoNuevo)
-        .whenComplete(() => _clearProductoNuevo());
+  void addNewProducto(PickedFile file) async {
+    _repository.addNewProducto(_productoNuevo).whenComplete(() async {
+      if (file != null) {
+        final FireStorageService storage = FireStorageService.instance();
+        await storage
+            .uploadImage(file, _productoNuevo.codigo)
+            .then((value) => null);
+        _clearProductoNuevo();
+      } else {
+        _clearProductoNuevo();
+      }
+    }).catchError((onError) => print('Error'));
   }
 
   void _clearProductoNuevo() {
@@ -62,7 +73,7 @@ class ProductoNotifier with ChangeNotifier {
     await _repository.changeImageUrl(_productoActual);
     // _productoList.firstWhere((element) => element.productoID == _productoActual.productoID).imagen = data;
     _productoList.forEach((element) {
-      if(element.productoID == _productoActual.productoID) {
+      if (element.productoID == _productoActual.productoID) {
         element.imagen = data;
         return;
       }
@@ -124,6 +135,10 @@ class ProductoNotifier with ChangeNotifier {
         notifyListeners();
         break;
     }
+  }
+
+  void addToCategoriaString(String id, bool val) {
+    val ? _categoriaString.add(id) : _categoriaString.remove(id);
   }
 
   void creatingProducto(Producto nuevo) {

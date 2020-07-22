@@ -36,13 +36,13 @@ abstract class Repository {
 
   Future<QuerySnapshot> getAllCategorias();
 
-  StreamSubscription<QuerySnapshot> getAllPedidos();
+  Future<QuerySnapshot> getAllPedidos();
 
   Future<DocumentSnapshot> getDatosUtiles();
 
-  StreamSubscription<QuerySnapshot> getCategorias();
+  // StreamSubscription<QuerySnapshot> getCategorias();
 
-  StreamSubscription<DocumentSnapshot> getClientePedido(String idCliente);
+  // StreamSubscription<DocumentSnapshot> getClientePedido(String idCliente);
 
   Stream<DocumentSnapshot> getUsersAdmin();
 

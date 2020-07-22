@@ -61,7 +61,7 @@ class _UserPageState extends State<UserPage> {
             iconTheme: IconThemeData(color: Colors.black),
             backgroundColor: Colors.white,
             title: Text(
-              "Kosher en un click",
+              "Kosher Cordoba",
               style: style,
             ),
             actions: <Widget>[

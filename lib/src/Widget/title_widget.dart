@@ -18,7 +18,7 @@ class TitleLabel extends StatelessWidget {
         RichText(
           textAlign: TextAlign.left,
           text: TextSpan(
-            text: 'Kosher en un click',
+            text: 'Kosher Cordoba',
             style: TextStyle(
               fontSize: 30,
               fontWeight: FontWeight.w700,

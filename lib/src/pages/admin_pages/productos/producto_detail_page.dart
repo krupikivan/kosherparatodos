@@ -4,6 +4,7 @@ import 'package:kosherparatodos/src/Widget/show_toast.dart';
 import 'package:kosherparatodos/src/Widget/title_text.dart';
 import 'package:kosherparatodos/src/models/producto.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/provider/producto_notifier.dart';
+import 'package:kosherparatodos/src/pages/admin_pages/widgets/custom_icon.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/widgets/export.dart';
 import 'package:kosherparatodos/src/repository/firebase_storage.dart';
 import 'package:provider/provider.dart';
@@ -44,14 +45,15 @@ class ProductoDetailPage extends StatelessWidget {
                   children: [
                     GestureDetector(
                       child: CircleAvatar(
-                        backgroundImage: prod.productoActual.imagen == null
+                        backgroundColor: Colors.white,
+                        backgroundImage: prod.productoActual.imagen == ""
                             ? AssetImage('assets/images/logo.png')
                             : NetworkImage(prod.productoActual.imagen),
                         radius: 40,
                       ),
-                      onTap: () => getImage(ImageSource.camera, prod),
+                      onTap: () => choose(context, prod),
                     ),
-                    Text("Imagen")
+                    Text("Cargar imagen")
                   ],
                 ),
               ],
@@ -102,8 +104,57 @@ class ProductoDetailPage extends StatelessWidget {
     );
   }
 
-  Future getImage(ImageSource source, ProductoNotifier prod) async {
+  void choose(BuildContext context, ProductoNotifier prod) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
+        title: TitleText(
+          color: Colors.black,
+          text: 'Cargar foto',
+          fontSize: 20,
+          fontWeight: FontWeight.w700,
+        ),
+        content: Container(
+          height: 100,
+          width: 100,
+          child: Row(
+            children: [
+              FlatButton(
+                  onPressed: () => getImage(ImageSource.gallery, prod),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: <Widget>[
+                      Text('Abrir galeria'),
+                      CustomIcon(icon: Icons.image, context: context),
+                    ],
+                  )),
+              FlatButton(
+                  onPressed: () => getImage(ImageSource.camera, prod),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: <Widget>[
+                      Text('Sacar foto'),
+                      CustomIcon(icon: Icons.camera, context: context),
+                    ],
+                  ))
+            ],
+          ),
+        ),
+        actions: <Widget>[
+          FlatButton(
+            child: Text(
+              "Volver",
+              style: TextStyle(color: Theme.of(context).primaryColor),
+            ),
+            onPressed: () => Navigator.pop(context),
+          ),
+        ],
+      ),
+    );
+  }
 
+  Future getImage(ImageSource source, ProductoNotifier prod) async {
     final FireStorageService storage = FireStorageService.instance();
     ImagePicker.platform.pickImage(source: source).then((image) async {
       if (image != null) {

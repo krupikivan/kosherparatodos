@@ -204,6 +204,7 @@ class _ProductoCardState extends State<ProductoCard> {
                         height: 120,
                         width: 160,
                         child: CircleAvatar(
+                          backgroundColor: Colors.white,
                           backgroundImage: NetworkImage(widget.imagen),
                         ),
                       ),

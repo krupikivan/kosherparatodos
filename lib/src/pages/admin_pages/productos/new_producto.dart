@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:kosherparatodos/src/Widget/export.dart';
 import 'package:kosherparatodos/src/Widget/title_text.dart';
 import 'package:kosherparatodos/src/models/categoria.dart';
 import 'package:kosherparatodos/src/models/producto.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/provider/categoria_notifier.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/provider/producto_notifier.dart';
+import 'package:kosherparatodos/src/pages/admin_pages/widgets/custom_icon.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/widgets/export.dart';
+import 'package:kosherparatodos/src/repository/firebase_storage.dart';
 import 'package:provider/provider.dart';
 
 class NewProducto extends StatefulWidget {
@@ -20,7 +23,7 @@ class _NewProductoState extends State<NewProducto> {
   TextEditingController _precioController;
   TextEditingController _stockController;
   TextEditingController _unidadMedidaController;
-
+  PickedFile image;
   bool _habilitado;
 
   @override
@@ -50,11 +53,31 @@ class _NewProductoState extends State<NewProducto> {
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
-              child: TitleText(
-                color: Colors.black,
-                text: 'Agregar nuevo Producto',
-                fontSize: 20,
-                fontWeight: FontWeight.w700,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  TitleText(
+                    color: Colors.black,
+                    text: 'Agregar nuevo Producto',
+                    fontSize: 20,
+                    fontWeight: FontWeight.w700,
+                  ),
+                  Column(
+                    children: [
+                      GestureDetector(
+                        child: CircleAvatar(
+                          backgroundColor: Colors.white,
+                          backgroundImage: image == null
+                              ? AssetImage('assets/images/logo.png')
+                              : AssetImage(image.path),
+                          radius: 20,
+                        ),
+                        onTap: () => choose(context),
+                      ),
+                      Text("Cargar imagen")
+                    ],
+                  ),
+                ],
               ),
             ),
             InputDataField(
@@ -103,7 +126,8 @@ class _NewProductoState extends State<NewProducto> {
       ),
       floatingActionButton: Consumer<CategoriaNotifier>(
         builder: (context, cate, _) => FloatingActionButton.extended(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
           onPressed: () =>
               _validateInputData() && cate.categoriaString.isNotEmpty
                   ? _addProduct(context)
@@ -113,6 +137,63 @@ class _NewProductoState extends State<NewProducto> {
         ),
       ),
     );
+  }
+
+  void choose(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
+        title: TitleText(
+          color: Colors.black,
+          text: 'Cargar foto',
+          fontSize: 20,
+          fontWeight: FontWeight.w700,
+        ),
+        content: Container(
+          height: 100,
+          width: 100,
+          child: Row(
+            children: [
+              FlatButton(
+                  onPressed: () => getImage(ImageSource.gallery)
+                      .then((value) => Navigator.pop(context)),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: <Widget>[
+                      Text('Abrir galeria'),
+                      CustomIcon(icon: Icons.image, context: context),
+                    ],
+                  )),
+              FlatButton(
+                  onPressed: () => getImage(ImageSource.camera)
+                      .then((value) => Navigator.pop(context)),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: <Widget>[
+                      Text('Sacar foto'),
+                      CustomIcon(icon: Icons.camera, context: context),
+                    ],
+                  ))
+            ],
+          ),
+        ),
+        actions: <Widget>[
+          FlatButton(
+            child: Text(
+              "Volver",
+              style: TextStyle(color: Theme.of(context).primaryColor),
+            ),
+            onPressed: () => Navigator.pop(context),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future getImage(ImageSource source) async {
+    image = await ImagePicker.platform.pickImage(source: source);
+    setState(() {});
   }
 
   bool _validateInputData() {
@@ -155,9 +236,14 @@ class _NewProductoState extends State<NewProducto> {
   }
 
   void _addProduct(BuildContext context) {
-    _setProductData();
-    Provider.of<ProductoNotifier>(context, listen: false).addNewProducto();
-    Navigator.pop(context);
+    try {
+      _setProductData();
+      Provider.of<ProductoNotifier>(context, listen: false)
+          .addNewProducto(image);
+      Navigator.pop(context);
+    } catch (e) {
+      ShowToast().show('Algo salio mal', 5);
+    }
   }
 }
 
@@ -168,7 +254,6 @@ Widget agregarCategoriasButton(context) {
           .push(MaterialPageRoute(builder: (context) => AgregarCategorias()));
     },
     color: Theme.of(context).primaryColorLight,
-
     textColor: Theme.of(context).backgroundColor,
     child: Text('Categoria Del Producto'),
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -223,7 +308,8 @@ class AgregarCategorias extends StatelessWidget {
                           child: list.length <= 7
                               ? _HijosChips(
                                   list: list,
-                                  categoria: categoria)
+                                  categoria: categoria,
+                                  producto: producto)
                               : Column(
                                   children: <Widget>[
                                     Container(
@@ -259,10 +345,12 @@ class _HijosChips extends StatelessWidget {
     Key key,
     @required this.list,
     @required this.categoria,
+    this.producto,
   }) : super(key: key);
 
   final List<Categoria> list;
   final CategoriaNotifier categoria;
+  final ProductoNotifier producto;
 
   @override
   Widget build(BuildContext context) {
@@ -280,6 +368,7 @@ class _HijosChips extends StatelessWidget {
                   : categoria.categoriaString.remove(list[index].categoriaID);
 
               categoria.changeSelected(list[index].categoriaID, val, true);
+              producto.addToCategoriaString(list[index].categoriaID, val);
             },
             label: Text(list[index].nombre),
           ),

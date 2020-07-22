@@ -39,9 +39,13 @@ class ProductoCardWidget extends StatelessWidget {
             child: Container(
               decoration: BoxDecoration(
                   shape: BoxShape.circle,
+                  border: Border.all(color: Colors.white, width: 0),
                   color: Colors.white,
                   image: DecorationImage(
-                      fit: BoxFit.cover, image: NetworkImage(img))),
+                      fit: BoxFit.cover,
+                      image: img == ""
+                          ? AssetImage('assets/images/logo.png')
+                          : NetworkImage(img))),
             ),
           ),
           onTap: action,
