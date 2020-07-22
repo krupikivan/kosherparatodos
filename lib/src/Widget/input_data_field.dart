@@ -26,7 +26,7 @@ class InputDataField extends StatelessWidget {
   Widget build(BuildContext context) {
     final prod = Provider.of<ProductoNotifier>(context, listen: false);
     return ListTile(
-      title: TextField(
+      subtitle: TextField(
         onChanged: (value) => prod.setData(tipo, value),
         decoration: InputDecoration(
           border: OutlineInputBorder(
@@ -39,7 +39,7 @@ class InputDataField extends StatelessWidget {
             _isNum ? [WhitelistingTextInputFormatter.digitsOnly] : null,
         controller: _controller,
       ),
-      subtitle: Text(_description),
+      title: Text(_description),
     );
   }
 }

@@ -12,7 +12,11 @@ class FireStorageService extends ChangeNotifier {
   FireStorageService.instance();
 
   Future getImage(String image) async {
-    return await _instance.ref().child(image).getDownloadURL() as String;
+    try {
+      return await _instance.ref().child(image).getDownloadURL() as String;
+    } catch (e) {
+      return "";
+    }
   }
 
   Future<void> uploadImage(PickedFile picked, String name) async {
