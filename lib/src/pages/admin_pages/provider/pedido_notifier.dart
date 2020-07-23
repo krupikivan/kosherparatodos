@@ -57,13 +57,14 @@ class PedidoNotifier with ChangeNotifier {
 
   void getPedidos() {
     final List<Pedido> _list = [];
-    _repository.getAllPedidos().then((listPed) {
+    _repository.getAllPedidos().onData((listPed) {
       _pedidoList.clear();
       listPed.documents.forEach((pedido) {
         final Pedido _pedido =
             Pedido.fromPedidos(pedido.data, pedido.documentID);
         _list.add(_pedido);
       });
+      _list.sort((a, b) => b.fecha.toDate().compareTo(a.fecha.toDate()));
       _pedidoList = _list;
       notifyListeners();
     });

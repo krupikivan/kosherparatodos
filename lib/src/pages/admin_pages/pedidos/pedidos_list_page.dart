@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:kosherparatodos/src/Widget/export.dart';
 import 'package:kosherparatodos/src/models/pedido.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/pedidos/pedido_detail_page.dart';
@@ -15,7 +16,6 @@ class PedidosListPage extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         Expanded(
-          flex: 3,
           child: Consumer<PedidoNotifier>(
             builder: (context, pedido, _) => pedido.filterList.isNotEmpty
                 ? _showList(pedido.filterList, pedido)
@@ -44,7 +44,7 @@ class PedidosListPage extends StatelessWidget {
         pagado: list[index].pagado,
         title:
             '${list[index].cliente.nombre.nombre} ${list[index].cliente.nombre.apellido}',
-        subtitle: 'Total: \$${list[index].total.truncate()}',
+        subtitle: 'Fecha: ${DateFormat('dd/MM').format(list[index].fecha.toDate())} - Total: \$${list[index].total.truncate()}',
       ),
       itemCount: list.length,
     );

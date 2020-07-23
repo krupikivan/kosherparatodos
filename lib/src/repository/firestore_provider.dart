@@ -176,8 +176,8 @@ class FirestoreProvider implements Repository {
 
 //----------------------------------------------------DEVUELVE TODOS LOS PEDIDOS
   @override
-  Future<QuerySnapshot> getAllPedidos() {
-    return _firestore.collection('pedidos').getDocuments(); //listen((doc) {
+  StreamSubscription<QuerySnapshot> getAllPedidos() {
+    return _firestore.collection('pedidos').snapshots().listen((event) { }); //listen((doc) {
     //   doc.documents.forEach((pedido) {});
     // });
   }

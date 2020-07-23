@@ -36,7 +36,7 @@ abstract class Repository {
 
   Future<QuerySnapshot> getAllCategorias();
 
-  Future<QuerySnapshot> getAllPedidos();
+  StreamSubscription<QuerySnapshot> getAllPedidos();
 
   Future<DocumentSnapshot> getDatosUtiles();
 

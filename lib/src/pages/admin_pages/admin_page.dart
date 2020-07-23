@@ -51,7 +51,8 @@ class AdminPage extends StatelessWidget {
                 }),
           ),
           drawerScrimColor: Theme.of(context).hoverColor,
-          drawer: SizedBox(
+          drawer:  
+           SizedBox(
             width: MediaQuery.of(context).size.width / 1.5,
             child: Builder(
               builder: (context) => SafeArea(

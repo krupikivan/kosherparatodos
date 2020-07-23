@@ -22,17 +22,17 @@ class ClienteCardWidget extends StatelessWidget {
       elevation: elevation ?? 15,
       shadowColor: Colors.black54,
       shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-          side: BorderSide(color: Theme.of(context).cardColor)),
+        borderRadius: BorderRadius.circular(10),
+      ),
       child: ListTile(
         title: Text(
           name,
-          style: TextStyle(fontSize: 15),
+          style: TextStyle(fontSize: 20),
         ),
-        leading: Icon(
-          Icons.account_circle,
-          size: 40,
-          color: Colors.grey,
+        leading: Image.asset(
+          'assets/icons/usuario_100.png',
+          height: 40,
+          alignment: Alignment.center,
         ),
         subtitle: Text(
           estado == true ? 'Habilitado' : 'No Habilitado',

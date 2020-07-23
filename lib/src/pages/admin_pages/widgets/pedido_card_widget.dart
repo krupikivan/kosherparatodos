@@ -31,43 +31,65 @@ class PedidoCardWidget extends StatelessWidget {
         color: color ?? Colors.white,
         elevation: elevation ?? 10,
         shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-            side: BorderSide(color: Theme.of(context).cardColor)),
+          borderRadius: BorderRadius.circular(10),
+        ),
         child: ListTile(
           title: Text(
             title,
-            style: const TextStyle(fontSize: 15),
+            style: const TextStyle(fontSize: 20),
           ),
           trailing: Row(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              Icon(
-                Icons.local_shipping,
-                size: 20,
-                color: envio ? Colors.green : Colors.red,
-              ),
+              (envio  && estado != 'Entregado')
+                  ? _StateIcon(asset: 'assets/icons/en_transito_100.png')
+                  : SizedBox(),
               SizedBox(
-                width: 20,
+                width: 10,
               ),
-              Icon(
-                Icons.watch_later,
-                size: 20,
-                color: Pedido.getEstadoColor(estado),
-              ),
+              (estado == 'En Preparacion')
+                      ? _StateIcon(
+                          asset: 'assets/icons/reloj_100.png',
+                        )
+                      : (estado == 'Cancelado')
+                          ? _StateIcon(
+                              asset: 'assets/icons/eliminar_100.png',
+                            )
+                          : SizedBox(),
               SizedBox(
-                width: 20,
+                width: 10,
               ),
-              Icon(
-                Icons.payment,
-                size: 20,
-                color: Pedido.getPagadoColor(pagado),
-              ),
+                pagado
+                  ? _StateIcon(
+                      asset: 'assets/icons/moneda_pagado_100.png',
+                  )
+                  : 
+                  _StateIcon(
+                      asset: 'assets/icons/moneda_no_pagado_100.png',
+                  )
             ],
           ),
           subtitle: Text(subtitle),
           onTap: action,
         ),
       ),
+    );
+  }
+}
+
+class _StateIcon extends StatelessWidget {
+  final String asset;
+  const _StateIcon({
+    Key key,
+    this.asset,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Image.asset(
+      asset,
+      height: 30,
+      alignment: Alignment.center,
     );
   }
 }
