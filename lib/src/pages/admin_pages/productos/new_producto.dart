@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:kosherparatodos/src/Widget/export.dart';
@@ -7,8 +8,6 @@ import 'package:kosherparatodos/src/models/producto.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/provider/categoria_notifier.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/provider/producto_notifier.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/widgets/custom_icon.dart';
-import 'package:kosherparatodos/src/pages/admin_pages/widgets/export.dart';
-import 'package:kosherparatodos/src/repository/firebase_storage.dart';
 import 'package:provider/provider.dart';
 
 class NewProducto extends StatefulWidget {
@@ -69,7 +68,7 @@ class _NewProductoState extends State<NewProducto> {
                           backgroundColor: Colors.white,
                           backgroundImage: image == null
                               ? AssetImage('assets/images/logo.png')
-                              : AssetImage(image.path),
+                              : FileImage(File(image.path)),
                           radius: 20,
                         ),
                         onTap: () => choose(context),
