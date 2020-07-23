@@ -12,22 +12,25 @@ class PedidosListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    final size = MediaQuery.of(context).size;
+    return Stack(
       children: <Widget>[
-        Expanded(
+        Positioned(
           child: Consumer<PedidoNotifier>(
             builder: (context, pedido, _) => pedido.filterList.isNotEmpty
                 ? _showList(pedido.filterList, pedido)
                 : _showList(pedido.pedidoList, pedido),
           ),
         ),
-        Expanded(
+        Positioned(
+            bottom: size.height * 0.04,
+            right: size.width * 0.3,
+            left: size.width * 0.3,
             child: FloatingActionButton(
-          onPressed: () => _filterList(context),
-          backgroundColor: Theme.of(context).primaryColor,
-          child: Icon(Icons.filter_list),
-        ))
+              onPressed: () => _filterList(context),
+              backgroundColor: Theme.of(context).primaryColor,
+              child: Icon(Icons.filter_list),
+            ))
       ],
     );
   }
@@ -44,7 +47,8 @@ class PedidosListPage extends StatelessWidget {
         pagado: list[index].pagado,
         title:
             '${list[index].cliente.nombre.nombre} ${list[index].cliente.nombre.apellido}',
-        subtitle: 'Fecha: ${DateFormat('dd/MM').format(list[index].fecha.toDate())} - Total: \$${list[index].total.truncate()}',
+        subtitle:
+            'Fecha: ${DateFormat('dd/MM').format(list[index].fecha.toDate())} - Total: \$${list[index].total.truncate()}',
       ),
       itemCount: list.length,
     );

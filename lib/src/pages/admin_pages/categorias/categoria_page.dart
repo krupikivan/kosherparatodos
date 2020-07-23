@@ -115,8 +115,8 @@ class CategoriaPage extends StatelessWidget {
 
   Widget _bntExpanded(BuildContext context) {
     return SpeedDial(
-      marginRight: 15,
-      marginBottom: 15,
+      marginRight: 30,
+      marginBottom: 30,
       overlayOpacity: 0.3,
       overlayColor: Colors.white,
       heroTag: 'bntExpand',
