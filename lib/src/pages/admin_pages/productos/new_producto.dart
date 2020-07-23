@@ -246,7 +246,7 @@ class _NewProductoState extends State<NewProducto> {
   }
 }
 
-Widget agregarCategoriasButton(context) {
+Widget agregarCategoriasButton(BuildContext context) {
   return MaterialButton(
     onPressed: () {
       Navigator.of(context)
@@ -303,30 +303,34 @@ class AgregarCategorias extends StatelessWidget {
                         fontWeight: FontWeight.w700,
                       ),
                       Container(
-                          height: list.length <= 7 ? 60 : 110,
-                          child: list.length <= 7
-                              ? _HijosChips(
-                                  list: list,
-                                  categoria: categoria,
-                                  producto: producto)
-                              : Column(
-                                  children: <Widget>[
-                                    Container(
-                                      height: 50,
-                                      child: _HijosChips(
-                                          list: list.sublist(
-                                              0, (list.length / 2).truncate()),
-                                          categoria: categoria),
-                                    ),
-                                    Container(
-                                      height: 50,
-                                      child: _HijosChips(
-                                          list: list.sublist(
-                                              (list.length / 2).floor()),
-                                          categoria: categoria),
-                                    )
-                                  ],
-                                )),
+                        height: list.length <= 7 ? 60 : 110,
+                        child: list.length <= 7
+                            ? _HijosChips(
+                                list: list,
+                                categoria: categoria,
+                                producto: producto)
+                            : Column(
+                                children: <Widget>[
+                                  Container(
+                                    height: 50,
+                                    child: _HijosChips(
+                                        list: list.sublist(
+                                          0,
+                                          (list.length / 2).truncate(),
+                                        ),
+                                        categoria: categoria),
+                                  ),
+                                  Container(
+                                    height: 50,
+                                    child: _HijosChips(
+                                        list: list.sublist(
+                                          (list.length / 2).floor(),
+                                        ),
+                                        categoria: categoria),
+                                  ),
+                                ],
+                              ),
+                      ),
                     ],
                   );
                 },

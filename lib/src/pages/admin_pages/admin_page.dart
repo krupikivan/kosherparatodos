@@ -22,9 +22,9 @@ class AdminPage extends StatelessWidget {
   final GlobalKey<NavigatorState> navigatorKey =
       GlobalKey(debugLabel: "Admin Main");
 
-  final TextStyle style = TextStyle(color: Colors.black);
   @override
   Widget build(BuildContext context) {
+    final TextStyle style = TextStyle(color: Theme.of(context).primaryColor, fontSize: 25, fontWeight: FontWeight.w500);
     final size = MediaQuery.of(context).size;
 
     return MultiProvider(
@@ -59,15 +59,15 @@ class AdminPage extends StatelessWidget {
                   child: ListView(padding: EdgeInsets.zero, children: <Widget>[
                     Container(
                       height: size.height * 0.25,
-                      padding:
-                          EdgeInsets.only(left: 30, top: size.height * 0.05),
+                      padding: EdgeInsets.only(
+                          left: 30, right: 30, top: size.height * 0.05),
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
-                          Icon(
-                            Icons.account_circle,
-                            size: 60,
-                            color: Colors.white,
+                          CircleAvatar(
+                            backgroundColor: Colors.transparent,
+                            child: Image.asset('assets/icons/admin_100.png'),
+                            radius: 40,
                           ),
                           SizedBox(height: 20),
                           Text(
@@ -83,57 +83,30 @@ class AdminPage extends StatelessWidget {
                       decoration: new BoxDecoration(
                           color: Theme.of(context).primaryColor),
                     ),
-                    ListTile(
-                      title: Text('Clientes'),
-                      leading: Icon(
-                        Icons.people,
-                        color: Theme.of(context).primaryColor,
+                    Padding(
+                      padding: const EdgeInsets.only(top: 15.0),
+                      child: _DrawerTile(
+                        text: 'Clientes',
+                        asset: 'assets/icons/clientes_100.png',
                       ),
-                      onTap: () {
-                        Navigator.of(context).pop();
-                        bloc.updateNavigation('Clientes');
-                      },
                     ),
-                    ListTile(
-                      title: Text('Pedidos'),
-                      leading: Icon(
-                        Icons.shopping_basket,
-                        color: Theme.of(context).primaryColor,
-                      ),
-                      onTap: () {
-                        Navigator.of(context).pop();
-                        bloc.updateNavigation('Pedidos');
-                      },
+                    _DrawerTile(
+                      text: 'Pedidos',
+                      asset: 'assets/icons/carrito_100.png',
                     ),
-                    ListTile(
-                      title: Text('Productos'),
-                      leading: Icon(
-                        Icons.image,
-                        color: Theme.of(context).primaryColor,
-                      ),
-                      onTap: () {
-                        Navigator.of(context).pop();
-                        bloc.updateNavigation('Productos');
-                      },
+                    _DrawerTile(
+                      text: 'Productos',
+                      asset: 'assets/icons/codigo_barras_100.png',
                     ),
-                    ListTile(
-                      title: Text('Categorias'),
-                      leading: Icon(
-                        Icons.list,
-                        color: Theme.of(context).primaryColor,
-                      ),
-                      onTap: () {
-                        Navigator.of(context).pop();
-                        bloc.updateNavigation('Categorias');
-                      },
+                    _DrawerTile(
+                      text: 'Categorias',
+                      asset: 'assets/icons/categorias_100.png',
                     ),
                     Divider(color: Theme.of(context).dividerColor),
                     ListTile(
-                        title: Text('Cerrar Sesion'),
-                        leading: Icon(
-                          Icons.exit_to_app,
-                          color: Theme.of(context).primaryColor,
-                        ),
+                        title: _DrawerText(text: 'Cerrar Sesion'),
+                        leading:
+                            _DrawerImage(image: 'assets/icons/salida_100.png'),
                         onTap: () =>
                             Provider.of<UserRepository>(context, listen: false)
                                 .signOut()),
@@ -169,6 +142,62 @@ class AdminPage extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class _DrawerTile extends StatelessWidget {
+  final String text;
+  final String asset;
+
+  const _DrawerTile({
+    Key key,
+    this.text,
+    this.asset,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      title: _DrawerText(text: text),
+      leading: _DrawerImage(image: asset),
+      onTap: () {
+        Navigator.of(context).pop();
+        bloc.updateNavigation(text);
+      },
+    );
+  }
+}
+
+class _DrawerImage extends StatelessWidget {
+  final String image;
+  const _DrawerImage({
+    Key key,
+    this.image,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Image.asset(
+      image,
+      height: 35,
+      alignment: Alignment.center,
+    );
+  }
+}
+
+class _DrawerText extends StatelessWidget {
+  final String text;
+  const _DrawerText({
+    Key key,
+    this.text,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      text,
+      style: TextStyle(fontSize: 20),
     );
   }
 }
