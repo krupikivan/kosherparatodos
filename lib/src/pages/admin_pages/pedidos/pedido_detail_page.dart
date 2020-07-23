@@ -160,7 +160,7 @@ class PedidoDetailPage extends StatelessWidget {
   }
 
   Widget _getEstadoEntregado(PedidoNotifier pedido, context) {
-    final data = Provider.of<DataProvider>(context, listen: false);
+    final data = Provider.of<DataProvider>(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
