@@ -13,7 +13,7 @@ class IconCart extends StatelessWidget {
         padding: const EdgeInsets.all(10.0),
         child: Container(
             height: 150.0,
-            width: 30.0,
+            width: 45.0,
             child: GestureDetector(
               onTap: () {
                 Navigator.of(context).push(MaterialPageRoute(
@@ -22,39 +22,39 @@ class IconCart extends StatelessWidget {
               },
               child: Stack(
                 children: <Widget>[
-                  IconButton(
-                    icon: Icon(
-                      Icons.shopping_cart,
-                      color: Theme.of(context).primaryColor,
+                  Positioned(
+                    left: 10,
+                    child: Image.asset(
+                      'assets/icons/carrito_compras_50.png',
+                      height: 35,
+                      alignment: Alignment.center,
                     ),
-                    onPressed: null,
                   ),
                   Positioned(
                       child: Stack(
                     children: <Widget>[
-                      Icon(Icons.brightness_1,
-                          size: 20.0, color: Theme.of(context).primaryColor),
+                      // Positioned(
+                      //   bottom: 0,
+                      //   child: Icon(Icons.brightness_1,
+                      //       size: 20, color: Theme.of(context).primaryColor),
+                      // ),
                       Positioned(
-                          top: 3.0,
-                          right: 4.0,
                           child: Center(
-                            child: StreamBuilder<Pedido>(
-                                stream: blocPedidoVigente.getPedido,
-                                builder: (context, snapshot) {
-                                  if (!snapshot.hasData ||
-                                      snapshot.data.productos == null) {
-                                    return const Text('0');
-                                  } else {
-                                    return Text(
-                                      snapshot.data.productos.length.toString(),
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 11.0,
-                                          fontWeight: FontWeight.w500),
-                                    );
-                                  }
-                                }),
-                          )),
+                        child: StreamBuilder<Pedido>(
+                            stream: blocPedidoVigente.getPedido,
+                            builder: (context, snapshot) {
+                              return Text(
+                                !snapshot.hasData ||
+                                        snapshot.data.productos == null
+                                    ? '0'
+                                    : snapshot.data.productos.length.toString(),
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold),
+                              );
+                            }),
+                      )),
                     ],
                   )),
                 ],

@@ -89,12 +89,13 @@ class _UserPageState extends State<UserPage> {
                         padding:
                             EdgeInsets.only(left: 30, top: size.height * 0.05),
                         child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: <Widget>[
-                            Icon(
-                              Icons.account_circle,
-                              size: 60,
-                              color: Colors.white,
+                            CircleAvatar(
+                              backgroundColor: Colors.transparent,
+                              child:
+                                  Image.asset('assets/icons/usuario_100.png'),
+                              radius: 40,
                             ),
                             SizedBox(height: 20),
                             Text(
@@ -107,49 +108,29 @@ class _UserPageState extends State<UserPage> {
                         decoration: new BoxDecoration(
                             color: Theme.of(context).primaryColor),
                       ),
-                      ListTile(
-                        title: Text('Historial de pedidos'),
-                        leading: Icon(
-                          Icons.history,
-                          color: Theme.of(context).primaryColor,
+                      Padding(
+                        padding: const EdgeInsets.only(top: 15.0),
+                        child: _DrawerTile(
+                          text: 'Historial de pedidos',
+                          asset: 'assets/icons/carrito_100.png',
                         ),
-                        onTap: () {
-                          Navigator.of(context).pop();
-                          blocNav.updateNavigation('Historial');
-                        },
                       ),
+                      _DrawerTile(
+                        text: 'Nuevo Pedido',
+                        asset: 'assets/icons/categorias_100.png',
+                      ),
+                      _DrawerTile(
+                        text: 'Datos',
+                        asset: 'assets/icons/menu_100.png',
+                      ),
+                      Divider(color: Theme.of(context).dividerColor),
                       ListTile(
-                        title: Text('Nuevo Pedido'),
-                        leading: Icon(
-                          Icons.fastfood,
-                          color: Theme.of(context).primaryColor,
-                        ),
-                        onTap: () {
-                          Navigator.of(context).pop();
-                          blocNav.updateNavigation('Productos');
-                        },
-                      ),
-                      ListTile(
-                        title: Text('Datos'),
-                        leading: Icon(
-                          Icons.info_outline,
-                          color: Theme.of(context).primaryColor,
-                        ),
-                        onTap: () {
-                          Navigator.of(context).pop();
-                          blocNav.updateNavigation('Datos');
-                        },
-                      ),
-                      ListTile(
-                        title: Text('Cerrar Sesion'),
-                        leading: Icon(
-                          Icons.exit_to_app,
-                          color: Theme.of(context).primaryColor,
-                        ),
-                        onTap: () =>
-                            Provider.of<UserRepository>(context, listen: false)
-                                .signOut(),
-                      ),
+                          title: _DrawerText(text: 'Cerrar Sesion'),
+                          leading: _DrawerImage(
+                              image: 'assets/icons/salida_100.png'),
+                          onTap: () => Provider.of<UserRepository>(context,
+                                  listen: false)
+                              .signOut()),
                     ]),
                   );
                 }
@@ -164,7 +145,7 @@ class _UserPageState extends State<UserPage> {
                 blocUserData.getPedidos(widget.user.uid);
                 return HistorialList();
               } else if (blocNav.navigationProvider.currentNavigation ==
-                  "Productos") {
+                  "Nuevo Pedido") {
                 return ProductoGridPage();
               } else if (blocNav.navigationProvider.currentNavigation ==
                   "Datos") {
@@ -209,6 +190,62 @@ class _UserPageState extends State<UserPage> {
           ),
         ],
       ),
+    );
+  }
+}
+
+class _DrawerTile extends StatelessWidget {
+  final String text;
+  final String asset;
+
+  const _DrawerTile({
+    Key key,
+    this.text,
+    this.asset,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      title: _DrawerText(text: text),
+      leading: _DrawerImage(image: asset),
+      onTap: () {
+        Navigator.of(context).pop();
+        blocNav.updateNavigation(text);
+      },
+    );
+  }
+}
+
+class _DrawerImage extends StatelessWidget {
+  final String image;
+  const _DrawerImage({
+    Key key,
+    this.image,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Image.asset(
+      image,
+      height: 35,
+      alignment: Alignment.center,
+    );
+  }
+}
+
+class _DrawerText extends StatelessWidget {
+  final String text;
+  const _DrawerText({
+    Key key,
+    this.text,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      text,
+      style: TextStyle(fontSize: 20),
     );
   }
 }

@@ -20,7 +20,7 @@ class _ProductoCardState extends State<ProductoCard> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
+    final Size size = MediaQuery.of(context).size;
     return Card(
       margin: EdgeInsets.symmetric(horizontal: 20),
       clipBehavior: Clip.antiAliasWithSaveLayer,
@@ -198,9 +198,10 @@ class _ProductoCardState extends State<ProductoCard> {
                             topRight: Radius.circular(15),
                             bottomRight: Radius.circular(15)),
                         color: Theme.of(context).backgroundColor,
-                        image: DecorationImage(image: NetworkImage(widget.imagen), fit: BoxFit.cover)
-                        ),
-                        // child: Image.network(''),
+                        image: DecorationImage(
+                            image: NetworkImage(widget.imagen),
+                            fit: BoxFit.cover)),
+                    // child: Image.network(''),
                   ),
                 ),
               ),
