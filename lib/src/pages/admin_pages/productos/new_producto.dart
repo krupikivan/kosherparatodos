@@ -9,6 +9,7 @@ import 'package:kosherparatodos/src/pages/admin_pages/provider/categoria_notifie
 import 'package:kosherparatodos/src/pages/admin_pages/provider/producto_notifier.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/widgets/custom_icon.dart';
 import 'package:provider/provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class NewProducto extends StatefulWidget {
   @override
@@ -22,7 +23,8 @@ class _NewProductoState extends State<NewProducto> {
   TextEditingController _precioController;
   TextEditingController _stockController;
   TextEditingController _unidadMedidaController;
-  PickedFile image;
+  File _image;
+  PermissionStatus _permissionStatus = PermissionStatus.undetermined;
   bool _habilitado;
 
   @override
@@ -66,9 +68,9 @@ class _NewProductoState extends State<NewProducto> {
                       GestureDetector(
                         child: CircleAvatar(
                           backgroundColor: Colors.white,
-                          backgroundImage: image == null
+                          backgroundImage: _image == null
                               ? AssetImage('assets/images/logo.png')
-                              : FileImage(File(image.path)),
+                              : FileImage(_image),
                           radius: 20,
                         ),
                         onTap: () => choose(context),
@@ -164,16 +166,16 @@ class _NewProductoState extends State<NewProducto> {
                       CustomIcon(icon: Icons.image, context: context),
                     ],
                   )),
-              FlatButton(
-                  onPressed: () => getImage(ImageSource.camera)
-                      .then((value) => Navigator.pop(context)),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: <Widget>[
-                      Text('Sacar foto'),
-                      CustomIcon(icon: Icons.camera, context: context),
-                    ],
-                  ))
+              // FlatButton(
+              //     onPressed: () => getImage(ImageSource.camera)
+              //         .then((value) => Navigator.pop(context)),
+              //     child: Column(
+              //       mainAxisAlignment: MainAxisAlignment.spaceAround,
+              //       children: <Widget>[
+              //         Text('Sacar foto'),
+              //         CustomIcon(icon: Icons.camera, context: context),
+              //       ],
+              //     ))
             ],
           ),
         ),
@@ -191,8 +193,33 @@ class _NewProductoState extends State<NewProducto> {
   }
 
   Future getImage(ImageSource source) async {
-    image = await ImagePicker.platform.pickImage(source: source);
-    setState(() {});
+    await _getPermission();
+    if (_permissionStatus == PermissionStatus.granted) {
+      ImagePicker.pickImage(source: source).then((pickedFile) {
+        if (pickedFile != null) {
+          setState(() {
+            _image = pickedFile;
+          });
+        }
+      }).catchError((onError) {
+        print(onError);
+      });
+    } else {
+      print('No tiene permisos');
+    }
+  }
+
+  // get permissions
+  Future<PermissionStatus> _getPermission() async {
+    final Permission _perms = Permission.camera;
+    _permissionStatus = await _perms.request();
+    if (_permissionStatus != PermissionStatus.granted &&
+        _permissionStatus != PermissionStatus.denied) {
+      return _permissionStatus;
+    } else {
+      print(_permissionStatus);
+      return _permissionStatus;
+    }
   }
 
   bool _validateInputData() {
@@ -238,7 +265,7 @@ class _NewProductoState extends State<NewProducto> {
     try {
       _setProductData();
       Provider.of<ProductoNotifier>(context, listen: false)
-          .addNewProducto(image);
+          .addNewProducto(_image);
       Navigator.pop(context);
     } catch (e) {
       ShowToast().show('Algo salio mal', 5);

@@ -1,7 +1,6 @@
 import 'dart:collection';
+import 'dart:io';
 import 'package:flutter/cupertino.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:kosherparatodos/src/models/categoria.dart';
 import 'package:kosherparatodos/src/models/producto.dart';
 import 'package:kosherparatodos/src/providers/connectivity.dart';
 import 'package:kosherparatodos/src/repository/firebase_storage.dart';
@@ -28,7 +27,7 @@ class ProductoNotifier with ChangeNotifier {
     return cantidad * precio;
   }
 
-  void addNewProducto(PickedFile file) async {
+  void addNewProducto(File file) async {
     _repository.addNewProducto(_productoNuevo).whenComplete(() async {
       if (file != null) {
         final FireStorageService storage = FireStorageService.instance();

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:kosherparatodos/src/Widget/export.dart';
 import 'package:kosherparatodos/src/Widget/show_toast.dart';
@@ -7,6 +9,7 @@ import 'package:kosherparatodos/src/pages/admin_pages/provider/producto_notifier
 import 'package:kosherparatodos/src/pages/admin_pages/widgets/custom_icon.dart';
 import 'package:kosherparatodos/src/pages/admin_pages/widgets/export.dart';
 import 'package:kosherparatodos/src/repository/firebase_storage.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -17,7 +20,8 @@ class ProductoDetailPage extends StatelessWidget {
   TextEditingController _stockController;
   TextEditingController _precioController;
   TextEditingController _umController;
-
+  File _image;
+  PermissionStatus _permissionStatus = PermissionStatus.undetermined;
   @override
   Widget build(BuildContext context) {
     final prod = Provider.of<ProductoNotifier>(context);
@@ -121,7 +125,7 @@ class ProductoDetailPage extends StatelessWidget {
           child: Row(
             children: [
               FlatButton(
-                  onPressed: () => getImage(ImageSource.gallery, prod),
+                  onPressed: () => null, //getImage(ImageSource.gallery, prod),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: <Widget>[
@@ -129,15 +133,15 @@ class ProductoDetailPage extends StatelessWidget {
                       CustomIcon(icon: Icons.image, context: context),
                     ],
                   )),
-              FlatButton(
-                  onPressed: () => getImage(ImageSource.camera, prod),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: <Widget>[
-                      Text('Sacar foto'),
-                      CustomIcon(icon: Icons.camera, context: context),
-                    ],
-                  ))
+              // FlatButton(
+              //     onPressed: () => null, // getImage(ImageSource.camera, prod),
+              //     child: Column(
+              //       mainAxisAlignment: MainAxisAlignment.spaceAround,
+              //       children: <Widget>[
+              //         Text('Sacar foto'),
+              //         CustomIcon(icon: Icons.camera, context: context),
+              //       ],
+              //     ))
             ],
           ),
         ),
@@ -156,15 +160,31 @@ class ProductoDetailPage extends StatelessWidget {
 
   Future getImage(ImageSource source, ProductoNotifier prod) async {
     final FireStorageService storage = FireStorageService.instance();
-    ImagePicker.platform.pickImage(source: source).then((image) async {
-      if (image != null) {
-        await storage.uploadImage(image, prod.productoActual.codigo);
-        var img = await storage.getImage(prod.productoActual.codigo);
+    await _getPermission();
+    if (_permissionStatus == PermissionStatus.granted) {
+      final pickedFile = await ImagePicker.pickImage(source: source);
+      if (pickedFile != null) {
+        _image = pickedFile;
+        await storage.uploadImage(_image, prod.productoActual.codigo);
+        final img = await storage.getImage(prod.productoActual.codigo);
         await prod.changeImageName(img);
       }
-    }).catchError((error) {
-      print(error);
-    });
+    } else {
+      print('No tiene permisos');
+    }
+  }
+
+  // get permissions
+  Future<PermissionStatus> _getPermission() async {
+    final Permission _perms = Permission.camera;
+    _permissionStatus = await _perms.request();
+    if (_permissionStatus != PermissionStatus.granted &&
+        _permissionStatus != PermissionStatus.denied) {
+      return _permissionStatus;
+    } else {
+      print(_permissionStatus);
+      return _permissionStatus;
+    }
   }
 
   void _updateAllData(BuildContext context) {

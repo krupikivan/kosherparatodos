@@ -1,6 +1,5 @@
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
 class FireStorageService extends ChangeNotifier {
@@ -18,11 +17,10 @@ class FireStorageService extends ChangeNotifier {
     }
   }
 
-  Future<void> uploadImage(PickedFile picked, String name) async {
-    final File file = File(picked.path);
+  Future<void> uploadImage(File picked, String name) async {
     final StorageReference storageReference =
         FirebaseStorage.instance.ref().child(name);
-    final StorageUploadTask uploadTask = storageReference.putFile(file);
+    final StorageUploadTask uploadTask = storageReference.putFile(picked);
     await uploadTask.onComplete;
   }
 }
