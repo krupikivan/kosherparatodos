@@ -5,6 +5,7 @@ import 'package:kosherparatodos/src/repository/firestore_provider.dart';
 import 'dart:collection';
 import '../repository/repo.dart';
 import 'connectivity.dart';
+import 'package:kosherparatodos/src/providers/preferences.dart';
 
 enum Status {
   Uninitialized,
@@ -23,6 +24,7 @@ class UserRepository with ChangeNotifier {
   final Repository repo = FirestoreProvider();
   final _conex = ConnectivityProvider.getInstance();
   List _adminList = [];
+  final Preferences _prefs = Preferences();
 
   UnmodifiableListView get adminList => UnmodifiableListView(_adminList);
 
@@ -33,7 +35,7 @@ class UserRepository with ChangeNotifier {
     notifyListeners();
   }
 
-  void getAdminList() async {
+  Future getAdminList() async {
     await _repository.getUsersAdmin().forEach((documents) {
       _adminList = documents.data['userID'] as List;
     });
@@ -115,7 +117,8 @@ class UserRepository with ChangeNotifier {
   }
 
   Future signOut() async {
-    _auth.signOut();
+    await _auth.signOut();
+    _prefs.clear();
     _status = Status.Unauthenticated;
     notifyListeners();
     return Future.delayed(Duration.zero);
