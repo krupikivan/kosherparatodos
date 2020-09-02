@@ -28,7 +28,7 @@ class Preferences {
   }
 
   bool get isAdmin {
-    return _prefs.getBool('is_admin') ?? false;
+    return _prefs.getBool('is_admin');
   }
 
   set isAdmin(bool value) {

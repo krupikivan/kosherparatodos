@@ -35,12 +35,21 @@ class App extends StatelessWidget {
             case Status.Register:
               return SignUpPage();
             case Status.Authenticated:
-              if (user.adminList.contains(user.user.uid) || _prefs.isAdmin) {
-                _prefs.isAdmin = true;
-                return AdminPage(user: user.user);
+              //TODO: Probar esto
+              if (_prefs.isAdmin == null) {
+                if (user.adminList.contains(user.user.uid)) {
+                  _prefs.isAdmin = true;
+                  return AdminPage(user: user.user);
+                } else {
+                  _prefs.isAdmin = false;
+                  return UserPage(user: user.user);
+                }
               } else {
-                _prefs.isAdmin = false;
-                return UserPage(user: user.user);
+                if (_prefs.isAdmin) {
+                  return AdminPage(user: user.user);
+                } else {
+                  return UserPage(user: user.user);
+                }
               }
           }
           return null;
